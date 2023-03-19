@@ -54,7 +54,13 @@ return {
       -- TODO: move mappings to keymaps file
 
       set('n', '<leader>b', dap.toggle_breakpoint)
+
       set('n', '<f9>', dap.toggle_breakpoint) -- vscode
+      set('i', '<f9>', function()
+        dap.toggle_breakpoint();
+        vim.cmd.startinsert({ bang = true })
+      end)
+
       set('n', '<leader>B', function()
         dap.toggle_breakpoint(vim.fn.input('Breakpoint Condition: '), nil, nil, true)
       end)
@@ -62,21 +68,54 @@ return {
         dap.toggle_breakpoint(nil, nil, vim.fn.input('Log point message: '), true)
       end)
 
-      set('n', '<f5>', dap.continue)    -- vscode
+      set('n', '<f5>', dap.continue) -- vscode
+      set('i', '<f5>', function()
+        dap.continue();
+        vim.cmd.startinsert({ bang = true })
+      end)
 
-      set('n', '<f11>', dap.step_into)  -- vscode
+      set('n', '<f11>', dap.step_into) -- vscode
+      set('i', '<f11>', function()
+        dap.step_into();
+        vim.cmd.startinsert({ bang = true })
+      end)
+
       set('n', '<s-f11>', dap.step_out) -- vscode
-      set('n', '<f23>', dap.step_out)   -- vscode, same as <s-f11>
+      set('i', '<s-f11>', function()
+        dap.step_out();
+        vim.cmd.startinsert({ bang = true })
+      end)
+      set('n', '<f23>', dap.step_out) -- vscode, same as <s-f11>
+      set('i', '<s-f23>', function()
+        dap.step_out();
+        vim.cmd.startinsert({ bang = true })
+      end)
 
-      set('n', '<f10>', dap.step_over)  -- vscode
+      set('n', '<f10>', dap.step_over) -- vscode
+      set('i', '<f10>', function()
+        dap.step_over();
+        vim.cmd.startinsert({ bang = true })
+      end)
 
       set('n', '<s-f5>', dap.terminate) -- vscode
-      set('n', '<f17>', dap.terminate)  -- vscode, same as <s-f5>
+      set('i', '<s-f5>', function()
+        dap.terminate();
+        vim.cmd.startinsert({ bang = true })
+      end)
+      set('n', '<f17>', dap.terminate) -- vscode, same as <s-f5>
+      set('i', '<f17>', function()
+        dap.terminate();
+        vim.cmd.startinsert({ bang = true })
+      end)
 
       local dapuiwidgets
       status, dapuiwidgets = pcall(require, "dapui.widgets")
       if status then
         set('n', '<f12>', dapuiwidgets.hover)
+        set('i', '<f12>', function()
+          dapuiwidgets.hover()
+          vim.cmd.startinsert({ bang = true })
+        end)
       end
 
       -- set('n', '<leader>dr', function() dap.repl.toggle({ height = 15 }) end)

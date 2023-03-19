@@ -20,7 +20,6 @@ if not status then
   return
 end
 local root_dir = jdtlssetup.find_root({ '.git', 'gradlew', 'mvnw' })
-
 local home = os.getenv('HOME')
 local workspace_folder = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
 --
