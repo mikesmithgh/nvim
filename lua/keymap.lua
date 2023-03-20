@@ -273,7 +273,15 @@ M.setup = function()
   vim.keymap.set('n', 'sdf', fzf.dap_frames)
   vim.keymap.set('n', 'sdc', fzf.dap_commands)
   -- vim.keymap.set('n', 'sW', fzf.lsp_workspace_diagnostics)
+
+  local osv
+  status, osv = pcall(require, "osv")
+  if status then
+    vim.keymap.set('n', '<leader><f5>', function() osv.launch({ port = 8086 }) end, { silent = true })
+  end
 end
+
+
 
 -- ideas
 -- TODO: more pseudo leaders
