@@ -18,6 +18,24 @@ return {
         request = 'launch',
         name = 'Launch file (justMyCode = false)',
         program = '${file}',
+        justMyCode = false,
+      },
+      {
+        type = 'python',
+        request = 'launch',
+        name = 'Launch file with arguments (justMyCode = false)',
+        program = '${file}',
+        justMyCode = false,
+        args = function()
+          local args_string = vim.fn.input('Arguments: ')
+          return vim.split(args_string, " +")
+        end,
+      },
+      {
+        type = 'python',
+        request = 'launch',
+        name = 'Launch file (console = integratedTerminal, justMyCode = false)',
+        program = '${file}',
         console = "integratedTerminal",
         justMyCode = false,
         -- pythonPath = opts.pythonPath,
@@ -25,7 +43,7 @@ return {
       {
         type = 'python',
         request = 'launch',
-        name = 'Launch file with arguments (justMyCode = false)',
+        name = 'Launch file with arguments (console = integratedTerminal, justMyCode = false)',
         program = '${file}',
         console = "integratedTerminal",
         justMyCode = false,
