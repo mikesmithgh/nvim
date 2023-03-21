@@ -152,9 +152,23 @@ return {
       settings = {
         pylsp = {
           plugins = {
+            autopep8 = {
+              enabled = false, -- conflicts with yapf
+            },
             pycodestyle = {
-              ignore = { 'W391' },
-              maxLineLength = 100
+              enabled = true,
+            },
+            flake8 = {
+              enabled = false, -- conflicts with yapf
+            },
+            yapf = {
+              enabled = true,
+            },
+            mccabe = {
+              enabled = true,
+            },
+            pyflakes = {
+              enabled = true,
             },
           },
         },

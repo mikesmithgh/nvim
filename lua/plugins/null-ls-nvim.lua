@@ -15,7 +15,7 @@ return {
         null_ls.builtins.formatting.gofumpt,
         null_ls.builtins.formatting.goimports,
         -- null_ls.builtins.formatting.stylua, -- using builtin from sumneko
-        null_ls.builtins.formatting.black,
+        -- null_ls.builtins.formatting.black,
       },
     })
   end

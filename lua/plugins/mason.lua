@@ -1,5 +1,6 @@
 return {
-  { "jayp0521/mason-nvim-dap.nvim",
+  {
+    "jayp0521/mason-nvim-dap.nvim",
     dependencies = { "williamboman/mason.nvim", "mfussenegger/nvim-dap" },
     enabled = true,
     config = function()
@@ -17,6 +18,7 @@ return {
       masonnvimdap.setup({
         ensure_installed = { "python", "delve", "bash" }
       })
-    end },
+    end
+  },
 
 }
