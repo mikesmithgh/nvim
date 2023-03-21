@@ -99,7 +99,7 @@ return {
           local window_h_int = math.floor(window_h)
           local center_x = (screen_w - window_w) / 2
           local center_y = ((vim.opt.lines:get() - window_h) / 2)
-              - vim.opt.cmdheight:get()
+            - vim.opt.cmdheight:get()
           return {
             border = "none",
             relative = "editor",
@@ -163,7 +163,8 @@ return {
         -- -- nvim_tree_view.grow_from_content()
       end
 
-      table.insert(nvim_tree_view.mappings.list, { key = "=", action = "toggle adaptive size", action_cb = resizer })
+      table.insert(nvim_tree_view.mappings.list,
+        { key = "=", action = "toggle adaptive size", action_cb = resizer })
       local tree_opts = {
         auto_reload_on_write = true,
         create_in_closed_folder = false,
@@ -316,7 +317,8 @@ return {
               enable = false,
               chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
               exclude = {
-                filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame", "dapui_watches",
+                filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame",
+                  "dapui_watches",
                   "dapui_stacks", "dapui_breakpoints", "dapui_scopes", "dapui_console", "dapui-repl" },
                 buftype = { "nofile", "terminal", "help" },
               },

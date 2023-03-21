@@ -10,7 +10,7 @@ return { {
     if not status then
       return
     end
-    treesitterconfigs.setup {
+    treesitterconfigs.setup{
       -- A list of parser names, or "all"
       ensure_installed = {
         "bash",

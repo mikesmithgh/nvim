@@ -17,7 +17,7 @@ return {
       return
     end
 
-    fzflua.setup {
+    fzflua.setup{
       -- fzf_bin         = 'sk',            -- use skim instead of fzf?
       -- https://github.com/lotabout/skim
       global_resume       = true, -- enable global `resume`?
@@ -88,7 +88,7 @@ return {
           delay        = 100,         -- delay(ms) displaying the preview
           -- prevents lag on fast scrolling
           winopts      = {
-                                      -- builtin previewer window options
+            -- builtin previewer window options
             number         = true,
             relativenumber = false,
             cursorline     = true,
@@ -105,7 +105,8 @@ return {
           vim.api.nvim_buf_set_keymap(0, "t", "<esc>", "<c-z>", { silent = true, noremap = true })
           vim.api.nvim_buf_set_keymap(0, "t", "<c-j>", "<down><down><down><down><down>",
             { silent = true, noremap = true })
-          vim.api.nvim_buf_set_keymap(0, "t", "<c-k>", "<up><up><up><up><up>", { silent = true, noremap = true })
+          vim.api.nvim_buf_set_keymap(0, "t", "<c-k>", "<up><up><up><up><up>",
+            { silent = true, noremap = true })
         end,
       },
       keymap              = {

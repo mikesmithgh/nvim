@@ -36,7 +36,7 @@ vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged", "Ins
       }
     end
 
-    lualine.setup {
+    lualine.setup{
       options = {
         icons_enabled = true,
         theme = 'gruvsquirrel',

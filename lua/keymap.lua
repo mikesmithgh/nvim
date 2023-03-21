@@ -49,7 +49,8 @@ M.setup = function()
   vim.keymap.set("n", "<a-s-n>", '0Nzzzv')
 
   -- Show all diagnostics on current line in floating window
-  vim.api.nvim_set_keymap('n', '<Leader>d', '<cmd>lua vim.diagnostic.open_float()<CR>', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', '<Leader>d', '<cmd>lua vim.diagnostic.open_float()<CR>',
+    { noremap = true, silent = true })
   vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>', {})
   vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>', {})
 
@@ -158,7 +159,7 @@ M.setup = function()
 
   vim.keymap.set('n', '<leader>lc', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', '<leader>lR', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<leader>lf', function() vim.lsp.buf.format { async = true } end, bufopts)
+  vim.keymap.set('n', '<leader>lf', function() vim.lsp.buf.format{ async = true } end, bufopts)
 
   -- TODO: keep this until it conflicts
   vim.keymap.set("t", "<esc>", '<c-\\><c-n><esc>', { remap = true })

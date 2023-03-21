@@ -82,7 +82,6 @@ return {
         " exe s:Map('n', '<leader>ot', '<cmd>ToggleTerm<cr>')
         ]])
     end,
-
   },
   {
     'tpope/vim-repeat',

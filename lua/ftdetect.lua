@@ -21,7 +21,7 @@ local json_or_yaml = {
 }
 
 M.setup = function()
-  vim.filetype.add {
+  vim.filetype.add{
     pattern = {
       ['.*.pipeline'] = json_or_yaml,
       ['%.releaserc'] = json_or_yaml,

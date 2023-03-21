@@ -19,7 +19,7 @@ return {
       return
     end
 
-    dapgo.setup {
+    dapgo.setup{
       -- Additional dap configurations can be added.
       -- dap_configurations accepts a list of tables where each entry
       -- represents a dap configuration. For more details do:

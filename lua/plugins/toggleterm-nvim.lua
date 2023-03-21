@@ -7,7 +7,7 @@ return {
     if not status then
       return
     end
-    toggleterm.setup {
+    toggleterm.setup{
       hide_numbers = true,
       start_in_insert = true,
       persist_mode = false,

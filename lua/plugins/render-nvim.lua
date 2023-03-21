@@ -14,7 +14,8 @@ return {
             faces = {
               {
                 name = "MonaLisa Nerd Font Regular",
-                src = [[url('/Users/mike/Library/Fonts/MonoLisa Regular Nerd Font.ttf') format("truetype")]]
+                src =
+                [[url('/Users/mike/Library/Fonts/MonoLisa Regular Nerd Font.ttf') format("truetype")]]
               },
               {
                 name = "MonaLisa Nerd Font Bold",
@@ -22,11 +23,13 @@ return {
               },
               {
                 name = "MonaLisa Nerd Font Regular Italic",
-                src = [[url('/Users/mike/Library/Fonts/MonoLisa Regular Italic Nerd Font.ttf') format("truetype")]]
+                src =
+                [[url('/Users/mike/Library/Fonts/MonoLisa Regular Italic Nerd Font.ttf') format("truetype")]]
               },
               {
                 name = "MonaLisa Nerd Font Bold Italic",
-                src = [[url('/Users/mike/Library/Fonts/MonoLisa Bold Italic Nerd Font.ttf') format("truetype")]]
+                src =
+                [[url('/Users/mike/Library/Fonts/MonoLisa Bold Italic Nerd Font.ttf') format("truetype")]]
               },
               {
                 name = "MonoLisa Regular Nerd Font Complete Windows Compatible",
