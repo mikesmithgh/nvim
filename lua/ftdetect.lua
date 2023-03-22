@@ -9,11 +9,11 @@ local json_or_yaml = {
     end
     local lines_table = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
     local content = table.concat(lines_table, "\n")
-    local is_yaml = vim.fn.match(content, '^---\\|\\s\\+\\w\\+:\\s*') >= 0
+    local is_yaml = vim.fn.match(content, '^---\\|\\_s\\+\\w\\+:\\_s*') >= 0
     if is_yaml then
       return "yaml"
     end
-    local is_json = vim.fn.match(content, '^\\s*{.*}\\s*$') >= 0
+    local is_json = vim.fn.match(content, '^\\_s*{.*}\\_s*$') >= 0
     if is_json then
       return "json"
     end
