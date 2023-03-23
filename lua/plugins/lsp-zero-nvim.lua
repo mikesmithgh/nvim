@@ -189,6 +189,20 @@ return {
     -- install via brew install bash-language-server or npm i -g bash-language-server
     lsp.configure("bashls", {})
 
+    lsp.configure("yamlls", {
+      filetypes = { 'yaml', 'yaml.docker-compose', 'yml' },
+      settings = {
+        yaml = {
+          format = {
+            enable = true,
+          },
+          schemaStore = {
+            enable = true,
+          },
+        },
+      },
+    })
+
     lsp.setup()
   end
 }
