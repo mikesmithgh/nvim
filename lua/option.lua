@@ -1,7 +1,7 @@
 local M = {}
 
 M.setup = function()
-  vim.api.nvim_create_augroup('Options', { clear = true })
+  vim.api.nvim_create_augroup("Options", { clear = true })
   vim.api.nvim_create_augroup('Comments', { clear = true })
 
   -- globals
@@ -24,9 +24,9 @@ M.setup = function()
   vim.opt.writebackup = true
   vim.opt.backupdir = vim.fn.stdpath('state') .. '/backup//' -- two trailing slashes replace all / with %
   vim.opt.backupcopy = 'yes'
-  vim.opt.backupext = '.bak' -- IMPORTANT: autcommand will override this
+  vim.opt.backupext = '.bak'                                 -- IMPORTANT: autocommand will override this
   vim.opt.backupskip:append('COMMIT_EDITMSG')
-  vim.opt.patchmode = '' -- no patch mode needed, autocommand will take versioned backups
+  vim.opt.patchmode = ''                                     -- no patch mode needed, autocommand will take versioned backups
 
   vim.opt.undodir = vim.fn.stdpath('state') .. '/undo'
   vim.opt.undofile = true
