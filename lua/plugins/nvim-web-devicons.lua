@@ -1,9 +1,9 @@
 return {
-  "nvim-tree/nvim-web-devicons",
+  'nvim-tree/nvim-web-devicons',
   dev = true,
   lazy = false,
   config = function()
-    require("nvim-web-devicons").setup{
+    require('nvim-web-devicons').setup({
       -- your personnal icons can go here (to override)
       -- you can specify color or cterm_color instead of specifying both of them
       -- DevIcon will be appended to `name`
@@ -44,6 +44,6 @@ return {
       --     name = "Log"
       --   }
       -- },
-    }
-  end
+    })
+  end,
 }

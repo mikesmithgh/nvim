@@ -2,7 +2,7 @@ return {
   'numToStr/Comment.nvim',
   enabled = true,
   config = function()
-    local status, comment = pcall(require, "Comment")
+    local status, comment = pcall(require, 'Comment')
     if not status then
       return
     end
@@ -17,5 +17,5 @@ return {
       pre_hook = nil,
       post_hook = nil,
     })
-  end
+  end,
 }

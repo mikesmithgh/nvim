@@ -2,7 +2,7 @@
 
 -- jdtls is required to be installed
 -- e.g, brew install jdtls
-local status, jdtls = pcall(require, "jdtls")
+local status, jdtls = pcall(require, 'jdtls')
 if not status then
   return
 end
@@ -15,18 +15,19 @@ vim.opt_local.softtabstop = 4
 -- below is lsp and dap stuff
 
 local jdtlssetup
-status, jdtlssetup = pcall(require, "jdtls.setup")
+status, jdtlssetup = pcall(require, 'jdtls.setup')
 if not status then
   return
 end
 local root_dir = jdtlssetup.find_root({ '.git', 'gradlew', 'mvnw' })
 local home = os.getenv('HOME')
-local workspace_folder = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
+local workspace_folder = home .. '/.local/share/eclipse/' .. vim.fn.fnamemodify(root_dir, ':p:h:t')
 --
 if not vim.g.jdtls then
-  local java_home = string.gsub(vim.fn.system("/usr/libexec/java_home -F"), "%s+", "")
-  local java_version = string.gsub(vim.fn.system("/usr/libexec/java_home -F --exec javap -version"), "%s+", "")
-  local java_major_version = string.match(java_version, "([^.]+)") -- split by . and get first match
+  local java_home = string.gsub(vim.fn.system('/usr/libexec/java_home -F'), '%s+', '')
+  local java_version =
+    string.gsub(vim.fn.system('/usr/libexec/java_home -F --exec javap -version'), '%s+', '')
+  local java_major_version = string.match(java_version, '([^.]+)') -- split by . and get first match
   local java_runtime = 'JavaSE-' .. java_major_version
   vim.g.jdtls = {
     java_home = java_home,
@@ -51,13 +52,18 @@ local config = {
     '-Dlog.level=ALL',
     '-Xms1G',
     '--add-modules=ALL-SYSTEM',
-    '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-    '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+    '--add-opens',
+    'java.base/java.util=ALL-UNNAMED',
+    '--add-opens',
+    'java.base/java.lang=ALL-UNNAMED',
 
-    '-jar', '/opt/homebrew/opt/jdtls/libexec/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
-    '-configuration', '/opt/homebrew/opt/jdtls/libexec/config_mac',
+    '-jar',
+    '/opt/homebrew/opt/jdtls/libexec/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
+    '-configuration',
+    '/opt/homebrew/opt/jdtls/libexec/config_mac',
 
-    '-data', workspace_folder,
+    '-data',
+    workspace_folder,
   },
   settings = {
     java = {
@@ -143,9 +149,13 @@ local on_attach = function(_, bufnr)
   --         augroup end
   --       ]], true)
 
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_keymap(...)
+    vim.api.nvim_buf_set_keymap(bufnr, ...)
+  end
 
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  local function buf_set_option(...)
+    vim.api.nvim_buf_set_option(bufnr, ...)
+  end
 
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -159,21 +169,31 @@ local on_attach = function(_, bufnr)
   buf_set_keymap('n', '<C-h>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap(
+    'n',
+    '<leader>wl',
+    '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
+    opts
+  )
   buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
   buf_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   buf_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
   -- Java specific
-  buf_set_keymap("n", "<leader>di", "<Cmd>lua require'jdtls'.organize_imports()<CR>", opts)
-  buf_set_keymap("n", "<leader>dt", "<Cmd>lua require'jdtls'.test_class()<CR>", opts)
-  buf_set_keymap("n", "<leader>dn", "<Cmd>lua require'jdtls'.test_nearest_method()<CR>", opts)
-  buf_set_keymap("v", "<leader>de", "<Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>", opts)
-  buf_set_keymap("n", "<leader>de", "<Cmd>lua require('jdtls').extract_variable()<CR>", opts)
-  buf_set_keymap("v", "<leader>dm", "<Esc><Cmd>lua require('jdtls').extract_method(true)<CR>", opts)
+  buf_set_keymap('n', '<leader>di', "<Cmd>lua require'jdtls'.organize_imports()<CR>", opts)
+  buf_set_keymap('n', '<leader>dt', "<Cmd>lua require'jdtls'.test_class()<CR>", opts)
+  buf_set_keymap('n', '<leader>dn', "<Cmd>lua require'jdtls'.test_nearest_method()<CR>", opts)
+  buf_set_keymap(
+    'v',
+    '<leader>de',
+    "<Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>",
+    opts
+  )
+  buf_set_keymap('n', '<leader>de', "<Cmd>lua require('jdtls').extract_variable()<CR>", opts)
+  buf_set_keymap('v', '<leader>dm', "<Esc><Cmd>lua require('jdtls').extract_method(true)<CR>", opts)
 
-  buf_set_keymap("n", "<leader>cf", "<cmd>lua vim.lsp.buf.format()<CR>", opts)
+  buf_set_keymap('n', '<leader>cf', '<cmd>lua vim.lsp.buf.format()<CR>', opts)
 
   -- vim.api.nvim_create_augroup("JavaLsp", { clear = true })
   -- vim.api.nvim_create_autocmd({ "CursorHold" }, {
@@ -183,8 +203,6 @@ local on_attach = function(_, bufnr)
   -- })
 end
 config['on_attach'] = on_attach
-
-
 
 -- setup jars for debug and test runners
 -- local jar_patterns = {
@@ -227,27 +245,42 @@ local bundles = {
   -- git clone git@github.com:microsoft/java-debug.git && cd java-debug
   -- JAVA_HOME="$(/usr/libexec/java_home -F -v 18)" M2_HOME="$(dirname $(dirname $(readlink -f $(which mvn))))" ./mvnw clean install
   vim.fn.glob(
-    "/Users/mike/gitrepos/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
-    , 1), "\n",
+    '/Users/mike/gitrepos/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar',
+    1
+  ),
+  '\n',
 }
 
 -- git clone git@github.com:dgileadi/vscode-java-decompiler.git
-vim.list_extend(bundles, vim.split(vim.fn.glob("/Users/mike/gitrepos/vscode-java-decompiler/server/*.jar", 1), "\n"))
+vim.list_extend(
+  bundles,
+  vim.split(vim.fn.glob('/Users/mike/gitrepos/vscode-java-decompiler/server/*.jar', 1), '\n')
+)
 
 -- git clone git@github.com:microsoft/vscode-java-test.git && cd vscode-java-test/java-extension
 -- npm install
 -- JAVA_HOME="$(/usr/libexec/java_home -F -v 18)" M2_HOME='/opt/homebrew/Cellar/maven/3.8.6' npm run build-plugin
 -- JAVA_HOME="$(/usr/libexec/java_home -F -v 18)" M2_HOME="$(dirname $(dirname $(readlink -f $(which mvn))))" ./mvnw clean install
-vim.list_extend(bundles, vim.split(vim.fn.glob("/Users/mike/gitrepos/vscode-java-test/server/*.jar", 1), "\n"))
+vim.list_extend(
+  bundles,
+  vim.split(vim.fn.glob('/Users/mike/gitrepos/vscode-java-test/server/*.jar', 1), '\n')
+)
 
 -- git clone git@github.com:testforstephen/vscode-pde.git && cd vscode-pde/pde/
 -- JAVA_HOME="$(/usr/libexec/java_home -F -v 18)" M2_HOME="$(dirname $(dirname $(readlink -f $(which mvn))))" ./mvnw clean install
-vim.list_extend(bundles,
-  vim.split(vim.fn.glob("/Users/mike/gitrepos/vscode-pde/pde/org.eclipse.jdt.ls.importer.pde/target/*.jar", 1), "\n"))
+vim.list_extend(
+  bundles,
+  vim.split(
+    vim.fn.glob(
+      '/Users/mike/gitrepos/vscode-pde/pde/org.eclipse.jdt.ls.importer.pde/target/*.jar',
+      1
+    ),
+    '\n'
+  )
+)
 
-
-local extendedClientCapabilities = jdtls.extendedClientCapabilities;
-extendedClientCapabilities.resolveAdditionalTextEditsSupport = true;
+local extendedClientCapabilities = jdtls.extendedClientCapabilities
+extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
 config.init_options = {
   bundles = bundles,
   extendedClientCapabilities = extendedClientCapabilities,

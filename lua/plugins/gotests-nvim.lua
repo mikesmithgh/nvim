@@ -1,8 +1,8 @@
 return {
-  "yanskun/gotests.nvim",
-  ft = "go",
+  'yanskun/gotests.nvim',
+  ft = 'go',
   enabled = true,
   config = function()
-    require("gotests").setup()
+    require('gotests').setup()
   end,
 }

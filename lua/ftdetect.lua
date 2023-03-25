@@ -8,20 +8,20 @@ local json_or_yaml = {
       return
     end
     local lines_table = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-    local content = table.concat(lines_table, "\n")
+    local content = table.concat(lines_table, '\n')
     local is_yaml = vim.fn.match(content, '^---\\|\\_s\\+\\w\\+:\\_s*') >= 0
     if is_yaml then
-      return "yaml"
+      return 'yaml'
     end
     local is_json = vim.fn.match(content, '^\\_s*{.*}\\_s*$') >= 0
     if is_json then
-      return "json"
+      return 'json'
     end
-  end
+  end,
 }
 
 M.setup = function()
-  vim.filetype.add{
+  vim.filetype.add({
     pattern = {
       ['.*.pipeline'] = json_or_yaml,
       ['%.releaserc'] = json_or_yaml,
@@ -29,10 +29,10 @@ M.setup = function()
         -- my filename convention for backup files
         -- logic reference from https://github.com/neovim/neovim/blob/master/runtime/lua/vim/filetype.lua#L1273
         local root = vim.fn.fnamemodify(path, ':r:r')
-        return require("vim.filetype").match({ buf = bufnr, filename = root })
+        return require('vim.filetype').match({ buf = bufnr, filename = root })
       end,
     },
-  }
+  })
 end
 
 return M

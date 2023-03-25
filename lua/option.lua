@@ -1,8 +1,8 @@
 local M = {}
 
 M.setup = function()
-  vim.api.nvim_create_augroup("Options", { clear = true })
-  vim.api.nvim_create_augroup("Comments", { clear = true })
+  vim.api.nvim_create_augroup('Options', { clear = true })
+  vim.api.nvim_create_augroup('Comments', { clear = true })
 
   -- globals
   -- disable netrw at the very start of your init.lua (strongly advised) Nvimtree
@@ -24,33 +24,30 @@ M.setup = function()
   vim.opt.writebackup = true
   vim.opt.backupdir = vim.fn.stdpath('state') .. '/backup//' -- two trailing slashes replace all / with %
   vim.opt.backupcopy = 'yes'
-  vim.opt.backupext = '.bak'                                 -- IMPORTANT: autcommand will override this
-  vim.opt.backupskip:append("COMMIT_EDITMSG")
-  vim.opt.patchmode =
-  '' -- no patch mode needed, autocommand will take versioned backups
+  vim.opt.backupext = '.bak' -- IMPORTANT: autcommand will override this
+  vim.opt.backupskip:append('COMMIT_EDITMSG')
+  vim.opt.patchmode = '' -- no patch mode needed, autocommand will take versioned backups
 
   vim.opt.undodir = vim.fn.stdpath('state') .. '/undo'
   vim.opt.undofile = true
 
   vim.opt.scroll = 5
-  vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-    group = "Options",
-    pattern = { "*" },
+  vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+    group = 'Options',
+    pattern = { '*' },
     callback = function()
       -- causes error with DiffviewOpen so swallowing the error for now
       pcall(function()
         vim.opt.scroll = 5
       end)
-    end
+    end,
   })
 
   -- Set 7 lines visible above/below the cursor
   vim.opt.scrolloff = 7
 
-
   -- Ignore case when searching
   vim.opt.ignorecase = true
-
 
   -- Case sensitive when searching with at least one uppcase letter
   vim.opt.smartcase = true
@@ -67,7 +64,6 @@ M.setup = function()
   -- Configure backspace so it acts as it should act
   vim.opt.backspace = { 'eol', 'start', 'indent' }
   vim.opt.whichwrap:append('<,>,h,l')
-
 
   -- Show matching brackets when text indicator is over them
   vim.opt.showmatch = true
@@ -86,9 +82,9 @@ M.setup = function()
   vim.opt.cursorcolumn = true
 
   -- -- hide insert autocomplete messages and while scanning for completion items
-  vim.tbl_extend("force", vim.opt.shortmess, { 'c', 'C' })
+  vim.tbl_extend('force', vim.opt.shortmess, { 'c', 'C' })
   -- -- enable spell check completion
-  vim.tbl_extend("force", vim.opt.complete, { 'kspell' })
+  vim.tbl_extend('force', vim.opt.complete, { 'kspell' })
 
   -- Improve popup completion menu
   vim.opt.completeopt = { 'longest', 'menuone' }
@@ -112,16 +108,15 @@ M.setup = function()
   -- Use Unix as the standard file type
   vim.opt.fileformats = { 'unix', 'dos', 'mac' }
 
-
   -- => TextRelated
   -- Use spaces instead of tabs
-  vim.opt.expandtab   = true
+  vim.opt.expandtab = true
 
   -- Be smart when using tabs ;)
-  vim.opt.smarttab    = true
+  vim.opt.smarttab = true
 
-  vim.opt.shiftwidth  = 2
-  vim.opt.tabstop     = 2
+  vim.opt.shiftwidth = 2
+  vim.opt.tabstop = 2
   vim.opt.softtabstop = 2
 
   -- augroup TabStops
@@ -129,27 +124,24 @@ M.setup = function()
   -- augroup end
 
   -- Auto indent
-  vim.opt.autoindent  = true
+  vim.opt.autoindent = true
   -- Smart indent
   vim.opt.smartindent = true
   -- Disable wrap lines
-  vim.opt.wrap        = false
+  vim.opt.wrap = false
 
   -- => Status line
   -- Always show the status line
-  vim.opt.laststatus  = 2
+  vim.opt.laststatus = 2
 
   -- disable show mode in favor of airline status line
-  vim.opt.showmode    = false
-
-
+  vim.opt.showmode = false
 
   -- show message for any line change, this help see the register info
   vim.opt.report = 0
 
   vim.opt.virtualedit = 'block'
   vim.opt.showcmd = true
-
 
   vim.opt.fillchars = {
     vert = '│',
@@ -162,17 +154,15 @@ M.setup = function()
 
   vim.g.github_enterprise_urls = { 'https://bithub.brightcove.com' }
 
-
   -- disable auto insert of comment after <cr> or o O
-  vim.opt.formatoptions = vim.opt.formatoptions - { 'r', 'o', }
-  vim.api.nvim_create_autocmd({ "FileType" }, {
-    group = "Comments",
-    pattern = { "*" },
+  vim.opt.formatoptions = vim.opt.formatoptions - { 'r', 'o' }
+  vim.api.nvim_create_autocmd({ 'FileType' }, {
+    group = 'Comments',
+    pattern = { '*' },
     callback = function()
-      vim.opt.formatoptions = vim.opt.formatoptions - { 'r', 'o', }
-    end
+      vim.opt.formatoptions = vim.opt.formatoptions - { 'r', 'o' }
+    end,
   })
-
 
   vim.opt.inccommand = 'nosplit'
 
