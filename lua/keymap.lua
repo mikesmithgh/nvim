@@ -2,14 +2,14 @@ local M = {}
 
 M.init = function()
   -- leader key
-  vim.g.mapleader = " "
+  vim.g.mapleader = ' '
 end
 
 M.setup = function()
   vim.keymap.set('n', '<space>', '<nop>')
 
   -- pseudo leaders
-  vim.keymap.set('n', 's', '<nop>')     -- used by kemap.fzf
+  vim.keymap.set('n', 's', '<nop>') -- used by kemap.fzf
   vim.keymap.set('n', '<c-n>', '<nop>') -- used by NvimTree still in init.vim
 
   vim.keymap.set(
@@ -242,19 +242,19 @@ M.setup = function()
 
   local function fzf_files()
     local fd_opts =
-    [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .git ]]
+      [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .git ]]
     fzf.files({ fd_opts = fd_opts, debug = false })
   end
 
   local function fzf_live_grep()
     local rg_opts =
-    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
+      "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
     fzf.live_grep({ rg_opts = rg_opts, debug = false, exec_empty_query = true })
   end
 
   local function fzf_lgrep_curbuf()
     local rg_opts =
-    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
+      "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
     fzf.lgrep_curbuf({ rg_opts = rg_opts, debug = false, { exec_empty_query = true } })
   end
 
@@ -272,8 +272,8 @@ M.setup = function()
   vim.keymap.set('n', 'sc', fzf.changes)
   vim.keymap.set('n', 's8', fzf.grep_cword) -- TODO: add exact match
   vim.keymap.set('n', 's*', fzf.grep_cWORD) -- TODO: add exact match
-  vim.keymap.set('n', 'sl', fzf.resume)     -- TODO: not sure about this binding
-  vim.keymap.set('n', 'so', fzf.oldfiles)   -- TODO: not sure about this binding
+  vim.keymap.set('n', 'sl', fzf.resume) -- TODO: not sure about this binding
+  vim.keymap.set('n', 'so', fzf.oldfiles) -- TODO: not sure about this binding
   vim.keymap.set('n', 's:', fzf.commands)
 
   vim.keymap.set('n', 'sT', fzf.lsp_typedefs)
