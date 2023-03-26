@@ -1,7 +1,7 @@
 return {
   'jose-elias-alvarez/null-ls.nvim',
   config = function()
-    local status, null_ls = pcall(require, "null-ls")
+    local status, null_ls = pcall(require, 'null-ls')
     if not status then
       return
     end
@@ -18,5 +18,5 @@ return {
         -- null_ls.builtins.formatting.black,
       },
     })
-  end
+  end,
 }

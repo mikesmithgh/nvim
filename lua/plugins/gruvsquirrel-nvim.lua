@@ -1,6 +1,6 @@
 return {
   {
-    "mikesmithgh/gruvsquirrel.nvim",
+    'mikesmithgh/gruvsquirrel.nvim',
     priority = 1000,
     enabled = true,
     lazy = false,

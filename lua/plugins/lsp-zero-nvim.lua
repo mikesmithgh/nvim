@@ -19,28 +19,26 @@ return {
     { 'L3MON4D3/LuaSnip' },
     { 'rafamadriz/friendly-snippets' },
 
-
     { 'rcarriga/nvim-dap-ui' },
-    { "mfussenegger/nvim-dap" },
-    { "folke/neodev.nvim" },
-
+    { 'mfussenegger/nvim-dap' },
+    { 'folke/neodev.nvim' },
   },
   config = function()
-    local status, neodev = pcall(require, "neodev")
+    local status, neodev = pcall(require, 'neodev')
     if not status then
-      vim.cmd.echom("error")
+      vim.cmd.echom('error')
       return
     end
     local lsp
-    status, lsp = pcall(require, "lsp-zero")
+    status, lsp = pcall(require, 'lsp-zero')
     if not status then
-      vim.cmd.echom("error")
+      vim.cmd.echom('error')
       return
     end
     -- IMPORTANT: make sure to setup neodev BEFORE lspconfig
     neodev.setup({
       -- add any options here, or leave empty to use the default settings
-      library = { plugins = { "nvim-dap-ui" }, types = true },
+      library = { plugins = { 'nvim-dap-ui' }, types = true },
     })
 
     -- lsp.preset("recommended")
@@ -56,8 +54,8 @@ return {
         error = '✘',
         warn = '▲',
         hint = '⚑',
-        info = ''
-      }
+        info = '',
+      },
     })
 
     -- lsp servers are available at the below path
@@ -76,7 +74,7 @@ return {
 
     lsp.ensure_installed({
       lua_language_server,
-      "luau_lsp",
+      'luau_lsp',
     })
 
     -- lsp.nvim_workspace()
@@ -96,20 +94,20 @@ return {
           },
           completion = {
             autoRequire = true,
-            callSnippet = "Both",
+            callSnippet = 'Both',
             displayContext = 5,
             enable = true,
-            keywordSnippet = "Both",
+            keywordSnippet = 'Both',
             postfix = '@',
             requireSeparator = '.',
             showParams = true,
-            showWord = "Enable",
+            showWord = 'Enable',
             workspaceWord = true,
           },
           {
             workspace = {
               -- Make the server aware of Neovim runtime files
-              library = vim.api.nvim_get_runtime_file("", true),
+              library = vim.api.nvim_get_runtime_file('', true),
             },
           },
           runtime = {
@@ -125,12 +123,12 @@ return {
             },
           },
           hint = {
-            arrayIndex = "Enable",
+            arrayIndex = 'Enable',
             await = true,
             enable = true,
-            paramName = "All",
+            paramName = 'All',
             paramType = true,
-            semicolon = "SameLine",
+            semicolon = 'SameLine',
             setType = true,
           },
           hover = {
@@ -143,14 +141,14 @@ return {
           },
           codeLens = {
             enable = true,
-          }
+          },
         },
       },
     })
 
-    lsp.configure("pylsp", {
+    lsp.configure('pylsp', {
       root_dir = function(fname)
-        local util = require'lspconfig.util'
+        local util = require('lspconfig.util')
         local root_files = {
           'pyproject.toml',
           'setup.py',
@@ -187,9 +185,9 @@ return {
     })
 
     -- install via brew install bash-language-server or npm i -g bash-language-server
-    lsp.configure("bashls", {})
+    lsp.configure('bashls', {})
 
-    lsp.configure("yamlls", {
+    lsp.configure('yamlls', {
       filetypes = { 'yaml', 'yaml.docker-compose', 'yml' },
       settings = {
         yaml = {
@@ -204,5 +202,5 @@ return {
     })
 
     lsp.setup()
-  end
+  end,
 }

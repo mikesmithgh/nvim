@@ -1,43 +1,48 @@
 return {
-  "lewis6991/gitsigns.nvim",
+  'lewis6991/gitsigns.nvim',
   enabled = true,
   config = function()
-    local status, gitsigns = pcall(require, "gitsigns")
+    local status, gitsigns = pcall(require, 'gitsigns')
     if not status then
       return
     end
-    gitsigns.setup{
+    gitsigns.setup({
       signs = {
-        add          = { hl = 'GitSignsAdd', text = ' ▐', numhl = 'GitSignsAddNr', linehl = 'GitSignsAddLn' },
-        change       = {
+        add = {
+          hl = 'GitSignsAdd',
+          text = ' ▐',
+          numhl = 'GitSignsAddNr',
+          linehl = 'GitSignsAddLn',
+        },
+        change = {
           hl = 'GitSignsChange',
           text = ' ▐',
           numhl = 'GitSignsChangeNr',
-          linehl = 'GitSignsChangeLn'
+          linehl = 'GitSignsChangeLn',
         },
-        topdelete    = {
+        topdelete = {
           hl = 'GitSignsDelete',
           text = ' ▐',
           numhl = 'GitSignsDeleteNr',
-          linehl = 'GitSignsDeleteLn'
+          linehl = 'GitSignsDeleteLn',
         },
-        delete       = {
+        delete = {
           hl = 'GitSignsDelete',
           text = ' ▐',
           numhl = 'GitSignsDeleteNr',
-          linehl = 'GitSignsDeleteLn'
+          linehl = 'GitSignsDeleteLn',
         },
         changedelete = {
           hl = 'GitSignsChangeDelete',
           text = ' ▐',
           numhl = 'GitSignsChangeDeleteNr',
-          linehl = 'GitSignsChangeDeleteLn'
+          linehl = 'GitSignsChangeDeleteLn',
         },
-        untracked    = {
+        untracked = {
           hl = 'GitSignsUntracked',
           text = ' ▌',
           numhl = 'GitSignsUntrackedNr',
-          linehl = 'GitSignsUntrackedLn'
+          linehl = 'GitSignsUntrackedLn',
         }, -- todo purple
       },
       on_attach = function(bufnr)
@@ -51,14 +56,22 @@ return {
 
         -- Navigation
         map('n', ']c', function()
-          if vim.wo.diff then return ']c' end
-          vim.schedule(function() gs.next_hunk() end)
+          if vim.wo.diff then
+            return ']c'
+          end
+          vim.schedule(function()
+            gs.next_hunk()
+          end)
           return '<Ignore>'
         end, { expr = true })
 
         map('n', '[c', function()
-          if vim.wo.diff then return '[c' end
-          vim.schedule(function() gs.prev_hunk() end)
+          if vim.wo.diff then
+            return '[c'
+          end
+          vim.schedule(function()
+            gs.prev_hunk()
+          end)
           return '<Ignore>'
         end, { expr = true })
 
@@ -69,15 +82,19 @@ return {
         map('n', '<leader>hu', gs.undo_stage_hunk)
         map('n', '<leader>hR', gs.reset_buffer)
         map('n', '<leader>hp', gs.preview_hunk)
-        map('n', '<leader>hb', function() gs.blame_line{ full = true } end)
+        map('n', '<leader>hb', function()
+          gs.blame_line({ full = true })
+        end)
         map('n', '<leader>tb', gs.toggle_current_line_blame)
         map('n', '<leader>hd', gs.diffthis)
-        map('n', '<leader>hD', function() gs.diffthis('~') end)
+        map('n', '<leader>hD', function()
+          gs.diffthis('~')
+        end)
         map('n', '<leader>td', gs.toggle_deleted)
 
         -- Text object
         map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-      end
-    }
-  end
+      end,
+    })
+  end,
 }

@@ -1,14 +1,14 @@
 return {
   'mfussenegger/nvim-dap-python',
-  dependencies = { "mfussenegger/nvim-dap" },
+  dependencies = { 'mfussenegger/nvim-dap' },
   enabled = true,
   config = function()
-    local status, dap = pcall(require, "dap")
+    local status, dap = pcall(require, 'dap')
     if not status then
       return
     end
     local dappython
-    status, dappython = pcall(require, "dap-python")
+    status, dappython = pcall(require, 'dap-python')
     if not status then
       return
     end
@@ -28,7 +28,7 @@ return {
         justMyCode = false,
         args = function()
           local args_string = vim.fn.input('Arguments: ')
-          return vim.split(args_string, " +")
+          return vim.split(args_string, ' +')
         end,
       },
       {
@@ -36,7 +36,7 @@ return {
         request = 'launch',
         name = 'Launch file (console = integratedTerminal, justMyCode = false)',
         program = '${file}',
-        console = "integratedTerminal",
+        console = 'integratedTerminal',
         justMyCode = false,
         -- pythonPath = opts.pythonPath,
       },
@@ -45,12 +45,12 @@ return {
         request = 'launch',
         name = 'Launch file with arguments (console = integratedTerminal, justMyCode = false)',
         program = '${file}',
-        console = "integratedTerminal",
+        console = 'integratedTerminal',
         justMyCode = false,
         -- pythonPath = opts.pythonPath,
         args = function()
           local args_string = vim.fn.input('Arguments: ')
-          return vim.split(args_string, " +")
+          return vim.split(args_string, ' +')
         end,
       },
     }
@@ -59,5 +59,5 @@ return {
       console = 'integratedTerminal',
       pythonPath = nil,
     })
-  end
+  end,
 }

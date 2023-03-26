@@ -1,8 +1,8 @@
 return {
-  "folke/zen-mode.nvim",
+  'folke/zen-mode.nvim',
   enabled = true,
   config = function()
-    require("zen-mode").setup{
+    require('zen-mode').setup({
       -- your configuration comes here
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
@@ -13,7 +13,7 @@ return {
         -- * a percentage of the width / height of the editor when <= 1
         -- * a function that returns the width or the height
         width = 180, -- width of the Zen window
-        height = 1,  -- height of the Zen window
+        height = 1, -- height of the Zen window
         -- by default, no options are changed for the Zen window
         -- uncomment any of the options below, or add other vim.wo options you want to apply
         options = {
@@ -26,6 +26,6 @@ return {
           -- list = false, -- disable whitespace characters
         },
       },
-    }
-  end
+    })
+  end,
 }

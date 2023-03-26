@@ -8,15 +8,22 @@ end
 M.setup = function()
   vim.keymap.set('n', '<space>', '<nop>')
 
-
   -- pseudo leaders
-  vim.keymap.set('n', 's', '<nop>')     -- used by kemap.fzf
+  vim.keymap.set('n', 's', '<nop>') -- used by kemap.fzf
   vim.keymap.set('n', '<c-n>', '<nop>') -- used by NvimTree still in init.vim
 
-
-  vim.keymap.set({ 'n', 'i', 't', 'v' }, '<c-w>o', '<cmd>ZenMode<cr>', { noremap = true, silent = true })
-  vim.keymap.set({ 'n', 'i', 't', 'v' }, '<c-w><c-o>', '<cmd>ZenMode<cr>', { noremap = true, silent = true })
-
+  vim.keymap.set(
+    { 'n', 'i', 't', 'v' },
+    '<c-w>o',
+    '<cmd>ZenMode<cr>',
+    { noremap = true, silent = true }
+  )
+  vim.keymap.set(
+    { 'n', 'i', 't', 'v' },
+    '<c-w><c-o>',
+    '<cmd>ZenMode<cr>',
+    { noremap = true, silent = true }
+  )
 
   -- enable hlsearch before search
   vim.keymap.set('n', '/', ':set hlsearch<cr>/')
@@ -33,24 +40,28 @@ M.setup = function()
   vim.keymap.set('n', 'x', '"_x')
 
   -- tasty keymaps modified from https://github.com/ThePrimeagen/init.lua/blob/bc8324fa1c31bd1bc81fb8a5dde684dffd324f84/lua/theprimeagen/remap.lua
-  vim.keymap.set("n", "J", "mzJ`z")
-  vim.keymap.set("n", "<C-d>", "<C-d>zz")
-  vim.keymap.set("n", "<C-u>", "<C-u>zz")
-  vim.keymap.set("n", "<C-o>", "<C-o>zz")
-  vim.keymap.set("n", "<C-i>", "<C-i>zz")
-  vim.keymap.set("n", "<C-t>", "<C-t>zz")
-  vim.keymap.set("n", "<C-]>", "<C-]>zz")
-  vim.keymap.set("n", "]c", "]czz")
-  vim.keymap.set("n", "[c", "[czz")
-  vim.keymap.set("n", "do", "do]czz")
-  vim.keymap.set("n", "n", "nzzzv")
-  vim.keymap.set("n", "N", "Nzzzv")
-  vim.keymap.set("n", "<a-n>", 'j0nzzzv')
-  vim.keymap.set("n", "<a-s-n>", '0Nzzzv')
+  vim.keymap.set('n', 'J', 'mzJ`z')
+  vim.keymap.set('n', '<C-d>', '<C-d>zz')
+  vim.keymap.set('n', '<C-u>', '<C-u>zz')
+  vim.keymap.set('n', '<C-o>', '<C-o>zz')
+  vim.keymap.set('n', '<C-i>', '<C-i>zz')
+  vim.keymap.set('n', '<C-t>', '<C-t>zz')
+  vim.keymap.set('n', '<C-]>', '<C-]>zz')
+  vim.keymap.set('n', ']c', ']czz')
+  vim.keymap.set('n', '[c', '[czz')
+  vim.keymap.set('n', 'do', 'do]czz')
+  vim.keymap.set('n', 'n', 'nzzzv')
+  vim.keymap.set('n', 'N', 'Nzzzv')
+  vim.keymap.set('n', '<a-n>', 'j0nzzzv')
+  vim.keymap.set('n', '<a-s-n>', '0Nzzzv')
 
   -- Show all diagnostics on current line in floating window
-  vim.api.nvim_set_keymap('n', '<Leader>d', '<cmd>lua vim.diagnostic.open_float()<CR>',
-    { noremap = true, silent = true })
+  vim.api.nvim_set_keymap(
+    'n',
+    '<Leader>d',
+    '<cmd>lua vim.diagnostic.open_float()<CR>',
+    { noremap = true, silent = true }
+  )
   vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>', {})
   vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>', {})
 
@@ -69,7 +80,6 @@ M.setup = function()
   -- todo zy and zp mappings
 
   vim.api.nvim_set_keymap('c', 'w!!', 'w !sudo tee > /dev/null %', {})
-
 
   vim.api.nvim_set_keymap('n', '<C-e>', '5<C-e>', {})
   vim.api.nvim_set_keymap('n', '<C-y>', '5<C-y>', {})
@@ -106,8 +116,18 @@ M.setup = function()
   vim.api.nvim_set_keymap('n', '<c-n>l', ':lclose<CR>', {})
 
   vim.keymap.set('t', '<c-w>', '<c-\\><c-n><c-w>')
-  vim.api.nvim_set_keymap('t', '<c-w><c-o>', '<c-\\><c-n><cmd>ZenMode<CR>', { noremap = true, silent = true })
-  vim.api.nvim_set_keymap('t', '<c-w>o', '<c-\\><c-n><cmd>ZenMode<CR>', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap(
+    't',
+    '<c-w><c-o>',
+    '<c-\\><c-n><cmd>ZenMode<CR>',
+    { noremap = true, silent = true }
+  )
+  vim.api.nvim_set_keymap(
+    't',
+    '<c-w>o',
+    '<c-\\><c-n><cmd>ZenMode<CR>',
+    { noremap = true, silent = true }
+  )
 
   vim.keymap.set('i', '<c-w>', '<esc><c-w>')
 
@@ -135,7 +155,6 @@ M.setup = function()
     -- end
   end, {})
 
-
   --- Enable completion triggered by <c-x><c-o>
 
   -- Mappings.
@@ -155,25 +174,27 @@ M.setup = function()
 
   -- vim.keymap.set('n', '<leader>lr', vim.lsp.buf.rename, bufopts)
   -- use IncRename plugin instead of default lsp rename
-  vim.keymap.set("n", "<leader>lr", ":IncRename ")
+  vim.keymap.set('n', '<leader>lr', ':IncRename ')
 
   vim.keymap.set('n', '<leader>lc', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', '<leader>lR', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<leader>lf', function() vim.lsp.buf.format{ async = true } end, bufopts)
+  vim.keymap.set('n', '<leader>lf', function()
+    vim.lsp.buf.format({ async = true })
+  end, bufopts)
 
   -- TODO: keep this until it conflicts
-  vim.keymap.set("t", "<esc>", '<c-\\><c-n><esc>', { remap = true })
+  vim.keymap.set('t', '<esc>', '<c-\\><c-n><esc>', { remap = true })
   -- Toggle
   vim.keymap.set('n', '<leader><leader>t', function()
     vim.cmd('ToggleTerm')
   end)
   vim.keymap.set('n', '<leader><leader>d', function()
-    local status, dapui = pcall(require, "dapui")
+    local status, dapui = pcall(require, 'dapui')
     if not status then
       return
     end
     local dapuiwindows
-    status, dapuiwindows = pcall(require, "dapui.windows")
+    status, dapuiwindows = pcall(require, 'dapui.windows')
     if next(dapuiwindows.layouts) == nil then
       dapui.setup()
     end
@@ -184,7 +205,7 @@ M.setup = function()
     vim.cmd('NvimTreeToggle')
   end)
   vim.keymap.set('n', '<leader><leader>v', function()
-    if next(require("diffview.lib").views) == nil then
+    if next(require('diffview.lib').views) == nil then
       vim.cmd('DiffviewOpen')
     else
       vim.cmd('DiffviewClose')
@@ -208,12 +229,11 @@ M.setup = function()
     vim.cmd('ColorizerToggle')
   end)
 
-
   -- vim.keymap.set("n", "<leader>fml", "<cmd>CellularAutomaton make_it_rain<CR>")
   -- TODO: make this return a table
   -- require("keymap.fzf")
 
-  local status, fzf = pcall(require, "fzf-lua")
+  local status, fzf = pcall(require, 'fzf-lua')
   if not status then
     return
   end
@@ -221,23 +241,24 @@ M.setup = function()
   -- TODO: these custom command options can be moved to setup
 
   local function fzf_files()
-    local fd_opts = [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .git ]]
+    local fd_opts =
+      [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .git ]]
     fzf.files({ fd_opts = fd_opts, debug = false })
   end
 
   local function fzf_live_grep()
     local rg_opts =
-    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
-    fzf.live_grep({ rg_opts = rg_opts, debug = false, exec_empty_query = true, })
+      "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
+    fzf.live_grep({ rg_opts = rg_opts, debug = false, exec_empty_query = true })
   end
 
   local function fzf_lgrep_curbuf()
     local rg_opts =
-    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
+      "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
     fzf.lgrep_curbuf({ rg_opts = rg_opts, debug = false, { exec_empty_query = true } })
   end
 
-  vim.keymap.set('n', 's<leader>', require("fzf-lua.cmd").load_command)
+  vim.keymap.set('n', 's<leader>', require('fzf-lua.cmd').load_command)
   vim.keymap.set('n', 'sf', fzf_files)
   vim.keymap.set('n', 'sp', fzf.git_files)
   vim.keymap.set('n', 'sg', fzf_live_grep)
@@ -251,8 +272,8 @@ M.setup = function()
   vim.keymap.set('n', 'sc', fzf.changes)
   vim.keymap.set('n', 's8', fzf.grep_cword) -- TODO: add exact match
   vim.keymap.set('n', 's*', fzf.grep_cWORD) -- TODO: add exact match
-  vim.keymap.set('n', 'sl', fzf.resume)     -- TODO: not sure about this binding
-  vim.keymap.set('n', 'so', fzf.oldfiles)   -- TODO: not sure about this binding
+  vim.keymap.set('n', 'sl', fzf.resume) -- TODO: not sure about this binding
+  vim.keymap.set('n', 'so', fzf.oldfiles) -- TODO: not sure about this binding
   vim.keymap.set('n', 's:', fzf.commands)
 
   vim.keymap.set('n', 'sT', fzf.lsp_typedefs)
@@ -276,13 +297,13 @@ M.setup = function()
   -- vim.keymap.set('n', 'sW', fzf.lsp_workspace_diagnostics)
 
   local osv
-  status, osv = pcall(require, "osv")
+  status, osv = pcall(require, 'osv')
   if status then
-    vim.keymap.set('n', '<leader><f5>', function() osv.launch({ port = 8086 }) end, { silent = true })
+    vim.keymap.set('n', '<leader><f5>', function()
+      osv.launch({ port = 8086 })
+    end, { silent = true })
   end
 end
-
-
 
 -- ideas
 -- TODO: more pseudo leaders
