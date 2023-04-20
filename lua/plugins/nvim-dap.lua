@@ -197,6 +197,7 @@ return {
             vmArgs = '-Dlog4j.debug=true',
             -- cwd = "${cwd}",
             cwd = '/Users/mike/repos/ingest-profiles/service/webapp',
+            -- modulePaths = { "/Users/mike/repos/ingest-profiles" }, -- java 9 or greater
           },
         }
       end, { nargs = 0 })

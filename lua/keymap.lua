@@ -33,11 +33,9 @@ M.setup = function()
   vim.keymap.set('n', 'g*', ':set hlsearch<cr>g*')
   vim.keymap.set('n', 'g#', ':set hlsearch<cr>g#')
 
-  -- esc insert mode
-  vim.keymap.set('i', 'jk', '<esc>')
-
-  -- black hole register "_
-  vim.keymap.set('n', 'x', '"_x')
+  -- causes delay and typos when j starts a word
+  -- -- esc insert mode
+  -- vim.keymap.set('i', 'jk', '<esc>')
 
   -- tasty keymaps modified from https://github.com/ThePrimeagen/init.lua/blob/bc8324fa1c31bd1bc81fb8a5dde684dffd324f84/lua/theprimeagen/remap.lua
   vim.keymap.set('n', 'J', 'mzJ`z')
@@ -65,11 +63,18 @@ M.setup = function()
   vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>', {})
   vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>', {})
 
+
+  -- black hole register "_
+  vim.keymap.set('n', 'x', '"_x')
+
   -- yanks and puts
+  vim.api.nvim_set_keymap('v', 'p', '"_dP', {})
+  vim.api.nvim_set_keymap('v', 'P', '"_dP', {})
+
   vim.api.nvim_set_keymap('v', '<leader>Y', '"+Y', {})
   vim.api.nvim_set_keymap('v', '<leader>y', '"+y', {})
-  vim.api.nvim_set_keymap('v', '<leader>p', '"+p', {})
-  vim.api.nvim_set_keymap('v', '<leader>P', '"+P', {})
+  vim.api.nvim_set_keymap('v', '<leader>p', '"_d"+P', {})
+  vim.api.nvim_set_keymap('v', '<leader>P', '"_d"+P', {})
 
   vim.api.nvim_set_keymap('n', '<leader>Y', '"+y$', {})
   vim.api.nvim_set_keymap('n', '<leader>y', '"+y', {})
@@ -79,7 +84,8 @@ M.setup = function()
 
   -- todo zy and zp mappings
 
-  vim.api.nvim_set_keymap('c', 'w!!', 'w !sudo tee > /dev/null %', {})
+  -- TODO: make this a user command instead of map
+  -- vim.api.nvim_set_keymap('c', 'w!!', 'w !sudo tee > /dev/null %', {})
 
   vim.api.nvim_set_keymap('n', '<C-e>', '5<C-e>', {})
   vim.api.nvim_set_keymap('n', '<C-y>', '5<C-y>', {})
@@ -242,19 +248,19 @@ M.setup = function()
 
   local function fzf_files()
     local fd_opts =
-      [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .git ]]
+    [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .git ]]
     fzf.files({ fd_opts = fd_opts, debug = false })
   end
 
   local function fzf_live_grep()
     local rg_opts =
-      "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
+    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
     fzf.live_grep({ rg_opts = rg_opts, debug = false, exec_empty_query = true })
   end
 
   local function fzf_lgrep_curbuf()
     local rg_opts =
-      "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
+    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
     fzf.lgrep_curbuf({ rg_opts = rg_opts, debug = false, { exec_empty_query = true } })
   end
 

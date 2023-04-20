@@ -1,6 +1,7 @@
 return {
   {
-    'mikesmithgh/render.nvim',
+    'mikesmithgh/render.nvim/render.nvim',
+    -- dir = '~/gitrepos/render.nvim/.worktrees/ci',
     enabled = true,
     lazy = true,
     dev = true,
@@ -9,6 +10,7 @@ return {
         features = {
           auto_open = true,
         },
+        -- scale = '200%',
         docker_args = {
           '-v',
           '/Users/mike/Library/Fonts:/Users/mike/Library/Fonts',

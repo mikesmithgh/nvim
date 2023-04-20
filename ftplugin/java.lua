@@ -24,11 +24,16 @@ local home = os.getenv('HOME')
 local workspace_folder = home .. '/.local/share/eclipse/' .. vim.fn.fnamemodify(root_dir, ':p:h:t')
 --
 if not vim.g.jdtls then
-  local java_home = string.gsub(vim.fn.system('/usr/libexec/java_home -F'), '%s+', '')
+  local java_home = vim.env.JAVA_HOME
+  print(java_home)
   local java_version =
-    string.gsub(vim.fn.system('/usr/libexec/java_home -F --exec javap -version'), '%s+', '')
-  local java_major_version = string.match(java_version, '([^.]+)') -- split by . and get first match
-  local java_runtime = 'JavaSE-' .. java_major_version
+    string.gsub(vim.fn.system([[/usr/libexec/java_home --verbose |& grep 'Amazon Corretto 11' | awk '{ print $9 }']]), '%s+', '')
+  print(java_version)
+  local java_major_version = string.match(java_version, '%d+') -- split by . and get first match
+  print(java_major_version)
+  local java_runtime = 'Corretto-' .. java_major_version
+  print(java_runtime)
+  -- local java_runtime = 'JavaSE-' .. java_major_version
   vim.g.jdtls = {
     java_home = java_home,
     java_version = java_version,
