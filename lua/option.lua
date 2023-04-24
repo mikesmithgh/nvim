@@ -169,8 +169,6 @@ M.setup = function()
   vim.opt.keywordprg = ':Woman'
 
   vim.opt.cmdheight = 0
-
-  vim.diagnostic.config({ update_in_insert = true })
 end
 
 return M

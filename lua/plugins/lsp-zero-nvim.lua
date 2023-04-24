@@ -1,6 +1,6 @@
 return {
   'VonHeikemen/lsp-zero.nvim',
-  enabled = true,
+  enabled = false,
   dependencies = {
     -- LSP Support
     { 'neovim/nvim-lspconfig' },
@@ -58,11 +58,6 @@ return {
       },
     })
 
-    -- lsp servers are available at the below path
-    -- lua print(vim.fn.stdpath('data') .. '/site/pack/packer/start/nvim-lspconfig/lua/lspconfig/server_configurations/')
-
-    -- local lua_language_server = 'sumneko_lua' -- see https://github.com/sumneko/lua-language-server/wiki/Settings
-    -- see https://github.com/sumneko/lua-language-server/wiki/Settings
     local lua_language_server = 'lua_ls'
 
     -- Do not use the java language server in this config, it is setup independently
