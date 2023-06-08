@@ -9,11 +9,22 @@ return {
     --   `nvim-notify` is only needed, if you want to use the notification view.
     --   If not available, we use `mini` as the fallback
     'rcarriga/nvim-notify',
+    'norcalli/nvim-colorizer.lua',
   },
   config = function()
     require('noice').setup({
       cmdline = {
         view = 'cmdline',
+      },
+      messages = {
+        -- NOTE: If you enable messages, then the cmdline is enabled automatically.
+        -- This is a current Neovim limitation.
+        enabled = true, -- enables the Noice messages UI
+        view = 'notify', -- default view for messages
+        view_error = 'notify', -- view for errors
+        view_warn = 'notify', -- view for warnings
+        view_history = 'messages', -- view for :messages
+        view_search = 'virtualtext', -- view for search count messages. Set to `false` to disable
       },
       -- format = {
       --   notify = { "{message}", "{message}" },
@@ -42,11 +53,19 @@ return {
           },
           view = 'mini',
         },
+        -- {
+        --   filter = {
+        --     event = 'notify',
+        --     warning = true,
+        --     find = 'scrollback.nvim',
+        --   },
+        --   view = 'mini',
+        -- },
         {
           view = 'hover',
           opts = {
             border = {
-              style = { '', '', '', '', '', '', '', '', }
+              style = require('style').border.outer_thin,
             },
             position = { row = 2, col = 2 },
           },
@@ -56,7 +75,7 @@ return {
           view = 'hover',
           opts = {
             border = {
-              style = { '', '', '', '', '', '', '', '', }
+              style = require('style').border.outer_thin,
             },
             position = { row = 2, col = 2 },
           },
@@ -64,5 +83,21 @@ return {
         },
       },
     })
+
+    -- local Config = require('noice.config')
+    -- local after_noice_load = function()
+    --   if Config._running then
+    --     vim.schedule(function()
+    --       local stylize_markdown_fn = vim.lsp.util.stylize_markdown
+    --       vim.lsp.util.stylize_markdown = function(buf, contents, _opts)
+    --         stylize_markdown_fn(buf, contents, _opts)
+    --         require('colorizer').attach_to_buffer(buf)
+    --       end
+    --     end)
+    --   else
+    --     vim.schedule(after_lazy_load)
+    --   end
+    -- end
+    -- vim.schedule(after_noice_load)
   end,
 }

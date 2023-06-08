@@ -152,7 +152,7 @@ M.setup = function()
     msgsep = '▅',
   }
 
-  vim.g.github_enterprise_urls = { 'https://bithub.brightcove.com' }
+  vim.g.github_enterprise_urls = {}
 
   -- disable auto insert of comment after <cr> or o O
   vim.opt.formatoptions = vim.opt.formatoptions - { 'r', 'o' }

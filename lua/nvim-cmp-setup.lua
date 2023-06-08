@@ -32,6 +32,7 @@ local function sources()
   register('cmp_buffer', { name = 'buffer', keyword_length = 3 })
   register('cmp_luasnip', { name = 'luasnip', keyword_length = 2 })
   register('cmp_nvim_lua', { name = 'nvim_lua', keyword_length = 3 }) -- may not need, lsp seems to be handling this
+  register('cmp_emoji', { name = 'emoji', keyword_length = 1 })
 
   return result
 end
@@ -45,7 +46,7 @@ local opts = {
   },
   window = {
     documentation = {
-      border = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', },
+      border = require('style').border.outer_thin,
       winhighlight = 'CursorLine:PmenuSel,Search:None',
       scrolloff = 3,
       col_offset = 1,
@@ -53,7 +54,7 @@ local opts = {
       max_width = 60,
     },
     completion = {
-      border = 'none',
+      border = require('style').border.none,
       scrollbar = true,
       winhighlight = 'CursorLine:PmenuSel,Search:None',
       scrolloff = 3,
@@ -75,6 +76,7 @@ local opts = {
         latex_symbols = '󱗆',
         path = '󰿟',
         cmdline = '󰅂',
+        emoji = '󰇵',
       },
       maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
       ellipsis_char = '', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
@@ -185,6 +187,25 @@ local opts = {
 M.call_setup = function()
   cmp.setup(opts)
 end
+-- cmp.event:on('menu_opened', function(ev)
+--   local buf = ev.window.entries_win:get_buffer()
+--   local after_cmp_win_open = function(buf) vim.print(buf) end
+--   after_cmp_win_open = function(b)
+--     if vim.fn.bufexists(b) > 0 then
+--       vim.schedule(function()
+--         vim.print(b)
+--         require('colorizer').attach_to_buffer(b)
+--       end)
+--     else
+--       vim.schedule(function()
+--         after_cmp_win_open(b)
+--       end)
+--     end
+--   end
+--   vim.schedule(function()
+--     after_cmp_win_open(buf)
+--   end)
+-- end)
 
 
 return M

@@ -6,6 +6,10 @@ return {
       'williamboman/mason-lspconfig.nvim',
       'neovim/nvim-lspconfig',
 
+      -- null-ls
+      'jose-elias-alvarez/null-ls.nvim',
+      'jay-babu/mason-null-ls.nvim',
+
       -- Autocompletion
       'hrsh7th/nvim-cmp',
       'hrsh7th/cmp-buffer',
@@ -13,6 +17,7 @@ return {
       'saadparwaiz1/cmp_luasnip',
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-nvim-lua',
+      'hrsh7th/cmp-emoji',
       'onsails/lspkind.nvim',
 
       -- Snippets
@@ -21,17 +26,27 @@ return {
 
       -- DAP
       'mfussenegger/nvim-dap',
-      'jayp0521/mason-nvim-dap.nvim',
+      'jay-babu/mason-nvim-dap.nvim',
 
       'folke/neodev.nvim',
     },
     enabled = true,
     config = function()
-      require('mason').setup()
+      require('mason').setup({
+        ui = {
+          border = require('style').border.outer_thin
+        }
+      })
+
+      -- TODO: look into the below command for importing all required packages
+      -- require("mason.api.command").MasonInstall({'shfmt'}, {})
 
       -- IMPORTANT: make sure to setup neodev BEFORE lspconfig
       require('neodev').setup({
         library = { plugins = { 'nvim-dap-ui' }, types = true },
+      })
+      require('neogen').setup({
+        snippet_engine = 'luasnip',
       })
 
       require('mason-lspconfig').setup({
@@ -44,15 +59,24 @@ return {
         ensure_installed = {
           'lua_ls',
           'luau_lsp',
+          'bashls',
         }
       })
 
 
+      -- TODO: should this be moved?
       require('mason-nvim-dap').setup({
         ensure_installed = {
           'python',
           'delve',
           'bash'
+        },
+      })
+
+      -- TODO: should this be moved?
+      require('mason-null-ls').setup({
+        ensure_installed = {
+          'shfmt',
         },
       })
 
@@ -63,6 +87,9 @@ return {
       local lsp_attach = function(client, bufnr)
         -- Create your keybindings here...
       end
+
+
+      require('lspconfig.ui.windows').default_options.border = require('style').border.outer_thin
 
       local lspconfig = require('lspconfig')
       require('mason-lspconfig').setup_handlers(
@@ -75,6 +102,7 @@ return {
           end,
           ['lua_ls'] = function()
             lspconfig.lua_ls.setup{
+              filetypes = { 'lua' },
               settings = {
                 Lua = {
                   format = {
@@ -193,7 +221,12 @@ return {
                 },
               }
             }
-          end
+          end,
+          ['bashls'] = function()
+            lspconfig.bashls.setup{
+              filetypes = { 'sh', 'bash' },
+            }
+          end,
         }
       )
 
@@ -206,14 +239,16 @@ return {
         float = {
           focusable = true,
           style = 'minimal',
-          border = 'none',
+          -- border = 'none',
+          border = require('style').border.outer_thin,
           source = 'always',
           header = '',
           prefix = '',
         },
       })
 
-      vim.fn.sign_define('DiagnosticSignError', { texthl = 'DiagnosticSignError', text = '', numhl = 'DiagnosticSignError' })
+
+      vim.fn.sign_define('DiagnosticSignError', { texthl = 'DiagnosticSignError', text = '×', numhl = 'DiagnosticSignError' })
       vim.fn.sign_define('DiagnosticSignWarn', { texthl = 'DiagnosticSignWarn', text = '▲', numhl = '' })
       vim.fn.sign_define('DiagnosticSignHint', { texthl = 'DiagnosticSignHint', text = '⚑', numhl = '' })
       vim.fn.sign_define('DiagnosticSignInfo', { texthl = 'DiagnosticSignInfo', text = '', numhl = '' })

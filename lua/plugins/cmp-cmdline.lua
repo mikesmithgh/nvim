@@ -63,7 +63,7 @@ return {
           if cmp.visible() then
             cmp.select_next_item(select_opts)
           else
-            fallback()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, false, true), 'c', true)
           end
         end,
       },
@@ -72,10 +72,23 @@ return {
           if cmp.visible() then
             cmp.select_prev_item(select_opts)
           else
-            fallback()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, false, true), 'c', true)
           end
         end,
       },
+      -- ['<C-p>'] = {
+      --   c = function(fallback)
+      --     if cmp.visible() then
+      --       cmp.select_prev_item(select_opts)
+      --     else
+      --       fallback()
+      --       local a = cmp.abort()
+      --       vim.print(a)
+      --
+      --       -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, false, true), 'c', true)
+      --     end
+      --   end,
+      -- },
       ['<Esc>'] = {
         c = function()
           local cmp_is_visible = cmp.core.view:visible()
@@ -143,6 +156,7 @@ return {
       }, {
         {
           name = 'cmdline',
+          keyword_length = 1,
           option = {
             ignore_cmds = { 'Man', '!' },
           },

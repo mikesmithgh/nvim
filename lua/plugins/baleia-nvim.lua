@@ -1,6 +1,7 @@
 return {
   'm00qek/baleia.nvim',
   enabled = true,
+  commit = '8ba437c',
   cmd = {
     'BaleiaLess',
     'BaleiaColorize',

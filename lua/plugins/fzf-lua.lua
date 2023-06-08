@@ -41,7 +41,8 @@ return {
         -- window, can be set to 'false' to remove all borders or to
         -- 'none', 'single', 'double', 'thicc' or 'rounded' (default)
         -- border     = 'none',
-        border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
+        -- border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
+        border = require('style').border.outer_thin,
         fullscreen = false, -- start fullscreen?
         -- highlights should optimally be set by the colorscheme using
         -- FzfLuaXXX highlights. If your colorscheme doesn't set these
@@ -65,29 +66,29 @@ return {
               scrollborder_f = 'FloatBorder',   -- scrollbar "full" section highlight
             }, ]]
         preview = {
-          -- default     = 'bat',           -- override the default previewer?
+          default      = 'bat', -- override the default previewer?
           -- default uses the 'builtin' previewer
-          border = 'border', -- border|noborder, applies only to
+          border       = 'border', -- border|noborder, applies only to
           -- native fzf previewers (bat/cat/git/etc)
-          wrap = 'nowrap', -- wrap|nowrap
-          hidden = 'nohidden', -- hidden|nohidden
-          vertical = 'down:45%', -- up|down:size
-          horizontal = 'right:60%', -- right|left:size
-          layout = 'flex', -- horizontal|vertical|flex
+          wrap         = 'nowrap', -- wrap|nowrap
+          hidden       = 'nohidden', -- hidden|nohidden
+          vertical     = 'down:45%', -- up|down:size
+          horizontal   = 'right:60%', -- right|left:size
+          layout       = 'flex', -- horizontal|vertical|flex
           flip_columns = 120, -- #cols to switch to horizontal on flex
           -- Only used with the builtin previewer:
-          title = true, -- preview border title (file/buf)?
-          title_align = 'left', -- left|center|right, title alignment
-          scrollbar = 'float', -- `false` or string:'float|border'
+          title        = true, -- preview border title (file/buf)?
+          title_align  = 'center', -- left|center|right, title alignment
+          scrollbar    = 'float', -- `false` or string:'float|border'
           -- float:  in-window floating border
           -- border: in-border chars (see below)
-          scrolloff = '-2', -- float scrollbar offset from right
+          scrolloff    = '-2', -- float scrollbar offset from right
           -- applies only when scrollbar = 'float'
-          scrollchars = { '█', '' }, -- scrollbar chars ({ <full>, <empty> }
+          scrollchars  = { '█', '' }, -- scrollbar chars ({ <full>, <empty> }
           -- applies only when scrollbar = 'border'
-          delay = 100, -- delay(ms) displaying the preview
+          delay        = 100, -- delay(ms) displaying the preview
           -- prevents lag on fast scrolling
-          winopts = {
+          winopts      = {
             -- builtin previewer window options
             number = true,
             relativenumber = false,
@@ -183,6 +184,7 @@ return {
           ['ctrl-t'] = actions.buf_tabedit,
         },
       },
+      -- global fzf_opts
       fzf_opts = {
         -- options are sent as `<left>=<right>`
         -- set to `false` to remove a flag
@@ -193,6 +195,13 @@ return {
         ['--height'] = '100%',
         ['--layout'] = 'reverse',
         ['--border'] = 'none',
+        ['--scrollbar'] = '█',
+        ['--no-separator'] = '',
+        ['--cycle'] = '',
+        ['--scroll-off'] = '7',
+        ['--border'] = 'none',
+        ['--margin'] = '0',
+        -- ['--no-bold'] = '',
       },
       -- fzf '--color=' options (optional)
       --[[ fzf_colors = {
@@ -218,7 +227,7 @@ return {
         bat = {
           cmd = 'bat',
           args = '--style=numbers,changes --color always',
-          theme = 'Coldark-Dark', -- bat preview theme (bat --list-themes)
+          theme = 'gruvsquirrel', -- bat preview theme (bat --list-themes)
           config = nil, -- nil uses $BAT_CONFIG_PATH
         },
         head = {
@@ -659,7 +668,9 @@ return {
       -- },
       -- padding can help kitty term users with
       -- double-width icon rendering
-      file_icon_padding = '',
+
+      -- Added file_icon_padding so that kitty expands the icon to two character width
+      file_icon_padding = ' '
       -- uncomment if your terminal/font does not support unicode character
       -- 'EN SPACE' (U+2002), the below sets it to 'NBSP' (U+00A0) instead
       -- nbsp = '\xc2\xa0',

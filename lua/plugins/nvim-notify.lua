@@ -12,7 +12,8 @@ return {
         function(...)
           local opts = stages[1](...)
           if opts then
-            opts.border = 'none'
+            -- opts.border = 'none'
+            opts.border = require('style').border.outer_thin
             opts.row = opts.row + 1
           end
           return opts

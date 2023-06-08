@@ -1,6 +1,6 @@
 return {
   'knubie/vim-kitty-navigator',
-  enabled = true,
+  enabled = false,
   init = function()
     vim.g.kitty_navigator_no_mappings = 1
 

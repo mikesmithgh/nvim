@@ -180,25 +180,49 @@ return {
           {
             type = 'java',
             request = 'launch',
-            name = 'Ingest Profiles',
-            mainClass = 'com.brightcove.profiles.ProfilesService',
-            args = 'server ./target/classes/ingest-profiles.yml',
-            vmArgs = '-Dhystrix.command.default.fallback.enabled=false',
-            cwd = '/Users/mike/repos/ingest-profiles/service/webapp',
-            -- modulePaths = { "/Users/mike/repos/ingest-profiles" }, -- java 9 or greater
+            name = 'SrxPortalApplication (local2)',
+            mainClass = 'com.srx.portal.SrxPortalApplication',
+            -- args = 'server ./target/classes/ingest-profiles.yml',
+            -- copied from  Intellij
+            vmArgs =
+            '--add-opens=java.base/java.lang=ALL-UNNAMED -Dspring.main.banner-mode=OFF -Dspring.profiles.active=local2 -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dmanagement.endpoints.jmx.exposure.include=*',
+            cwd = '/Users/mike/repos/srx-backend/packages/srx-portal-backend',
+            modulePaths = { '/Users/mike/repos/srx-backend/packages/srx-portal-backend' },
           },
           {
             type = 'java',
             request = 'launch',
-            name = 'Run with log4j debug',
-            mainClass = 'com.brightcove.profiles.dynamo.DynamoDBTestAdd',
-            -- classPaths = "${Auto}",
-            args = '',
-            vmArgs = '-Dlog4j.debug=true',
-            -- cwd = "${cwd}",
-            cwd = '/Users/mike/repos/ingest-profiles/service/webapp',
-            -- modulePaths = { "/Users/mike/repos/ingest-profiles" }, -- java 9 or greater
+            name = 'SrxPortalApplication (dev)',
+            mainClass = 'com.srx.portal.SrxPortalApplication',
+            -- args = 'server ./target/classes/ingest-profiles.yml',
+            -- copied from  Intellij
+            vmArgs =
+            '--add-opens=java.base/java.lang=ALL-UNNAMED -Dspring.main.banner-mode=OFF -Dspring.profiles.active=dev -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dmanagement.endpoints.jmx.exposure.include=*',
+            cwd = '/Users/mike/repos/srx-backend/packages/srx-portal-backend',
+            modulePaths = { '/Users/mike/repos/srx-backend/packages/srx-portal-backend' },
           },
+          -- {
+          --   type = 'java',
+          --   request = 'launch',
+          --   name = 'Ingest Profiles',
+          --   mainClass = 'com.brightcove.profiles.ProfilesService',
+          --   args = 'server ./target/classes/ingest-profiles.yml',
+          --   vmArgs = '-Dhystrix.command.default.fallback.enabled=false',
+          --   cwd = '/Users/mike/repos/ingest-profiles/service/webapp',
+          --   -- modulePaths = { "/Users/mike/repos/ingest-profiles" }, -- java 9 or greater
+          -- },
+          -- {
+          --   type = 'java',
+          --   request = 'launch',
+          --   name = 'Run with log4j debug',
+          --   mainClass = 'com.brightcove.profiles.dynamo.DynamoDBTestAdd',
+          --   -- classPaths = "${Auto}",
+          --   args = '',
+          --   vmArgs = '-Dlog4j.debug=true',
+          --   -- cwd = "${cwd}",
+          --   cwd = '/Users/mike/repos/ingest-profiles/service/webapp',
+          --   -- modulePaths = { "/Users/mike/repos/ingest-profiles" }, -- java 9 or greater
+          -- },
         }
       end, { nargs = 0 })
 

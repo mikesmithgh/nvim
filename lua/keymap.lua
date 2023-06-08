@@ -101,12 +101,6 @@ M.setup = function()
   -- Don't use Q for Ex mode, use it for formatting.  Except for Select mode.
   -- vim.keymap.set("n", "Q", "gq")
 
-  -- TODO: convert to more lua
-  vim.api.nvim_set_keymap('n', '<a-left>', ':vertical resize -5<cr>', { silent = true })
-  vim.api.nvim_set_keymap('n', '<a-right>', ':vertical resize +5<cr>', { silent = true })
-  vim.api.nvim_set_keymap('n', '<a-up>', ':resize +5<cr>', { silent = true })
-  vim.api.nvim_set_keymap('n', '<a-down>', ':resize -5<cr>', { silent = true })
-
   vim.api.nvim_set_keymap('n', '<c-n>n', ':NvimTreeToggle<CR>', {})
   vim.keymap.set('n', '<C-n><C-n>', function()
     -- TODO: improve in lua
@@ -248,19 +242,19 @@ M.setup = function()
 
   local function fzf_files()
     local fd_opts =
-    [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .git ]]
+    [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]]
     fzf.files({ fd_opts = fd_opts, debug = false })
   end
 
   local function fzf_live_grep()
     local rg_opts =
-    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
+    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/'"
     fzf.live_grep({ rg_opts = rg_opts, debug = false, exec_empty_query = true })
   end
 
   local function fzf_lgrep_curbuf()
     local rg_opts =
-    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,node_modules}/'"
+    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/'"
     fzf.lgrep_curbuf({ rg_opts = rg_opts, debug = false, { exec_empty_query = true } })
   end
 
@@ -282,6 +276,10 @@ M.setup = function()
   vim.keymap.set('n', 'so', fzf.oldfiles) -- TODO: not sure about this binding
   vim.keymap.set('n', 's:', fzf.commands)
 
+  vim.keymap.set('n', 'su', '<Cmd>UrlView<CR>', { desc = 'View buffer URLs' })
+
+
+
   vim.keymap.set('n', 'sT', fzf.lsp_typedefs)
   vim.keymap.set('n', 'sR', fzf.lsp_references)
   vim.keymap.set('n', 'sD', fzf.lsp_definitions)
@@ -302,6 +300,31 @@ M.setup = function()
   vim.keymap.set('n', 'sdc', fzf.dap_commands)
   -- vim.keymap.set('n', 'sW', fzf.lsp_workspace_diagnostics)
 
+
+  -- venn.nvim: enable or disable keymappings
+  -- copied from https://github.com/jbyuki/venn.nvim
+  function _G.Toggle_venn()
+    local venn_enabled = vim.inspect(vim.b.venn_enabled)
+    if venn_enabled == 'nil' then
+      vim.b.venn_enabled = true
+      vim.cmd[[setlocal ve=all]]
+      -- draw a line on HJKL keystokes
+      vim.api.nvim_buf_set_keymap(0, 'n', 'J', '<C-v>j:VBox<CR>', { noremap = true })
+      vim.api.nvim_buf_set_keymap(0, 'n', 'K', '<C-v>k:VBox<CR>', { noremap = true })
+      vim.api.nvim_buf_set_keymap(0, 'n', 'L', '<C-v>l:VBox<CR>', { noremap = true })
+      vim.api.nvim_buf_set_keymap(0, 'n', 'H', '<C-v>h:VBox<CR>', { noremap = true })
+      -- draw a box by pressing "f" with visual selection
+      vim.api.nvim_buf_set_keymap(0, 'v', 'f', ':VBox<CR>', { noremap = true })
+    else
+      vim.cmd[[setlocal ve=]]
+      vim.cmd[[mapclear <buffer>]]
+      vim.b.venn_enabled = nil
+    end
+  end
+
+  -- toggle keymappings for venn using <leader>v
+  vim.api.nvim_set_keymap('n', '<leader>v', ':lua Toggle_venn()<CR>', { noremap = true })
+
   local osv
   status, osv = pcall(require, 'osv')
   if status then
@@ -309,6 +332,21 @@ M.setup = function()
       osv.launch({ port = 8086 })
     end, { silent = true })
   end
+
+  local smart_splits = require('smart-splits')
+  vim.keymap.set('n', '<c-w>h', smart_splits.move_cursor_left, { noremap = true, silent = true })
+  vim.keymap.set('n', '<c-w>j', smart_splits.move_cursor_down, { noremap = true, silent = true })
+  vim.keymap.set('n', '<c-w>k', smart_splits.move_cursor_up, { noremap = true, silent = true })
+  vim.keymap.set('n', '<c-w>l', smart_splits.move_cursor_right, { noremap = true, silent = true })
+
+  vim.keymap.set('n', '<a-left>', require('smart-splits').resize_left)
+  vim.keymap.set('n', '<a-down>', require('smart-splits').resize_down)
+  vim.keymap.set('n', '<a-up>', require('smart-splits').resize_up)
+  vim.keymap.set('n', '<a-right>', require('smart-splits').resize_right)
+  -- vim.api.nvim_set_keymap('n', '<a-left>', ':vertical resize -5<cr>', { silent = true })
+  -- vim.api.nvim_set_keymap('n', '<a-right>', ':vertical resize +5<cr>', { silent = true })
+  -- vim.api.nvim_set_keymap('n', '<a-up>', ':resize +5<cr>', { silent = true })
+  -- vim.api.nvim_set_keymap('n', '<a-down>', ':resize -5<cr>', { silent = true })
 end
 
 -- ideas

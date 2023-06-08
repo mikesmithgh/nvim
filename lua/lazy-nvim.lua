@@ -27,6 +27,9 @@ M.setup = function()
       },
       fallback = false, -- Fallback to git when local plugin doesn't exist
     },
+    ui = {
+      border = require('style').border.outer_thin,
+    },
     install = {
       -- install missing plugins on startup. This doesn't increase startup time.
       missing = true,
