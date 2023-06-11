@@ -56,14 +56,18 @@ return {
         c = function(fallback)
           cmp.mapping.confirm({ select = true })
           fallback()
-        end
+        end,
       },
       ['<Down>'] = {
         c = function(fallback)
           if cmp.visible() then
             cmp.select_next_item(select_opts)
           else
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, false, true), 'c', true)
+            vim.api.nvim_feedkeys(
+              vim.api.nvim_replace_termcodes('<C-n>', true, false, true),
+              'c',
+              true
+            )
           end
         end,
       },
@@ -72,7 +76,11 @@ return {
           if cmp.visible() then
             cmp.select_prev_item(select_opts)
           else
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, false, true), 'c', true)
+            vim.api.nvim_feedkeys(
+              vim.api.nvim_replace_termcodes('<C-p>', true, false, true),
+              'c',
+              true
+            )
           end
         end,
       },
@@ -102,14 +110,18 @@ return {
             end
           end
           if leave_cmd_mode then
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-c>', true, false, true), 'c', true)
+            vim.api.nvim_feedkeys(
+              vim.api.nvim_replace_termcodes('<C-c>', true, false, true),
+              'c',
+              true
+            )
           end
-        end
+        end,
       },
       ['<C-j>'] = {
         c = function(fallback)
           if cmp.visible() then
-            cmp.select_next_item({ count = 5, })
+            cmp.select_next_item({ count = 5 })
           else
             fallback()
           end
@@ -118,7 +130,7 @@ return {
       ['<C-k>'] = {
         c = function(fallback)
           if cmp.visible() then
-            cmp.select_prev_item({ count = 5, })
+            cmp.select_prev_item({ count = 5 })
           else
             fallback()
           end

@@ -12,7 +12,7 @@ return {
         -- current = { buffer_index = true },
         -- inactive = { button = '×' },
         -- visible = { modified = { buffer_number = false } },
-      }
+      },
     })
-  end
+  end,
 }

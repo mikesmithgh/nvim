@@ -34,8 +34,8 @@ return {
     config = function()
       require('mason').setup({
         ui = {
-          border = require('style').border.outer_thin
-        }
+          border = require('style').border.outer_thin,
+        },
       })
 
       -- TODO: look into the below command for importing all required packages
@@ -60,16 +60,15 @@ return {
           'lua_ls',
           'luau_lsp',
           'bashls',
-        }
+        },
       })
-
 
       -- TODO: should this be moved?
       require('mason-nvim-dap').setup({
         ensure_installed = {
           'python',
           'delve',
-          'bash'
+          'bash',
         },
       })
 
@@ -88,147 +87,144 @@ return {
         -- Create your keybindings here...
       end
 
-
       require('lspconfig.ui.windows').default_options.border = require('style').border.outer_thin
 
       local lspconfig = require('lspconfig')
-      require('mason-lspconfig').setup_handlers(
-        {
-          function(server_name)
-            lspconfig[server_name].setup({
-              on_attach = lsp_attach,
-              capabilities = lsp_capabilities,
-            })
-          end,
-          ['lua_ls'] = function()
-            lspconfig.lua_ls.setup{
-              filetypes = { 'lua' },
-              settings = {
-                Lua = {
-                  format = {
-                    enable = true,
-                    -- Put format options here
-                    -- NOTE: the value should be STRING!!
-                    -- defaultConfig = {
-                    --   indent_style = "space",
-                    --   indent_size = "2",
-                    -- }
-                  },
-                  completion = {
-                    autoRequire = true,
-                    callSnippet = 'Both',
-                    displayContext = 5,
-                    enable = true,
-                    keywordSnippet = 'Both',
-                    postfix = '@',
-                    requireSeparator = '.',
-                    showParams = true,
-                    showWord = 'Enable',
-                    workspaceWord = true,
-                  },
-                  {
-                    workspace = {
-                      -- Make the server aware of Neovim runtime files
-                      library = vim.api.nvim_get_runtime_file('', true),
-                    },
-                  },
-                  runtime = {
-                    -- :lua print(jit.version)  =>  LuaJIT 2.1.0-beta3
-                    version = 'LuaJIT',
-                  },
-                  telemetry = {
-                    enable = false,
-                  },
-                  diagnostics = {
-                    globals = {
-                      'vim',
-                    },
-                  },
-                  hint = {
-                    arrayIndex = 'Enable',
-                    await = true,
-                    enable = true,
-                    paramName = 'All',
-                    paramType = true,
-                    semicolon = 'SameLine',
-                    setType = true,
-                  },
-                  hover = {
-                    enable = true,
-                    enumsLimit = 10,
-                    expandAlias = true,
-                    previewFields = 50,
-                    viewNumber = true,
-                    viewStringMax = 1000,
-                  },
-                  codeLens = {
-                    enable = true,
+      require('mason-lspconfig').setup_handlers({
+        function(server_name)
+          lspconfig[server_name].setup({
+            on_attach = lsp_attach,
+            capabilities = lsp_capabilities,
+          })
+        end,
+        ['lua_ls'] = function()
+          lspconfig.lua_ls.setup({
+            filetypes = { 'lua' },
+            settings = {
+              Lua = {
+                format = {
+                  enable = true,
+                  -- Put format options here
+                  -- NOTE: the value should be STRING!!
+                  -- defaultConfig = {
+                  --   indent_style = "space",
+                  --   indent_size = "2",
+                  -- }
+                },
+                completion = {
+                  autoRequire = true,
+                  callSnippet = 'Both',
+                  displayContext = 5,
+                  enable = true,
+                  keywordSnippet = 'Both',
+                  postfix = '@',
+                  requireSeparator = '.',
+                  showParams = true,
+                  showWord = 'Enable',
+                  workspaceWord = true,
+                },
+                {
+                  workspace = {
+                    -- Make the server aware of Neovim runtime files
+                    library = vim.api.nvim_get_runtime_file('', true),
                   },
                 },
+                runtime = {
+                  -- :lua print(jit.version)  =>  LuaJIT 2.1.0-beta3
+                  version = 'LuaJIT',
+                },
+                telemetry = {
+                  enable = false,
+                },
+                diagnostics = {
+                  globals = {
+                    'vim',
+                  },
+                },
+                hint = {
+                  arrayIndex = 'Enable',
+                  await = true,
+                  enable = true,
+                  paramName = 'All',
+                  paramType = true,
+                  semicolon = 'SameLine',
+                  setType = true,
+                },
+                hover = {
+                  enable = true,
+                  enumsLimit = 10,
+                  expandAlias = true,
+                  previewFields = 50,
+                  viewNumber = true,
+                  viewStringMax = 1000,
+                },
+                codeLens = {
+                  enable = true,
+                },
+              },
+            },
+          })
+        end,
+        ['pylsp'] = function()
+          lspconfig.pylsp.setup({
+            root_dir = function(fname)
+              local util = require('lspconfig.util')
+              local root_files = {
+                'pyproject.toml',
+                'setup.py',
+                'setup.cfg',
+                -- 'requirements.txt',
+                'Pipfile',
               }
-            }
-          end,
-          ['pylsp'] = function()
-            lspconfig.pylsp.setup{
-              root_dir = function(fname)
-                local util = require('lspconfig.util')
-                local root_files = {
-                  'pyproject.toml',
-                  'setup.py',
-                  'setup.cfg',
-                  -- 'requirements.txt',
-                  'Pipfile',
-                }
-                return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
-              end,
-              settings = {
-                pylsp = {
-                  plugins = {
-                    autopep8 = {
-                      enabled = false, -- conflicts with yapf
-                    },
-                    pycodestyle = {
-                      enabled = true,
-                    },
-                    flake8 = {
-                      enabled = false, -- conflicts with yapf
-                    },
-                    yapf = {
-                      enabled = true,
-                    },
-                    mccabe = {
-                      enabled = true,
-                    },
-                    pyflakes = {
-                      enabled = true,
-                    },
+              return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
+            end,
+            settings = {
+              pylsp = {
+                plugins = {
+                  autopep8 = {
+                    enabled = false, -- conflicts with yapf
+                  },
+                  pycodestyle = {
+                    enabled = true,
+                  },
+                  flake8 = {
+                    enabled = false, -- conflicts with yapf
+                  },
+                  yapf = {
+                    enabled = true,
+                  },
+                  mccabe = {
+                    enabled = true,
+                  },
+                  pyflakes = {
+                    enabled = true,
                   },
                 },
               },
-            }
-          end,
-          ['yamlls'] = function()
-            lspconfig.yamlls.setup{
-              filetypes = { 'yaml', 'yaml.docker-compose', 'yml' },
-              settings = {
-                yaml = {
-                  format = {
-                    enable = true,
-                  },
-                  schemaStore = {
-                    enable = true,
-                  },
+            },
+          })
+        end,
+        ['yamlls'] = function()
+          lspconfig.yamlls.setup({
+            filetypes = { 'yaml', 'yaml.docker-compose', 'yml' },
+            settings = {
+              yaml = {
+                format = {
+                  enable = true,
                 },
-              }
-            }
-          end,
-          ['bashls'] = function()
-            lspconfig.bashls.setup{
-              filetypes = { 'sh', 'bash' },
-            }
-          end,
-        }
-      )
+                schemaStore = {
+                  enable = true,
+                },
+              },
+            },
+          })
+        end,
+        ['bashls'] = function()
+          lspconfig.bashls.setup({
+            filetypes = { 'sh', 'bash' },
+          })
+        end,
+      })
 
       vim.diagnostic.config({
         virtual_text = false,
@@ -247,11 +243,22 @@ return {
         },
       })
 
-
-      vim.fn.sign_define('DiagnosticSignError', { texthl = 'DiagnosticSignError', text = '×', numhl = 'DiagnosticSignError' })
-      vim.fn.sign_define('DiagnosticSignWarn', { texthl = 'DiagnosticSignWarn', text = '▲', numhl = '' })
-      vim.fn.sign_define('DiagnosticSignHint', { texthl = 'DiagnosticSignHint', text = '⚑', numhl = '' })
-      vim.fn.sign_define('DiagnosticSignInfo', { texthl = 'DiagnosticSignInfo', text = '', numhl = '' })
+      vim.fn.sign_define(
+        'DiagnosticSignError',
+        { texthl = 'DiagnosticSignError', text = '×', numhl = 'DiagnosticSignError' }
+      )
+      vim.fn.sign_define(
+        'DiagnosticSignWarn',
+        { texthl = 'DiagnosticSignWarn', text = '▲', numhl = '' }
+      )
+      vim.fn.sign_define(
+        'DiagnosticSignHint',
+        { texthl = 'DiagnosticSignHint', text = '⚑', numhl = '' }
+      )
+      vim.fn.sign_define(
+        'DiagnosticSignInfo',
+        { texthl = 'DiagnosticSignInfo', text = '', numhl = '' }
+      )
     end,
   },
 }

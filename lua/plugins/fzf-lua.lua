@@ -32,8 +32,8 @@ return {
         -- "aboveleft vnew   : split left
         -- Only valid when using a float window
         -- (i.e. when 'split' is not defined, default)
-        height = .90, -- window height
-        width = .85, -- window width
+        height = 0.90, -- window height
+        width = 0.85, -- window width
         row = 0.4, -- window row position (0=top, 1=bottom)
         col = 0.5, -- window col position (0=left, 1=right)
         -- border argument passthrough to nvim_open_win(), also used
@@ -68,33 +68,33 @@ return {
         preview = {
           -- default      = 'bat', -- override the default previewer?
           -- default uses the 'builtin' previewer
-          border       = 'noborder', -- border|noborder, applies only to native fzf previewers (bat/cat/git/etc)
-          wrap         = 'nowrap', -- wrap|nowrap
-          hidden       = 'nohidden', -- hidden|nohidden
-          vertical     = 'down:45%', -- up|down:size
-          horizontal   = 'right:60%', -- right|left:size
-          layout       = 'flex', -- horizontal|vertical|flex
+          border = 'noborder', -- border|noborder, applies only to native fzf previewers (bat/cat/git/etc)
+          wrap = 'nowrap', -- wrap|nowrap
+          hidden = 'nohidden', -- hidden|nohidden
+          vertical = 'down:45%', -- up|down:size
+          horizontal = 'right:60%', -- right|left:size
+          layout = 'flex', -- horizontal|vertical|flex
           flip_columns = 120, -- #cols to switch to horizontal on flex
           -- Only used with the builtin previewer:
-          title        = true, -- preview border title (file/buf)?
-          title_align  = 'center', -- left|center|right, title alignment
-          scrollbar    = 'float', -- `false` or string:'float|border'
+          title = true, -- preview border title (file/buf)?
+          title_align = 'center', -- left|center|right, title alignment
+          scrollbar = 'float', -- `false` or string:'float|border'
           -- float:  in-window floating border
           -- border: in-border chars (see below)
-          scrolloff    = '-2', -- float scrollbar offset from right applies only when scrollbar = 'float'
-          scrollchars  = { '█', '' }, -- scrollbar chars ({ <full>, <empty> } applies only when scrollbar = 'border'
-          delay        = 50, -- delay(ms) displaying the preview prevents lag on fast scrolling
-          winopts      = {
+          scrolloff = '-2', -- float scrollbar offset from right applies only when scrollbar = 'float'
+          scrollchars = { '█', '' }, -- scrollbar chars ({ <full>, <empty> } applies only when scrollbar = 'border'
+          delay = 50, -- delay(ms) displaying the preview prevents lag on fast scrolling
+          winopts = {
             -- builtin previewer window options
-            number         = true,
+            number = true,
             relativenumber = false,
-            cursorline     = true,
-            cursorlineopt  = 'both',
-            cursorcolumn   = false,
-            signcolumn     = 'no',
-            list           = false,
-            foldenable     = false,
-            foldmethod     = 'manual',
+            cursorline = true,
+            cursorlineopt = 'both',
+            cursorcolumn = false,
+            signcolumn = 'no',
+            list = false,
+            foldenable = false,
+            foldmethod = 'manual',
             -- winhighlight   = 'Normal:NvimInternalError'
           },
         },
@@ -332,8 +332,7 @@ return {
         },
         commits = {
           prompt = 'Commits❯ ',
-          cmd =
-          "git log --color --pretty=format:'%C(yellow)%h%Creset %Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset'",
+          cmd = "git log --color --pretty=format:'%C(yellow)%h%Creset %Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset'",
           preview = "git show --pretty='%Cred%H%n%Cblue%an <%ae>%n%C(yellow)%cD%n%Cgreen%s' --color {1}",
           -- uncomment if you wish to use git-delta as pager
           --preview_pager = "delta --width=$FZF_PREVIEW_COLUMNS",
@@ -348,8 +347,7 @@ return {
           --   git show --color {1} --rotate-to=<file>
           --   {1}    : commit SHA (fzf field index expression)
           --   <file> : filepath placement within the commands
-          cmd =
-          "git log --color --pretty=format:'%C(yellow)%h%Creset %Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset' <file>",
+          cmd = "git log --color --pretty=format:'%C(yellow)%h%Creset %Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset' <file>",
           preview = 'git diff --color {1}~1 {1} -- <file>',
           -- uncomment if you wish to use git-delta as pager
           --preview_pager = "delta --width=$FZF_PREVIEW_COLUMNS",
@@ -674,7 +672,7 @@ return {
       -- double-width icon rendering
 
       -- Added file_icon_padding so that kitty expands the icon to two character width
-      file_icon_padding = ' '
+      file_icon_padding = ' ',
       -- uncomment if your terminal/font does not support unicode character
       -- 'EN SPACE' (U+2002), the below sets it to 'NBSP' (U+00A0) instead
       -- nbsp = '\xc2\xa0',

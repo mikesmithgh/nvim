@@ -8,8 +8,8 @@ return {
       border = require('style').border.outer_thin,
       sources = {
         null_ls.builtins.formatting.shfmt.with({
-          extra_args = { '--case-indent', '--simplify', '--binary-next-line', '--indent', '2' }
-        })
+          extra_args = { '--case-indent', '--simplify', '--binary-next-line', '--indent', '2' },
+        }),
         -- null_ls.builtins.code_actions.shellcheck,
         -- null_ls.builtins.completion.luasnip,
         -- null_ls.builtins.formatting.gofmt,

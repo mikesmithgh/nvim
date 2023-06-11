@@ -13,7 +13,7 @@ local s = {
     else
       return false
     end
-  end
+  end,
 }
 
 local function sources()
@@ -42,7 +42,7 @@ local opts = {
   -- performance = ???
   completion = {
     -- autocomplete = true,
-    completeopt = 'menu,menuone,noinsert'
+    completeopt = 'menu,menuone,noinsert',
   },
   window = {
     documentation = {
@@ -84,7 +84,7 @@ local opts = {
       -- before = function(entry, vim_item)
       --   return vim_item
       -- end
-    })
+    }),
   },
   snippet = {
     expand = function(args)
@@ -180,8 +180,8 @@ local opts = {
   sources = sources(),
   -- -- view = ???,
   experimental = {
-    ghost_text = false -- this feature conflict with copilot.vim's preview.
-  }
+    ghost_text = false, -- this feature conflict with copilot.vim's preview.
+  },
 }
 
 M.call_setup = function()
@@ -206,6 +206,5 @@ end
 --     after_cmp_win_open(buf)
 --   end)
 -- end)
-
 
 return M

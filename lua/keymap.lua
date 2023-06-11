@@ -63,7 +63,6 @@ M.setup = function()
   vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>', {})
   vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>', {})
 
-
   -- black hole register "_
   vim.keymap.set('n', 'x', '"_x')
 
@@ -242,19 +241,19 @@ M.setup = function()
 
   local function fzf_files()
     local fd_opts =
-    [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]]
+      [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]]
     fzf.files({ fd_opts = fd_opts, debug = false })
   end
 
   local function fzf_live_grep()
     local rg_opts =
-    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/'"
+      "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/'"
     fzf.live_grep({ rg_opts = rg_opts, debug = false, exec_empty_query = true })
   end
 
   local function fzf_lgrep_curbuf()
     local rg_opts =
-    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/'"
+      "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/'"
     fzf.lgrep_curbuf({ rg_opts = rg_opts, debug = false, { exec_empty_query = true } })
   end
 
@@ -278,8 +277,6 @@ M.setup = function()
 
   vim.keymap.set('n', 'su', '<Cmd>UrlView<CR>', { desc = 'View buffer URLs' })
 
-
-
   vim.keymap.set('n', 'sT', fzf.lsp_typedefs)
   vim.keymap.set('n', 'sR', fzf.lsp_references)
   vim.keymap.set('n', 'sD', fzf.lsp_definitions)
@@ -300,14 +297,13 @@ M.setup = function()
   vim.keymap.set('n', 'sdc', fzf.dap_commands)
   -- vim.keymap.set('n', 'sW', fzf.lsp_workspace_diagnostics)
 
-
   -- venn.nvim: enable or disable keymappings
   -- copied from https://github.com/jbyuki/venn.nvim
   function _G.Toggle_venn()
     local venn_enabled = vim.inspect(vim.b.venn_enabled)
     if venn_enabled == 'nil' then
       vim.b.venn_enabled = true
-      vim.cmd[[setlocal ve=all]]
+      vim.cmd([[setlocal ve=all]])
       -- draw a line on HJKL keystokes
       vim.api.nvim_buf_set_keymap(0, 'n', 'J', '<C-v>j:VBox<CR>', { noremap = true })
       vim.api.nvim_buf_set_keymap(0, 'n', 'K', '<C-v>k:VBox<CR>', { noremap = true })
@@ -316,8 +312,8 @@ M.setup = function()
       -- draw a box by pressing "f" with visual selection
       vim.api.nvim_buf_set_keymap(0, 'v', 'f', ':VBox<CR>', { noremap = true })
     else
-      vim.cmd[[setlocal ve=]]
-      vim.cmd[[mapclear <buffer>]]
+      vim.cmd([[setlocal ve=]])
+      vim.cmd([[mapclear <buffer>]])
       vim.b.venn_enabled = nil
     end
   end
