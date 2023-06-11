@@ -32,10 +32,10 @@ return {
         -- "aboveleft vnew   : split left
         -- Only valid when using a float window
         -- (i.e. when 'split' is not defined, default)
-        height = 0.85, -- window height
-        width = 0.80, -- window width
-        row = 0.35, -- window row position (0=top, 1=bottom)
-        col = 0.50, -- window col position (0=left, 1=right)
+        height = .90, -- window height
+        width = .85, -- window width
+        row = 0.4, -- window row position (0=top, 1=bottom)
+        col = 0.5, -- window col position (0=left, 1=right)
         -- border argument passthrough to nvim_open_win(), also used
         -- to manually draw the border characters around the preview
         -- window, can be set to 'false' to remove all borders or to
@@ -66,10 +66,9 @@ return {
               scrollborder_f = 'FloatBorder',   -- scrollbar "full" section highlight
             }, ]]
         preview = {
-          default      = 'bat', -- override the default previewer?
+          -- default      = 'bat', -- override the default previewer?
           -- default uses the 'builtin' previewer
-          border       = 'border', -- border|noborder, applies only to
-          -- native fzf previewers (bat/cat/git/etc)
+          border       = 'noborder', -- border|noborder, applies only to native fzf previewers (bat/cat/git/etc)
           wrap         = 'nowrap', -- wrap|nowrap
           hidden       = 'nohidden', -- hidden|nohidden
           vertical     = 'down:45%', -- up|down:size
@@ -82,23 +81,21 @@ return {
           scrollbar    = 'float', -- `false` or string:'float|border'
           -- float:  in-window floating border
           -- border: in-border chars (see below)
-          scrolloff    = '-2', -- float scrollbar offset from right
-          -- applies only when scrollbar = 'float'
-          scrollchars  = { '█', '' }, -- scrollbar chars ({ <full>, <empty> }
-          -- applies only when scrollbar = 'border'
-          delay        = 100, -- delay(ms) displaying the preview
-          -- prevents lag on fast scrolling
+          scrolloff    = '-2', -- float scrollbar offset from right applies only when scrollbar = 'float'
+          scrollchars  = { '█', '' }, -- scrollbar chars ({ <full>, <empty> } applies only when scrollbar = 'border'
+          delay        = 50, -- delay(ms) displaying the preview prevents lag on fast scrolling
           winopts      = {
             -- builtin previewer window options
-            number = true,
+            number         = true,
             relativenumber = false,
-            cursorline = true,
-            cursorlineopt = 'both',
-            cursorcolumn = false,
-            signcolumn = 'no',
-            list = false,
-            foldenable = false,
-            foldmethod = 'manual',
+            cursorline     = true,
+            cursorlineopt  = 'both',
+            cursorcolumn   = false,
+            signcolumn     = 'no',
+            list           = false,
+            foldenable     = false,
+            foldmethod     = 'manual',
+            -- winhighlight   = 'Normal:NvimInternalError'
           },
         },
         on_create = function()
@@ -191,17 +188,22 @@ return {
         -- set to '' for a non-value flag
         -- for raw args use `fzf_args` instead
         ['--ansi'] = '',
-        ['--info'] = 'inline',
-        ['--height'] = '100%',
-        ['--layout'] = 'reverse',
-        ['--border'] = 'none',
-        ['--scrollbar'] = '█',
-        ['--no-separator'] = '',
-        ['--cycle'] = '',
-        ['--scroll-off'] = '7',
+        ['--preview-window'] = 'border-thinblock',
         ['--border'] = 'none',
         ['--margin'] = '0',
-        -- ['--no-bold'] = '',
+        ['--multi'] = '',
+        ['--layout'] = 'reverse',
+        ['--inline-info'] = '',
+        ['--scroll-off'] = '7',
+        ['--height'] = '100%',
+        ['--cycle'] = '',
+        ['--info'] = 'inline:"󰅁 "',
+        -- ['--separator'] = '─',
+        ['--scrollbar'] = '▊',
+        ['--pointer'] = '󰅂',
+        ['--no-separator'] = '',
+        ['--marker'] = '󰅂',
+        ['--prompt'] = '$ ',
       },
       -- fzf '--color=' options (optional)
       --[[ fzf_colors = {
@@ -330,7 +332,8 @@ return {
         },
         commits = {
           prompt = 'Commits❯ ',
-          cmd = "git log --color --pretty=format:'%C(yellow)%h%Creset %Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset'",
+          cmd =
+          "git log --color --pretty=format:'%C(yellow)%h%Creset %Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset'",
           preview = "git show --pretty='%Cred%H%n%Cblue%an <%ae>%n%C(yellow)%cD%n%Cgreen%s' --color {1}",
           -- uncomment if you wish to use git-delta as pager
           --preview_pager = "delta --width=$FZF_PREVIEW_COLUMNS",
@@ -345,7 +348,8 @@ return {
           --   git show --color {1} --rotate-to=<file>
           --   {1}    : commit SHA (fzf field index expression)
           --   <file> : filepath placement within the commands
-          cmd = "git log --color --pretty=format:'%C(yellow)%h%Creset %Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset' <file>",
+          cmd =
+          "git log --color --pretty=format:'%C(yellow)%h%Creset %Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset' <file>",
           preview = 'git diff --color {1}~1 {1} -- <file>',
           -- uncomment if you wish to use git-delta as pager
           --preview_pager = "delta --width=$FZF_PREVIEW_COLUMNS",

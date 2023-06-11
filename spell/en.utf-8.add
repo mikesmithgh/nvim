@@ -56,3 +56,5 @@ postgres
 Serverless
 Redis
 backoff
+Nahed
+Accumulus
