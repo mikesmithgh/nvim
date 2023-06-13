@@ -42,7 +42,7 @@ return {
         -- 'none', 'single', 'double', 'thicc' or 'rounded' (default)
         -- border     = 'none',
         -- border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
-        border = require('style').border.outer_thin,
+        border = require('style').border.thinblock,
         fullscreen = false, -- start fullscreen?
         -- highlights should optimally be set by the colorscheme using
         -- FzfLuaXXX highlights. If your colorscheme doesn't set these
@@ -202,7 +202,7 @@ return {
         ['--scrollbar'] = '▊',
         ['--pointer'] = '󰅂',
         ['--no-separator'] = '',
-        ['--marker'] = '󰅂',
+        ['--marker'] = '﹢',
         ['--prompt'] = '$ ',
       },
       -- fzf '--color=' options (optional)

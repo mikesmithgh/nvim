@@ -65,7 +65,7 @@ return {
           view = 'hover',
           opts = {
             border = {
-              style = require('style').border.outer_thin,
+              style = require('style').border.thinblock,
             },
             position = { row = 2, col = 2 },
           },
@@ -75,7 +75,7 @@ return {
           view = 'hover',
           opts = {
             border = {
-              style = require('style').border.outer_thin,
+              style = require('style').border.thinblock,
             },
             position = { row = 2, col = 2 },
           },

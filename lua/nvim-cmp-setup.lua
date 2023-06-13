@@ -46,7 +46,7 @@ local opts = {
   },
   window = {
     documentation = {
-      border = require('style').border.outer_thin,
+      border = require('style').border.thinblock,
       winhighlight = 'CursorLine:PmenuSel,Search:None',
       scrolloff = 3,
       col_offset = 1,
