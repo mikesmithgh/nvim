@@ -33,10 +33,6 @@ M.setup = function()
   vim.keymap.set('n', 'g*', ':set hlsearch<cr>g*')
   vim.keymap.set('n', 'g#', ':set hlsearch<cr>g#')
 
-  -- causes delay and typos when j starts a word
-  -- -- esc insert mode
-  -- vim.keymap.set('i', 'jk', '<esc>')
-
   -- tasty keymaps modified from https://github.com/ThePrimeagen/init.lua/blob/bc8324fa1c31bd1bc81fb8a5dde684dffd324f84/lua/theprimeagen/remap.lua
   vim.keymap.set('n', 'J', 'mzJ`z')
   vim.keymap.set('n', '<C-d>', '<C-d>zz')
@@ -54,14 +50,10 @@ M.setup = function()
   vim.keymap.set('n', '<a-s-n>', '0Nzzzv')
 
   -- Show all diagnostics on current line in floating window
-  vim.api.nvim_set_keymap(
-    'n',
-    '<Leader>d',
-    '<cmd>lua vim.diagnostic.open_float()<CR>',
-    { noremap = true, silent = true }
-  )
-  vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<cr>', {})
-  vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<cr>', {})
+
+  vim.keymap.set({ 'n' }, '<Leader>d', vim.diagnostic.open_float, { noremap = true, silent = true })
+  vim.keymap.set({ 'n' }, ']d', vim.diagnostic.goto_next, {})
+  vim.keymap.set({ 'n' }, '[d', vim.diagnostic.goto_prev, {})
 
   -- black hole register "_
   vim.keymap.set('n', 'x', '"_x')
@@ -237,31 +229,11 @@ M.setup = function()
     return
   end
 
-  -- TODO: these custom command options can be moved to setup
-
-  local function fzf_files()
-    local fd_opts =
-    [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]]
-    fzf.files({ fd_opts = fd_opts, debug = false })
-  end
-
-  local function fzf_live_grep()
-    local rg_opts =
-    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/'"
-    fzf.live_grep({ rg_opts = rg_opts, debug = false, exec_empty_query = true })
-  end
-
-  local function fzf_lgrep_curbuf()
-    local rg_opts =
-    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/'"
-    fzf.lgrep_curbuf({ rg_opts = rg_opts, debug = false, { exec_empty_query = true } })
-  end
-
   vim.keymap.set('n', 's<leader>', require('fzf-lua.cmd').load_command)
-  vim.keymap.set('n', 'sf', fzf_files)
+  vim.keymap.set('n', 'sf', fzf.files)
   vim.keymap.set('n', 'sp', fzf.git_files)
-  vim.keymap.set('n', 'sg', fzf_live_grep)
-  vim.keymap.set('n', 's/', fzf_lgrep_curbuf)
+  vim.keymap.set('n', 'sg', fzf.live_grep)
+  vim.keymap.set('n', 's/', fzf.lgrep_curbuf)
   vim.keymap.set('n', 's?', fzf.spell_suggest)
   vim.keymap.set('n', 'sb', fzf.buffers)
   vim.keymap.set('n', 'sh', fzf.help_tags)
