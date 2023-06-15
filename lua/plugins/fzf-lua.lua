@@ -264,28 +264,27 @@ return {
       },
       -- provider setup
       files = {
-        fzf_opts     = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/files-history.txt',
         }),
         -- previewer      = "bat",          -- uncomment to override previewer
         -- (name from 'previewers' table)
         -- set to 'false' to disable
-        prompt       = 'Files❯ ',
+        prompt = 'Files❯ ',
         multiprocess = true, -- run command in a separate process
-        git_icons    = true, -- show git icons?
-        file_icons   = true, -- show file icons?
-        color_icons  = true, -- colorize file|git icons
+        git_icons = true, -- show git icons?
+        file_icons = true, -- show file icons?
+        color_icons = true, -- colorize file|git icons
         -- path_shorten   = 1,              -- 'true' or number, shorten path?
         -- executed command priority is 'cmd' (if exists)
         -- otherwise auto-detect prioritizes `fd`:`rg`:`find`
         -- default options are controlled by 'fd|rg|find|_opts'
         -- NOTE: 'find -printf' requires GNU find
-        cmd          =
-        [[ fd --color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]],
+        cmd = [[ fd --color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]],
         -- find_opts    = [[-type f -not -path '*/\.git/*' -printf '%P\n']],
         -- rg_opts      = "--color=never --files --hidden --follow -g '!.git'",
         -- fd_opts      = '--color=never --type f --hidden --follow --exclude .git',
-        actions      = {
+        actions = {
           -- inherits from 'actions.files', here we can override
           -- or set bind to 'false' to disable a default action
           ['default'] = actions.file_edit,
@@ -296,7 +295,7 @@ return {
         },
       },
       git = {
-        files    = {
+        files = {
           fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
             ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/git-files-history.txt',
           }),
@@ -310,7 +309,7 @@ return {
           -- directory can also be used to hide the header when not wanted
           -- show_cwd_header = true
         },
-        status   = {
+        status = {
           fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
             ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/git-status-history.txt',
           }),
@@ -330,7 +329,7 @@ return {
             ['left'] = { actions.git_stage, actions.resume },
           },
         },
-        commits  = {
+        commits = {
           fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
             ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/git-commits-history.txt',
           }),
@@ -375,7 +374,7 @@ return {
             ['default'] = actions.git_switch,
           },
         },
-        stash    = {
+        stash = {
           fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
             ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/git-stash-history.txt',
             ['--no-multi'] = '',
@@ -389,7 +388,7 @@ return {
             ['ctrl-x'] = { actions.git_stash_drop, actions.resume },
           },
         },
-        icons    = {
+        icons = {
           ['M'] = { icon = 'M', color = 'yellow' },
           ['D'] = { icon = 'D', color = 'red' },
           ['A'] = { icon = 'A', color = 'green' },
@@ -404,27 +403,26 @@ return {
         },
       },
       grep = {
-        fzf_opts         = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/grep-history.txt',
         }),
-        debug            = false,
+        debug = false,
         exec_empty_query = true,
-        prompt           = 'Rg❯ ',
-        input_prompt     = 'Grep For❯ ',
-        multiprocess     = true, -- run command in a separate process
-        git_icons        = true, -- show git icons?
-        file_icons       = true, -- show file icons?
-        color_icons      = true, -- colorize file|git icons
+        prompt = 'Rg❯ ',
+        input_prompt = 'Grep For❯ ',
+        multiprocess = true, -- run command in a separate process
+        git_icons = true, -- show git icons?
+        file_icons = true, -- show file icons?
+        color_icons = true, -- colorize file|git icons
         -- prefer rg_opts over setting cmd explicitly because other commands (e.g., lgrep_curbuf) extend rg_opts
-        rg_opts          =
-        [[--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/']],
+        rg_opts = [[--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/']],
         -- set to 'true' to always parse globs in both 'grep' and 'live_grep'
         -- search strings will be split using the 'glob_separator' and translated
         -- to '--iglob=' arguments, requires 'rg'
         -- can still be used when 'false' by calling 'live_grep_glob' directly
-        rg_glob          = false, -- default to glob parsing?
-        glob_flag        = '--iglob', -- for case sensitive globs use '--glob'
-        glob_separator   = '%s%-%-', -- query separator pattern (lua): ' --'
+        rg_glob = false, -- default to glob parsing?
+        glob_flag = '--iglob', -- for case sensitive globs use '--glob'
+        glob_separator = '%s%-%-', -- query separator pattern (lua): ' --'
         -- advanced usage: for custom argument parsing define
         -- 'rg_glob_fn' to return a pair:
         --   first returned argument is the new search query
@@ -433,41 +431,41 @@ return {
         --   ...
         --   return new_query, flags
         -- end,
-        actions          = {
+        actions = {
           -- actions inherit from 'actions.files' and merge
           -- this action toggles between 'grep' and 'live_grep'
           ['ctrl-g'] = { actions.grep_lgrep },
         },
-        no_header        = false, -- hide grep|cwd header?
-        no_header_i      = false, -- hide interactive header?
+        no_header = false, -- hide grep|cwd header?
+        no_header_i = false, -- hide interactive header?
       },
       args = {
-        fzf_opts   = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/args-history.txt',
         }),
-        prompt     = 'Args❯ ',
+        prompt = 'Args❯ ',
         files_only = true,
         -- actions inherit from 'actions.files' and merge
-        actions    = { ['ctrl-x'] = { actions.arg_del, actions.resume } },
+        actions = { ['ctrl-x'] = { actions.arg_del, actions.resume } },
       },
       oldfiles = {
-        fzf_opts                = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/oldfiles-history.txt',
         }),
-        prompt                  = 'History❯ ',
-        cwd_only                = false,
-        stat_file               = true, -- verify files exist on disk
+        prompt = 'History❯ ',
+        cwd_only = false,
+        stat_file = true, -- verify files exist on disk
         include_current_session = false, -- include bufs from current session
       },
       buffers = {
-        fzf_opts      = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/buffers-history.txt',
         }),
-        prompt        = 'Buffers❯ ',
-        file_icons    = true, -- show file icons?
-        color_icons   = true, -- colorize file|git icons
+        prompt = 'Buffers❯ ',
+        file_icons = true, -- show file icons?
+        color_icons = true, -- colorize file|git icons
         sort_lastused = true, -- sort buffers() by last used
-        actions       = {
+        actions = {
           -- actions inherit from 'actions.buffers' and merge
           -- by supplying a table of functions we're telling
           -- fzf-lua to not close the fzf window, this way we
@@ -477,25 +475,25 @@ return {
         },
       },
       tabs = {
-        fzf_opts    = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/tabs-history.txt',
           -- hide tabnr
           ['--delimiter'] = "'[\\):]'",
           ['--with-nth'] = '2..',
         }),
-        prompt      = 'Tabs❯ ',
-        tab_title   = 'Tab',
-        tab_marker  = '<<',
-        file_icons  = true, -- show file icons?
+        prompt = 'Tabs❯ ',
+        tab_title = 'Tab',
+        tab_marker = '<<',
+        file_icons = true, -- show file icons?
         color_icons = true, -- colorize file|git icons
-        actions     = {
+        actions = {
           -- actions inherit from 'actions.buffers' and merge
           ['default'] = actions.buf_switch,
           ['ctrl-x'] = { actions.buf_del, actions.resume },
         },
       },
       lines = {
-        fzf_opts        = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/lines-history.txt',
           -- do not include bufnr in fuzzy matching
           -- tiebreak by line no.
@@ -503,83 +501,83 @@ return {
           ['--nth'] = '2..',
           ['--tiebreak'] = 'index',
         }),
-        previewer       = 'builtin', -- set to 'false' to disable
-        prompt          = 'Lines❯ ',
-        show_unlisted   = false, -- exclude 'help' buffers
+        previewer = 'builtin', -- set to 'false' to disable
+        prompt = 'Lines❯ ',
+        show_unlisted = false, -- exclude 'help' buffers
         no_term_buffers = true, -- exclude 'term' buffers
         -- actions inherit from 'actions.buffers' and merge
-        actions         = {
+        actions = {
           ['default'] = actions.buf_edit_or_qf,
           ['alt-q'] = actions.buf_sel_to_qf,
           ['alt-l'] = actions.buf_sel_to_ll,
         },
       },
       blines = {
-        fzf_opts        = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/blines-history.txt',
           -- hide filename, tiebreak by line no.
           ['--delimiter'] = "'[\\]:]'",
           ['--with-nth'] = '2..',
           ['--tiebreak'] = 'index',
         }),
-        previewer       = 'builtin', -- set to 'false' to disable
-        prompt          = 'BLines❯ ',
-        show_unlisted   = true, -- include 'help' buffers
+        previewer = 'builtin', -- set to 'false' to disable
+        prompt = 'BLines❯ ',
+        show_unlisted = true, -- include 'help' buffers
         no_term_buffers = false, -- include 'term' buffers
         -- actions inherit from 'actions.buffers' and merge
-        actions         = {
+        actions = {
           ['default'] = actions.buf_edit_or_qf,
           ['alt-q'] = actions.buf_sel_to_qf,
           ['alt-l'] = actions.buf_sel_to_ll,
         },
       },
       tags = {
-        fzf_opts     = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/tags-history.txt',
         }),
-        prompt       = 'Tags❯ ',
-        ctags_file   = 'tags',
+        prompt = 'Tags❯ ',
+        ctags_file = 'tags',
         multiprocess = true,
-        file_icons   = true,
-        git_icons    = true,
-        color_icons  = true,
+        file_icons = true,
+        git_icons = true,
+        color_icons = true,
         -- 'tags_live_grep' options, `rg` prioritizes over `grep`
-        rg_opts      = '--no-heading --color=always --smart-case',
-        grep_opts    = '--color=auto --perl-regexp',
-        actions      = {
+        rg_opts = '--no-heading --color=always --smart-case',
+        grep_opts = '--color=auto --perl-regexp',
+        actions = {
           -- actions inherit from 'actions.files' and merge
           -- this action toggles between 'grep' and 'live_grep'
           ['ctrl-g'] = { actions.grep_lgrep },
         },
-        no_header    = false, -- hide grep|cwd header?
-        no_header_i  = false, -- hide interactive header?
+        no_header = false, -- hide grep|cwd header?
+        no_header_i = false, -- hide interactive header?
       },
       btags = {
-        fzf_opts      = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/btags-history.txt',
           ['--delimiter'] = "'[\\]:]'",
           ['--with-nth'] = '2..',
           ['--tiebreak'] = 'index',
         }),
-        prompt        = 'BTags❯ ',
-        ctags_file    = 'tags',
+        prompt = 'BTags❯ ',
+        ctags_file = 'tags',
         ctags_autogen = false, -- dynamically generate ctags each call
-        multiprocess  = true,
-        file_icons    = true,
-        git_icons     = true,
-        color_icons   = true,
-        rg_opts       = '--no-heading --color=always',
-        grep_opts     = '--color=auto --perl-regexp',
+        multiprocess = true,
+        file_icons = true,
+        git_icons = true,
+        color_icons = true,
+        rg_opts = '--no-heading --color=always',
+        grep_opts = '--color=auto --perl-regexp',
         -- actions inherit from 'actions.files'
       },
       colorschemes = {
-        fzf_opts      = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/colorschemes-history.txt',
         }),
-        prompt        = 'Colorschemes❯ ',
-        live_preview  = true, -- apply the colorscheme on preview?
-        actions       = { ['default'] = actions.colorscheme },
-        winopts       = { height = 0.55, width = 0.30 },
+        prompt = 'Colorschemes❯ ',
+        live_preview = true, -- apply the colorscheme on preview?
+        actions = { ['default'] = actions.colorscheme },
+        winopts = { height = 0.55, width = 0.30 },
         post_reset_cb = function()
           -- reset statusline highlights after
           -- a live_preview of the colorscheme
@@ -587,29 +585,29 @@ return {
         end,
       },
       quickfix = {
-        fzf_opts   = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/quickfix-history.txt',
         }),
         file_icons = true,
-        git_icons  = true,
+        git_icons = true,
       },
       lsp = {
-        fzf_opts         = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/lsp--history.txt',
         }),
-        prompt_postfix   = '❯ ', -- will be appended to the LSP label
+        prompt_postfix = '❯ ', -- will be appended to the LSP label
         -- to override use 'prompt' instead
-        cwd_only         = false, -- LSP/diagnostics for cwd only?
+        cwd_only = false, -- LSP/diagnostics for cwd only?
         async_or_timeout = 5000, -- timeout(ms) or 'true' for async calls
-        file_icons       = true,
-        git_icons        = false,
+        file_icons = true,
+        git_icons = false,
         -- settings for 'lsp_{document|workspace|lsp_live_workspace}_symbols'
-        symbols          = {
-          fzf_opts         = vim.tbl_extend('force', global_fzf_opts, {
+        symbols = {
+          fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
             ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/lsp-symbols-history.txt',
           }),
           async_or_timeout = true, -- symbols are async by default
-          symbol_style     = 1, -- style for document/workspace symbols
+          symbol_style = 1, -- style for document/workspace symbols
           -- false: disable,    1: icon+kind
           --     2: icon only,  3: kind only
           -- NOTE: icons are extracted from
@@ -619,18 +617,18 @@ return {
           -- or 'false' to disable highlighting
           symbol_hl_prefix = 'CmpItemKind',
           -- additional symbol formatting, works with or without style
-          symbol_fmt       = function(s)
+          symbol_fmt = function(s)
             return '[' .. s .. ']'
           end,
         },
-        code_actions     = {
-          fzf_opts         = vim.tbl_extend('force', global_fzf_opts, {
+        code_actions = {
+          fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
             ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/lsp-code-actions-history.txt',
           }),
-          prompt           = 'Code Actions> ',
-          ui_select        = true, -- use 'vim.ui.select'?
+          prompt = 'Code Actions> ',
+          ui_select = true, -- use 'vim.ui.select'?
           async_or_timeout = 5000,
-          winopts          = {
+          winopts = {
             row = 0.40,
             height = 0.35,
             width = 0.60,
@@ -638,14 +636,14 @@ return {
         },
       },
       diagnostics = {
-        fzf_opts     = vim.tbl_extend('force', global_fzf_opts, {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/diagnostics-history.txt',
         }),
-        prompt       = 'Diagnostics❯ ',
-        cwd_only     = false,
-        file_icons   = true,
-        git_icons    = false,
-        diag_icons   = true,
+        prompt = 'Diagnostics❯ ',
+        cwd_only = false,
+        file_icons = true,
+        git_icons = false,
+        diag_icons = true,
         icon_padding = '', -- add padding for wide diagnostics signs
         -- by default icons and highlights are extracted from 'DiagnosticSignXXX'
         -- and highlighted by a highlight group of the same name (which is usually

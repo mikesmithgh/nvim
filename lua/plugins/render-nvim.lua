@@ -7,11 +7,11 @@ return {
     dev = true,
     init = function()
       require('render').setup(
-      -- {
-      --   notify = {
-      --     level = vim.log.levels.INFO,
-      --   },
-      -- }
+        -- {
+        --   notify = {
+        --     level = vim.log.levels.INFO,
+        --   },
+        -- }
       )
     end,
   },

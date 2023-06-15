@@ -25,13 +25,7 @@ local function scrollback_msg()
   local comment_hl = vim.api.nvim_get_hl(0, { name = 'WarningMsg' })
   local timer_hl = vim.tbl_extend('force', normal_float_hl, comment_hl)
   vim.api.nvim_set_hl(render_timer_ns, 'Normal', timer_hl)
-  vim.api.nvim_buf_set_lines(
-    buffer_id,
-    0,
-    0,
-    false,
-    { '           󰄛   ', }
-  )
+  vim.api.nvim_buf_set_lines(buffer_id, 0, 0, false, { '           󰄛   ' })
   -- vim.defer_fn(function()
   --   vim.api.nvim_buf_delete(buffer_id, { force = true })
   -- end, 5000)
@@ -47,5 +41,5 @@ vim.api.nvim_create_autocmd({ 'BufEnter' }, {
       scrollback_msg()
     end
     return true
-  end
+  end,
 })

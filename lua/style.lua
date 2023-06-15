@@ -19,11 +19,10 @@ M.border = {
   outer_thin_telescope_top_prompt = { '▔', '▕', ' ', '▏', '🭽', '🭾', '▕', '▏' },
   outer_thin_telescope_dropdown_prompt = { ' ', '▕', ' ', '▏', '▏', '▕', ' ', ' ' },
   outer_thick_telescope = { '▀', '▐', '▄', '▌', '▛', '▜', '▟', '▙' },
-
 }
 
 M.telescope_fmt = function(b)
-  return { b[2], b[4], b[6], b[8], b[1], b[3], b[5], b[7], }
+  return { b[2], b[4], b[6], b[8], b[1], b[3], b[5], b[7] }
 end
 
 return M
