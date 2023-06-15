@@ -1,6 +1,6 @@
 return {
   'romgrk/barbar.nvim',
-  enabled = true,
+  enabled = true and not vim.g.is_kitty_scrollback_pager,
   dependencies = 'nvim-web-devicons',
   hide = { extensions = false, inactive = false },
   config = function()

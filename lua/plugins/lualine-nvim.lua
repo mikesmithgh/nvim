@@ -94,6 +94,6 @@ vim.api.nvim_create_autocmd(
 
 return {
   'nvim-lualine/lualine.nvim',
-  enabled = true,
+  enabled = true and not vim.g.is_kitty_scrollback_pager,
   dependencies = { 'nvim-tree/nvim-web-devicons', 'mikesmithgh/gruvsquirrel.nvim' },
 }

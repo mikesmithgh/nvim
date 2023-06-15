@@ -241,19 +241,19 @@ M.setup = function()
 
   local function fzf_files()
     local fd_opts =
-      [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]]
+    [[--color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]]
     fzf.files({ fd_opts = fd_opts, debug = false })
   end
 
   local function fzf_live_grep()
     local rg_opts =
-      "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/'"
+    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/'"
     fzf.live_grep({ rg_opts = rg_opts, debug = false, exec_empty_query = true })
   end
 
   local function fzf_lgrep_curbuf()
     local rg_opts =
-      "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/'"
+    "--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/'"
     fzf.lgrep_curbuf({ rg_opts = rg_opts, debug = false, { exec_empty_query = true } })
   end
 
@@ -266,7 +266,7 @@ M.setup = function()
   vim.keymap.set('n', 'sb', fzf.buffers)
   vim.keymap.set('n', 'sh', fzf.help_tags)
   vim.keymap.set('n', 'sr', fzf.registers)
-  vim.keymap.set('n', 'st', fzf.tags)
+  vim.keymap.set('n', 'st', require('telescope.builtin').builtin)
   vim.keymap.set('n', 'sj', fzf.jumps)
   vim.keymap.set('n', 'sc', fzf.changes)
   vim.keymap.set('n', 's8', fzf.grep_cword) -- TODO: add exact match
