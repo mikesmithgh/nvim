@@ -144,12 +144,28 @@ M.setup = function()
   vim.opt.showcmd = true
 
   vim.opt.fillchars = {
-    vert = '│',
-    fold = '·',
-    eob = '~',
-    lastline = '@',
-    diff = '╱',
-    msgsep = '▅',
+    stl       = ' ',
+    stlnc     = ' ',
+    wbr       = ' ',
+
+    horiz     = '🭹',
+    horizup   = '🭹',
+    horizdown = '🭹',
+
+    vert      = '🮇',
+    vertleft  = ' ',
+    vertright = ' ',
+    verthoriz = '🭹',
+
+    -- vert      = ' ',
+    fold      = '·',
+    foldopen  = '-',
+    foldclose = '+',
+    foldsep   = '│',
+    diff      = '╱',
+    msgsep    = '▅',
+    eob       = '~',
+    lastline  = '@',
   }
 
   vim.g.github_enterprise_urls = {}
