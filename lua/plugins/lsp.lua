@@ -34,7 +34,7 @@ return {
     config = function()
       require('mason').setup({
         ui = {
-          border = require('style').border.thinblock,
+          border = 'rounded',
         },
       })
 
@@ -87,7 +87,7 @@ return {
         -- Create your keybindings here...
       end
 
-      require('lspconfig.ui.windows').default_options.border = require('style').border.thinblock
+      -- require('lspconfig.ui.windows').default_options.border = require('style').border.thinblock
 
       local lspconfig = require('lspconfig')
       require('mason-lspconfig').setup_handlers({
@@ -252,7 +252,6 @@ return {
           focusable = true,
           style = 'minimal',
           -- border = 'none',
-          border = require('style').border.thinblock,
           source = 'always',
           header = '',
           prefix = '',

@@ -46,17 +46,17 @@ local opts = {
   },
   window = {
     documentation = {
-      border = require('style').border.thinblock,
-      winhighlight = 'CursorLine:PmenuSel,Search:None',
+      -- border = require('style').border.thinblock,
+      -- winhighlight = 'CursorLine:PmenuSel,Search:None',
       scrolloff = 3,
       col_offset = 1,
       max_height = 15,
       max_width = 60,
     },
     completion = {
-      border = require('style').border.none,
+      -- border = require('style').border.empty,
       scrollbar = true,
-      winhighlight = 'CursorLine:PmenuSel,Search:None',
+      -- winhighlight = 'CursorLine:PmenuSel,Search:None',
       scrolloff = 3,
       col_offset = 0,
     },

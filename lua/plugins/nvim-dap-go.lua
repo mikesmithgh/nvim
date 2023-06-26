@@ -26,29 +26,24 @@ return {
       -- :help dap-configuration
       dap_configurations = {
         {
-          -- Must be "go" or it will be ignored by the plugin
           type = 'go',
-          name = 'Attach remote',
+          name = ' Debug Package (Arguments)',
+          request = 'launch',
+          program = '${fileDirname}',
+          args = function()
+            local args_string = vim.fn.input('Arguments: ')
+            return vim.split(args_string, ' +')
+          end,
+        },
+        {
+          type = 'go',
+          name = ' Attach Remote',
           mode = 'remote',
           request = 'attach',
         },
         {
           type = 'go',
-          name = 'Debug boulder-wfe2',
-          request = 'launch',
-          mode = 'debug',
-          args = {
-            '--config',
-            '/Users/mike/go/src/github.com/letsencrypt/boulder/test/config/wfe2-local.json',
-          },
-          program = '/Users/mike/go/src/github.com/letsencrypt/boulder/cmd/boulder/main.go',
-          output = 'boulder-wfe2',
-          cwd = '/Users/mike/go/src/github.com/letsencrypt/boulder',
-          -- stopOnEntry = true,
-        },
-        {
-          type = 'go',
-          name = 'Remote Debug boulder-wfe2',
+          name = ' Remote Debug (Boulder)',
           request = 'attach',
           mode = 'remote',
           port = 4040,
@@ -71,24 +66,6 @@ return {
               end,
             }):sync() -- or start()
           end,
-        },
-        {
-          type = 'go',
-          name = 'Remote Debug testing',
-          request = 'attach',
-          mode = 'remote',
-          port = 40000,
-          debugAdapter = 'dlv-dap',
-          host = '127.0.0.1',
-          -- showLog= true,
-          -- trace= "log",
-          -- logOutput= "rpc",
-          substitutePath = {
-            {
-              from = '${workspaceFolder}',
-              to = '/debuggingTutorial',
-            },
-          },
         },
       },
       -- delve configurations

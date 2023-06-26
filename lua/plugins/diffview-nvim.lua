@@ -3,8 +3,6 @@ return {
   enabled = true,
   dependencies = 'nvim-lua/plenary.nvim',
   config = function()
-    require('diffview').setup({
-      -- enhanced_diff_hl = true,
-    })
+    require('diffview').setup()
   end,
 }

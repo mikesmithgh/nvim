@@ -29,7 +29,7 @@ return {
           'go',
           'gomod',
           'gowork',
-          'help',
+          -- 'help',
           'html',
           'http',
           'java',

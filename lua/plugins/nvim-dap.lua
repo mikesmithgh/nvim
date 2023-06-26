@@ -82,7 +82,55 @@ return {
         dap.toggle_breakpoint(nil, nil, vim.fn.input('Log point message: '), true)
       end)
 
-      set('n', '<f5>', dap.continue) -- vscode
+      -- set('n', '<f5>', dap.continue) -- vscode
+      set('n', '<f5>', function()
+        local session = dap.session()
+        if session then
+          dap.continue()
+          return
+        end
+        local ft = vim.bo.filetype
+
+        local utils = require('fzf-lua.utils')
+        local dap = require('dap')
+        local core = require('fzf-lua.core')
+        local entries = {}
+        local o = {
+          fzf_opts = {},
+          _cfgs = {}
+        }
+        for lang, lang_cfgs in pairs(dap.configurations) do
+          for _, cfg in ipairs(lang_cfgs) do
+            o._cfgs[#entries + 1] = cfg
+            if lang == ft then
+              table.insert(entries, ('[%s] %s. %s'):format(
+                utils.ansi_codes.green(lang),
+                utils.ansi_codes.magenta(tostring(#entries + 1)),
+                cfg.name
+              ))
+            end
+          end
+        end
+
+        o.actions = {
+          ['default'] = o.actions and o.actions.default or
+            function(selected, _)
+              -- cannot run while in session
+              if dap.session() then
+                vim.print('already in session')
+                return
+              end
+              local idx = selected and tonumber(selected[1]:match('(%d+).')) or nil
+              if idx and o._cfgs[idx] then
+                dap.run(o._cfgs[idx])
+              end
+            end,
+        }
+
+        o.fzf_opts['--no-multi'] = ''
+
+        core.fzf_exec(entries, o)
+      end) -- vscode
       set('i', '<f5>', function()
         dap.continue()
         vim.cmd.startinsert({ bang = true })
@@ -184,7 +232,8 @@ return {
             mainClass = 'com.srx.portal.SrxPortalApplication',
             -- args = 'server ./target/classes/ingest-profiles.yml',
             -- copied from  Intellij
-            vmArgs = '--add-opens=java.base/java.lang=ALL-UNNAMED -Dspring.main.banner-mode=OFF -Dspring.profiles.active=local2 -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dmanagement.endpoints.jmx.exposure.include=*',
+            vmArgs =
+            '--add-opens=java.base/java.lang=ALL-UNNAMED -Dspring.main.banner-mode=OFF -Dspring.profiles.active=local2 -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dmanagement.endpoints.jmx.exposure.include=*',
             cwd = '/Users/mike/repos/srx-backend/packages/srx-portal-backend',
             modulePaths = { '/Users/mike/repos/srx-backend/packages/srx-portal-backend' },
           },
@@ -195,7 +244,8 @@ return {
             mainClass = 'com.srx.portal.SrxPortalApplication',
             -- args = 'server ./target/classes/ingest-profiles.yml',
             -- copied from  Intellij
-            vmArgs = '--add-opens=java.base/java.lang=ALL-UNNAMED -Dspring.main.banner-mode=OFF -Dspring.profiles.active=dev -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dmanagement.endpoints.jmx.exposure.include=*',
+            vmArgs =
+            '--add-opens=java.base/java.lang=ALL-UNNAMED -Dspring.main.banner-mode=OFF -Dspring.profiles.active=dev -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dmanagement.endpoints.jmx.exposure.include=*',
             cwd = '/Users/mike/repos/srx-backend/packages/srx-portal-backend',
             modulePaths = { '/Users/mike/repos/srx-backend/packages/srx-portal-backend' },
           },

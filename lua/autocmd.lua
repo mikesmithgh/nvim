@@ -4,6 +4,7 @@ M.setup = function()
   vim.api.nvim_create_augroup('BashFixCommandPreventExecuteWithoutSave', { clear = true })
   vim.api.nvim_create_augroup('Unhighlight', { clear = true })
   vim.api.nvim_create_augroup('Backup', { clear = true })
+  -- vim.api.nvim_create_augroup('BarBarMoveStart', { clear = true })
 
   vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
     group = 'BashFixCommandPreventExecuteWithoutSave',
@@ -125,6 +126,21 @@ M.setup = function()
     addr = 'other',
     nargs = 0,
   })
+
+  -- vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+  --   group = 'BarBarMoveStart',
+  --   callback = function()
+  --     local index_of = require('barbar.utils.list').index_of
+  --     local state = require('barbar.state')
+  --     local api = require('barbar.api')
+  --
+  --     local current_bufnr = vim.api.nvim_get_current_buf()
+  --     local idx = index_of(state.buffers, current_bufnr)
+  --     if idx ~= nil then
+  --       api.move_current_buffer_to(1)
+  --     end
+  --   end,
+  -- })
 end
 
 return M

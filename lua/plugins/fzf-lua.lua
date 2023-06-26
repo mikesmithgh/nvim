@@ -57,7 +57,7 @@ return {
         -- 'none', 'single', 'double', 'thicc' or 'rounded' (default)
         -- border     = 'none',
         -- border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
-        border = require('style').border.thinblock,
+        -- border = require('style').border.thinblock,
         fullscreen = false, -- start fullscreen?
         -- highlights should optimally be set by the colorscheme using
         -- FzfLuaXXX highlights. If your colorscheme doesn't set these
@@ -280,7 +280,8 @@ return {
         -- otherwise auto-detect prioritizes `fd`:`rg`:`find`
         -- default options are controlled by 'fd|rg|find|_opts'
         -- NOTE: 'find -printf' requires GNU find
-        cmd = [[ fd --color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]],
+        cmd =
+        [[ fd --color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]],
         -- find_opts    = [[-type f -not -path '*/\.git/*' -printf '%P\n']],
         -- rg_opts      = "--color=never --files --hidden --follow -g '!.git'",
         -- fd_opts      = '--color=never --type f --hidden --follow --exclude .git',
@@ -415,7 +416,8 @@ return {
         file_icons = true, -- show file icons?
         color_icons = true, -- colorize file|git icons
         -- prefer rg_opts over setting cmd explicitly because other commands (e.g., lgrep_curbuf) extend rg_opts
-        rg_opts = [[--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/']],
+        rg_opts =
+        [[--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/']],
         -- set to 'true' to always parse globs in both 'grep' and 'live_grep'
         -- search strings will be split using the 'glob_separator' and translated
         -- to '--iglob=' arguments, requires 'rg'

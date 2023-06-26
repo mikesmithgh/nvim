@@ -43,6 +43,7 @@ return {
         command_palette = false, -- position the cmdline and popupmenu together
         long_message_to_split = true, -- long messages will be sent to a split
         inc_rename = false, -- enables an input dialog for inc-rename.nvim
+        lsp_doc_border = true, -- add a border to hover docs and signature help
       },
       routes = {
         {
@@ -64,9 +65,9 @@ return {
         {
           view = 'hover',
           opts = {
-            border = {
-              style = require('style').border.thinblock,
-            },
+            -- border = {
+            --   style = require('style').border.thinblock,
+            -- },
             position = { row = 2, col = 2 },
           },
           filter = { event = 'lsp', kind = 'signature' },
@@ -74,9 +75,9 @@ return {
         {
           view = 'hover',
           opts = {
-            border = {
-              style = require('style').border.thinblock,
-            },
+            -- border = {
+            --   style = require('style').border.thinblock,
+            -- },
             position = { row = 2, col = 2 },
           },
           filter = { event = 'lsp', kind = 'hover' },

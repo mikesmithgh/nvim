@@ -247,7 +247,7 @@ M.setup = function()
   vim.keymap.set('n', 'so', fzf.oldfiles) -- TODO: not sure about this binding
   vim.keymap.set('n', 's:', fzf.commands)
 
-  vim.keymap.set('n', 'su', '<Cmd>UrlView<CR>', { desc = 'View buffer URLs' })
+  vim.keymap.set('n', 'su', '<Cmd>UrlView buffer bufnr=0<CR>', { desc = 'View buffer URLs' })
 
   vim.keymap.set('n', 'sT', fzf.lsp_typedefs)
   vim.keymap.set('n', 'sR', fzf.lsp_references)

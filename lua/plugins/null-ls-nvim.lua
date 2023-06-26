@@ -5,7 +5,7 @@ return {
   config = function()
     local null_ls = require('null-ls')
     null_ls.setup({
-      border = require('style').border.thinblock,
+      border = 'rounded',
       sources = {
         null_ls.builtins.formatting.shfmt.with({
           extra_args = { '--case-indent', '--simplify', '--binary-next-line', '--indent', '2' },

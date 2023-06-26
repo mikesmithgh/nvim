@@ -1,15 +1,14 @@
-local style = require('style')
 local opts = {
   prompt_prefix = '$ ',
   selection_caret = '󰅂 ',
   entry_prefix = '  ',
   multi_icon = '﹢',
-  border = true,
-  borderchars = {
-    prompt = style.telescope_fmt(style.border.thinblock_nobottom),
-    results = style.telescope_fmt(style.border.thinblock),
-    preview = style.telescope_fmt(style.border.thinblock),
-  },
+  -- border = false,
+  -- borderchars = {
+  -- prompt = style.telescope_fmt(style.border.thinblock_nobottom),
+  --   results = style.telescope_fmt(style.border.thinblock),
+  --   preview = style.telescope_fmt(style.border.thinblock),
+  -- },
   sorting_strategy = 'ascending', -- display results top->bottom
   layout_config = {
     prompt_position = 'top',
