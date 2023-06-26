@@ -4,4 +4,5 @@ return {
     enabled = false,
     lazy = true,
     opts = {},
-  } }
+  },
+}
