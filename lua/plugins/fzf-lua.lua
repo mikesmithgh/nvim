@@ -696,7 +696,7 @@ return {
         width = 0.65, -- window width
         row = 0.4, -- window row position (0=top, 1=bottom)
         col = 0.5, -- window col position (0=left, 1=right)
-      }
+      },
     })
   end,
 }

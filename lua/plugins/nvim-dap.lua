@@ -184,8 +184,7 @@ return {
             mainClass = 'com.srx.portal.SrxPortalApplication',
             -- args = 'server ./target/classes/ingest-profiles.yml',
             -- copied from  Intellij
-            vmArgs =
-            '--add-opens=java.base/java.lang=ALL-UNNAMED -Dspring.main.banner-mode=OFF -Dspring.profiles.active=local2 -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dmanagement.endpoints.jmx.exposure.include=*',
+            vmArgs = '--add-opens=java.base/java.lang=ALL-UNNAMED -Dspring.main.banner-mode=OFF -Dspring.profiles.active=local2 -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dmanagement.endpoints.jmx.exposure.include=*',
             cwd = '/Users/mike/repos/srx-backend/packages/srx-portal-backend',
             modulePaths = { '/Users/mike/repos/srx-backend/packages/srx-portal-backend' },
           },
@@ -196,8 +195,7 @@ return {
             mainClass = 'com.srx.portal.SrxPortalApplication',
             -- args = 'server ./target/classes/ingest-profiles.yml',
             -- copied from  Intellij
-            vmArgs =
-            '--add-opens=java.base/java.lang=ALL-UNNAMED -Dspring.main.banner-mode=OFF -Dspring.profiles.active=dev -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dmanagement.endpoints.jmx.exposure.include=*',
+            vmArgs = '--add-opens=java.base/java.lang=ALL-UNNAMED -Dspring.main.banner-mode=OFF -Dspring.profiles.active=dev -Dspring.output.ansi.enabled=always -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true -Dspring.liveBeansView.mbeanDomain -Dspring.application.admin.enabled=true -Dmanagement.endpoints.jmx.exposure.include=*',
             cwd = '/Users/mike/repos/srx-backend/packages/srx-portal-backend',
             modulePaths = { '/Users/mike/repos/srx-backend/packages/srx-portal-backend' },
           },
