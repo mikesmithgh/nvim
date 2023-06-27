@@ -692,5 +692,13 @@ return {
       -- 'EN SPACE' (U+2002), the below sets it to 'NBSP' (U+00A0) instead
       -- nbsp = '\xc2\xa0',
     })
+    fzflua.register_ui_select({
+      winopts = {
+        height = 0.40, -- window height
+        width = 0.65, -- window width
+        row = 0.4, -- window row position (0=top, 1=bottom)
+        col = 0.5, -- window col position (0=left, 1=right)
+      }
+    })
   end,
 }

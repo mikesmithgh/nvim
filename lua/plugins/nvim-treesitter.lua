@@ -49,6 +49,7 @@ return {
           'todotxt',
           'toml',
           'vim',
+          'vimdoc',
           'yaml',
         },
 
