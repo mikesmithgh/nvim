@@ -1,6 +1,6 @@
 return {
   'jose-elias-alvarez/null-ls.nvim',
-  enabled = true,
+  enabled = false,
   dependencies = 'nvim-lua/plenary.nvim',
   config = function()
     local null_ls = require('null-ls')
@@ -10,6 +10,7 @@ return {
         null_ls.builtins.formatting.shfmt.with({
           extra_args = { '--case-indent', '--simplify', '--binary-next-line', '--indent', '2' },
         }),
+        null_ls.builtins.formatting.yapf,
         -- null_ls.builtins.code_actions.shellcheck,
         -- null_ls.builtins.completion.luasnip,
         -- null_ls.builtins.formatting.gofmt,

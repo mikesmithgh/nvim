@@ -153,16 +153,16 @@ return {
         adaptive_size = false,
         centralize_selection = false,
         width = width_opt(M.toggle),
-        hide_root_folder = false,
+        -- hide_root_folder = false,
         side = 'left',
         preserve_window_proportions = false,
         number = false,
         relativenumber = false,
         signcolumn = 'yes',
-        mappings = {
-          custom_only = true,
-          list = my_mappings_list,
-        },
+        -- mappings = {
+        --   custom_only = true,
+        --   list = my_mappings_list,
+        -- },
         float = float_opt(M.toggle),
       }
 
@@ -180,7 +180,7 @@ return {
         reload_on_bufenter = false,
         respect_buf_cwd = true,
         on_attach = on_attach,
-        remove_keymaps = false,
+        -- remove_keymaps = false,
         select_prompts = false,
         view = nvim_tree_view,
         renderer = {

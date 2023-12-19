@@ -3,6 +3,7 @@ local M = {}
 M.init = function()
   -- leader key
   vim.g.mapleader = ' '
+  vim.g.maplocalleader = ','
 end
 
 M.setup = function()
@@ -12,18 +13,8 @@ M.setup = function()
   vim.keymap.set('n', 's', '<nop>') -- used by kemap.fzf
   vim.keymap.set('n', '<c-n>', '<nop>') -- used by NvimTree still in init.vim
 
-  vim.keymap.set(
-    { 'n', 'i', 't', 'v' },
-    '<c-w>o',
-    '<cmd>ZenMode<cr>',
-    { noremap = true, silent = true }
-  )
-  vim.keymap.set(
-    { 'n', 'i', 't', 'v' },
-    '<c-w><c-o>',
-    '<cmd>ZenMode<cr>',
-    { noremap = true, silent = true }
-  )
+  vim.keymap.set({ 'n', 'i', 't', 'v' }, '<c-w>o', '<cmd>ZenMode<cr>', { noremap = true, silent = true })
+  vim.keymap.set({ 'n', 'i', 't', 'v' }, '<c-w><c-o>', '<cmd>ZenMode<cr>', { noremap = true, silent = true })
 
   -- enable hlsearch before search
   vim.keymap.set('n', '/', ':set hlsearch<cr>/')
@@ -59,40 +50,40 @@ M.setup = function()
   vim.keymap.set('n', 'x', '"_x')
 
   -- yanks and puts
-  vim.api.nvim_set_keymap('v', 'p', '"_dP', {})
-  vim.api.nvim_set_keymap('v', 'P', '"_dP', {})
+  vim.keymap.set({ 'v' }, 'p', '"_dP', {})
+  vim.keymap.set({ 'v' }, 'P', '"_dP', {})
 
-  vim.api.nvim_set_keymap('v', '<leader>Y', '"+Y', {})
-  vim.api.nvim_set_keymap('v', '<leader>y', '"+y', {})
-  vim.api.nvim_set_keymap('v', '<leader>p', '"_d"+P', {})
-  vim.api.nvim_set_keymap('v', '<leader>P', '"_d"+P', {})
+  vim.keymap.set({ 'v' }, '<leader>Y', '"+Y', {})
+  vim.keymap.set({ 'v' }, '<leader>y', '"+y', {})
+  vim.keymap.set({ 'v' }, '<leader>p', '"_d"+P', {})
+  vim.keymap.set({ 'v' }, '<leader>P', '"_d"+P', {})
 
-  vim.api.nvim_set_keymap('n', '<leader>Y', '"+y$', {})
-  vim.api.nvim_set_keymap('n', '<leader>y', '"+y', {})
-  vim.api.nvim_set_keymap('n', '<leader>yy', '"+yy', {})
-  vim.api.nvim_set_keymap('n', '<leader>p', '"+p<CR>', {})
-  vim.api.nvim_set_keymap('n', '<leader>P', '"+P<CR>', {})
+  vim.keymap.set({ 'n' }, '<leader>Y', '"+y$', {})
+  vim.keymap.set({ 'n' }, '<leader>y', '"+y', {})
+  vim.keymap.set({ 'n' }, '<leader>yy', '"+yy', {})
+  vim.keymap.set({ 'n' }, '<leader>p', '"+p<CR>', {})
+  vim.keymap.set({ 'n' }, '<leader>P', '"+P<CR>', {})
 
   -- todo zy and zp mappings
 
   -- TODO: make this a user command instead of map
   -- vim.api.nvim_set_keymap('c', 'w!!', 'w !sudo tee > /dev/null %', {})
 
-  vim.api.nvim_set_keymap('n', '<C-e>', '5<C-e>', {})
-  vim.api.nvim_set_keymap('n', '<C-y>', '5<C-y>', {})
-  vim.api.nvim_set_keymap('n', '<C-h>', '3h', {})
-  vim.api.nvim_set_keymap('n', '<C-j>', '5j', {})
-  vim.api.nvim_set_keymap('n', '<C-k>', '5k', {})
-  vim.api.nvim_set_keymap('n', '<C-l>', '3l', {})
-  vim.api.nvim_set_keymap('v', '<C-h>', '3h', {})
-  vim.api.nvim_set_keymap('v', '<C-j>', '5j', {})
-  vim.api.nvim_set_keymap('v', '<C-k>', '5k', {})
-  vim.api.nvim_set_keymap('v', '<C-l>', '3l', {})
+  vim.keymap.set({ 'n' }, '<C-e>', '5<C-e>', {})
+  vim.keymap.set({ 'n' }, '<C-y>', '5<C-y>', {})
+  vim.keymap.set({ 'n' }, '<C-h>', '3h', {})
+  vim.keymap.set({ 'n' }, '<C-j>', '5j', {})
+  vim.keymap.set({ 'n' }, '<C-k>', '5k', {})
+  vim.keymap.set({ 'n' }, '<C-l>', '3l', {})
+  vim.keymap.set({ 'v' }, '<C-h>', '3h', {})
+  vim.keymap.set({ 'v' }, '<C-j>', '5j', {})
+  vim.keymap.set({ 'v' }, '<C-k>', '5k', {})
+  vim.keymap.set({ 'v' }, '<C-l>', '3l', {})
 
   -- Don't use Q for Ex mode, use it for formatting.  Except for Select mode.
   -- vim.keymap.set("n", "Q", "gq")
 
-  vim.api.nvim_set_keymap('n', '<c-n>n', ':NvimTreeToggle<CR>', {})
+  vim.keymap.set({ 'n' }, '<c-n>n', ':NvimTreeToggle<CR>', {})
   vim.keymap.set('n', '<C-n><C-n>', function()
     -- TODO: improve in lua
     if vim.opt.filetype:get() == 'NvimTree' then
@@ -101,24 +92,14 @@ M.setup = function()
       vim.cmd('NvimTreeFindFile | NvimTreeFocus')
     end
   end, {})
-  vim.api.nvim_set_keymap('n', '<c-n><C-q>', ':copen<CR>', {})
-  vim.api.nvim_set_keymap('n', '<c-n>q', ':cclose<CR>', {})
-  vim.api.nvim_set_keymap('n', '<c-n><C-l>', ':lopen<CR>', {})
-  vim.api.nvim_set_keymap('n', '<c-n>l', ':lclose<CR>', {})
+  vim.keymap.set({ 'n' }, '<c-n><C-q>', ':copen<CR>', {})
+  vim.keymap.set({ 'n' }, '<c-n>q', ':cclose<CR>', {})
+  vim.keymap.set({ 'n' }, '<c-n><C-l>', ':lopen<CR>', {})
+  vim.keymap.set({ 'n' }, '<c-n>l', ':lclose<CR>', {})
 
   vim.keymap.set('t', '<c-w>', '<c-\\><c-n><c-w>')
-  vim.api.nvim_set_keymap(
-    't',
-    '<c-w><c-o>',
-    '<c-\\><c-n><cmd>ZenMode<CR>',
-    { noremap = true, silent = true }
-  )
-  vim.api.nvim_set_keymap(
-    't',
-    '<c-w>o',
-    '<c-\\><c-n><cmd>ZenMode<CR>',
-    { noremap = true, silent = true }
-  )
+  vim.keymap.set({ 't' }, '<c-w><c-o>', '<c-\\><c-n><cmd>ZenMode<CR>', {})
+  vim.keymap.set({ 't' }, '<c-w>o', '<c-\\><c-n><cmd>ZenMode<CR>', {})
 
   vim.keymap.set('i', '<c-w>', '<esc><c-w>')
 
@@ -202,6 +183,17 @@ M.setup = function()
       vim.cmd('DiffviewClose')
     end
   end)
+
+  vim.api.nvim_create_user_command('DiffviewToggle', function()
+    vim.schedule(function()
+      if next(require('diffview.lib').views) == nil then
+        vim.cmd('DiffviewOpen')
+      else
+        vim.cmd('DiffviewClose')
+      end
+    end)
+  end, {})
+
   vim.keymap.set('n', '<leader><leader>u', function()
     vim.cmd('UndotreeToggle')
     vim.cmd('UndotreeFocus')
@@ -230,6 +222,11 @@ M.setup = function()
   end
 
   vim.keymap.set('n', 's<leader>', require('fzf-lua.cmd').load_command)
+  vim.keymap.set('n', 'sa', function()
+    fzf.files({
+      cmd = [[ fd --color=never --type f --hidden --no-ignore --follow ]],
+    })
+  end)
   vim.keymap.set('n', 'sf', fzf.files)
   vim.keymap.set('n', 'sp', fzf.git_files)
   vim.keymap.set('n', 'sg', fzf.live_grep)
@@ -291,7 +288,7 @@ M.setup = function()
   end
 
   -- toggle keymappings for venn using <leader>v
-  vim.api.nvim_set_keymap('n', '<leader>v', ':lua Toggle_venn()<CR>', { noremap = true })
+  vim.keymap.set({ 'n' }, '<leader>v', ':lua Toggle_venn()<CR>', {})
 
   local osv
   status, osv = pcall(require, 'osv')
@@ -301,20 +298,51 @@ M.setup = function()
     end, { silent = true })
   end
 
-  local smart_splits = require('smart-splits')
-  vim.keymap.set('n', '<c-w>h', smart_splits.move_cursor_left, { noremap = true, silent = true })
-  vim.keymap.set('n', '<c-w>j', smart_splits.move_cursor_down, { noremap = true, silent = true })
-  vim.keymap.set('n', '<c-w>k', smart_splits.move_cursor_up, { noremap = true, silent = true })
-  vim.keymap.set('n', '<c-w>l', smart_splits.move_cursor_right, { noremap = true, silent = true })
+  local ok, smart_splits = pcall(require, 'smart-splits')
+  if ok then
+    vim.keymap.set('n', '<c-w>h', smart_splits.move_cursor_left, { noremap = true, silent = true })
+    vim.keymap.set('n', '<c-w>j', smart_splits.move_cursor_down, { noremap = true, silent = true })
+    vim.keymap.set('n', '<c-w>k', smart_splits.move_cursor_up, { noremap = true, silent = true })
+    vim.keymap.set('n', '<c-w>l', smart_splits.move_cursor_right, { noremap = true, silent = true })
 
-  vim.keymap.set('n', '<a-left>', require('smart-splits').resize_left)
-  vim.keymap.set('n', '<a-down>', require('smart-splits').resize_down)
-  vim.keymap.set('n', '<a-up>', require('smart-splits').resize_up)
-  vim.keymap.set('n', '<a-right>', require('smart-splits').resize_right)
-  -- vim.api.nvim_set_keymap('n', '<a-left>', ':vertical resize -5<cr>', { silent = true })
-  -- vim.api.nvim_set_keymap('n', '<a-right>', ':vertical resize +5<cr>', { silent = true })
-  -- vim.api.nvim_set_keymap('n', '<a-up>', ':resize +5<cr>', { silent = true })
-  -- vim.api.nvim_set_keymap('n', '<a-down>', ':resize -5<cr>', { silent = true })
+    vim.keymap.set('n', '<a-left>', smart_splits.resize_left)
+    vim.keymap.set('n', '<a-down>', smart_splits.resize_down)
+    vim.keymap.set('n', '<a-up>', smart_splits.resize_up)
+    vim.keymap.set('n', '<a-right>', smart_splits.resize_right)
+  else
+    vim.notify('mike: failed to load smart-splits', vim.log.levels.WARN, {})
+  end
+
+  vim.keymap.set('n', '<leader>q', function()
+    for _, ui in pairs(vim.api.nvim_list_uis()) do
+      if ui.chan and not ui.stdout_tty then
+        vim.fn.chanclose(ui.chan)
+      end
+    end
+  end, { noremap = true })
+
+  vim.keymap.set('n', '<tab>', function()
+    if vim.o.buftype == 'quickfix' then
+      vim.cmd.cnext()
+      vim.cmd.wincmd('p')
+    else
+      return '<tab>'
+    end
+  end)
+  vim.keymap.set('n', '<s-tab>', function()
+    if vim.o.buftype == 'quickfix' then
+      vim.cmd.cprevious()
+      vim.cmd.wincmd('p')
+    else
+      return '<tab>'
+    end
+  end)
+
+  -- surround nvim
+  vim.keymap.set('n', 'S', '<Plug>(nvim-surround-normal)')
+  vim.keymap.set('n', 'SS', '<Plug>(nvim-surround-normal-cur)')
+  vim.keymap.set('n', 'Sc', '<Plug>(nvim-surround-change)')
+  vim.keymap.set('n', 'Sd', '<Plug>(nvim-surround-delete)')
 end
 
 -- ideas

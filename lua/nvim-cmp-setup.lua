@@ -46,17 +46,16 @@ local opts = {
   },
   window = {
     documentation = {
-      -- border = require('style').border.thinblock,
-      -- winhighlight = 'CursorLine:PmenuSel,Search:None',
+      -- nvim-cmp defaults FloatBorder to Normal which causes issues with border highlights
+      winhighlight = 'FloatBorder:FloatBorder',
       scrolloff = 3,
       col_offset = 1,
       max_height = 15,
       max_width = 60,
     },
     completion = {
-      -- border = require('style').border.empty,
       scrollbar = true,
-      -- winhighlight = 'CursorLine:PmenuSel,Search:None',
+      winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None',
       scrolloff = 3,
       col_offset = 0,
     },
@@ -158,7 +157,7 @@ local opts = {
         end
       end
       if leave_insert_mode then
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-c>', true, false, true), 'i', true)
+        vim.cmd.stopinsert()
       end
     end, { 'i', 's' }),
     -- go to next placeholder in the snippet

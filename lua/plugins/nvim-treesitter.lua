@@ -3,8 +3,7 @@ return {
     'nvim-treesitter/nvim-treesitter',
     enabled = true,
     build = function()
-      local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-      ts_update()
+      require('nvim-treesitter.install').update({ with_sync = true })
     end,
     config = function()
       local status, treesitterconfigs = pcall(require, 'nvim-treesitter.configs')
@@ -37,7 +36,7 @@ return {
           'jq',
           'jsdoc',
           'json',
-          'json5',
+          -- 'json5', -- I think this was causing vi to crash on startup on 8/14/2023
           'lua',
           'make',
           'markdown',
@@ -90,6 +89,16 @@ return {
           additional_vim_regex_highlighting = false,
         },
       })
+
+      local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+      parser_config.gotmpl = {
+        install_info = {
+          url = '/Users/mike/gitrepos/tree-sitter-go-template',
+          files = { 'src/parser.c' },
+        },
+        filetype = 'gotmpl',
+        used_by = { 'gohtmltmpl', 'gotexttmpl', 'gotmpl', 'yaml' },
+      }
     end,
   },
 

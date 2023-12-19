@@ -6,9 +6,9 @@ return {
       'williamboman/mason-lspconfig.nvim',
       'neovim/nvim-lspconfig',
 
-      -- null-ls
-      'jose-elias-alvarez/null-ls.nvim',
-      'jay-babu/mason-null-ls.nvim',
+      -- -- null-ls
+      -- 'jose-elias-alvarez/null-ls.nvim',
+      -- 'jay-babu/mason-null-ls.nvim',
 
       -- Autocompletion
       'hrsh7th/nvim-cmp',
@@ -35,6 +35,9 @@ return {
       require('mason').setup({
         ui = {
           border = 'rounded',
+          pip = {
+            upgrade_pip = true,
+          },
         },
       })
 
@@ -58,32 +61,36 @@ return {
         -- you can keep reading here.
         ensure_installed = {
           'lua_ls',
-          'luau_lsp',
           'bashls',
+          'kotlin_language_server',
+          'pylsp',
+          'gopls',
         },
       })
 
       -- TODO: should this be moved?
       require('mason-nvim-dap').setup({
         ensure_installed = {
-          'python',
+          'python@1.6.7', -- 1.6.8 no available in pip
           'delve',
           'bash',
+          'kotlin',
         },
       })
 
-      -- TODO: should this be moved?
-      require('mason-null-ls').setup({
-        ensure_installed = {
-          'shfmt',
-        },
-      })
+      -- require('mason-null-ls').setup({
+      --   ensure_installed = {
+      --     'yapf',
+      --     'shfmt',
+      --   },
+      -- })
 
       -- copied from lsp zero
       require('nvim-cmp-setup').call_setup()
       local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
       local lsp_attach = function(client, bufnr)
+        -- vim.schedule_wrap(vim.print)(client, bufnr)
         -- Create your keybindings here...
       end
 
@@ -103,12 +110,13 @@ return {
             settings = {
               Lua = {
                 format = {
-                  enable = true,
+                  enable = false,
+                  defaultConfig = {},
                   -- Put format options here
                   -- NOTE: the value should be STRING!!
                   -- defaultConfig = {
-                  --   indent_style = "space",
-                  --   indent_size = "2",
+                  --   indent_style = 'space',
+                  --   indent_size = '2',
                   -- }
                 },
                 completion = {
@@ -236,8 +244,20 @@ return {
                 -- Default upstream pattern is "**/*@(.sh|.inc|.bash|.command)".
                 globPattern = vim.env.GLOB_PATTERN or '*@(.sh|.inc|.bash|.command)',
                 shellcheckArguments = '',
+                logLevel = 'debug',
               },
             },
+          })
+        end,
+        ['kotlin_language_server'] = function()
+          local util = require('lspconfig.util')
+          lspconfig.kotlin_language_server.setup({
+            -- kotlin = {
+            --   -- root_dir = function()
+            --   --   vim.print('root dir here')
+            --   --   util.root_pattern('settings.gradle', 'settings.gradle.kts')
+            --   -- end
+            -- },
           })
         end,
       })
@@ -258,22 +278,10 @@ return {
         },
       })
 
-      vim.fn.sign_define(
-        'DiagnosticSignError',
-        { texthl = 'DiagnosticSignError', text = '×', numhl = 'DiagnosticSignError' }
-      )
-      vim.fn.sign_define(
-        'DiagnosticSignWarn',
-        { texthl = 'DiagnosticSignWarn', text = '▲', numhl = '' }
-      )
-      vim.fn.sign_define(
-        'DiagnosticSignHint',
-        { texthl = 'DiagnosticSignHint', text = '⚑', numhl = '' }
-      )
-      vim.fn.sign_define(
-        'DiagnosticSignInfo',
-        { texthl = 'DiagnosticSignInfo', text = '', numhl = '' }
-      )
+      vim.fn.sign_define('DiagnosticSignError', { texthl = 'DiagnosticSignError', text = '×', numhl = 'DiagnosticSignError' })
+      vim.fn.sign_define('DiagnosticSignWarn', { texthl = 'DiagnosticSignWarn', text = '▲', numhl = '' })
+      vim.fn.sign_define('DiagnosticSignHint', { texthl = 'DiagnosticSignHint', text = '⚑', numhl = '' })
+      vim.fn.sign_define('DiagnosticSignInfo', { texthl = 'DiagnosticSignInfo', text = '', numhl = '' })
     end,
   },
 }

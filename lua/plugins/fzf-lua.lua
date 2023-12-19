@@ -4,10 +4,13 @@ return {
   lazy = false,
   dependencies = {
     'nvim-tree/nvim-web-devicons', -- optional, for file icons
+    'mikesmithgh/gruvsquirrel.nvim',
   },
+  init = function()
+    vim.fn.mkdir(vim.fn.stdpath('state') .. '/fzf-lua/', '-p')
+  end,
   config = function()
     local actions = require('fzf-lua.actions')
-    local fzflua = require('fzf-lua')
 
     local global_fzf_opts = {
       -- options are sent as `<left>=<right>`
@@ -32,7 +35,10 @@ return {
       ['--prompt'] = '$ ',
     }
 
-    fzflua.setup({
+    require('gruvsquirrel.plugins.fzf-lua').setup({
+      -- custom devicons setup file to be loaded when `multiprocess = true`
+      -- _devicons_setup = '~/gitrepos/gruvsquirrel.nvim/lua/gruvsquirrel/util/nvim-web-devicons-overrides.lua',
+
       -- fzf_bin         = 'sk',            -- use skim instead of fzf?
       -- https://github.com/lotabout/skim
       global_resume = true, -- enable global `resume`?
@@ -55,7 +61,7 @@ return {
         -- to manually draw the border characters around the preview
         -- window, can be set to 'false' to remove all borders or to
         -- 'none', 'single', 'double', 'thicc' or 'rounded' (default)
-        -- border     = 'none',
+        -- border     = 'double',
         -- border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
         -- border = require('style').border.thinblock,
         fullscreen = false, -- start fullscreen?
@@ -81,9 +87,9 @@ return {
               scrollborder_f = 'FloatBorder',   -- scrollbar "full" section highlight
             }, ]]
         preview = {
-          -- default      = 'bat', -- override the default previewer?
+          -- default      = 'bat_async', -- override the default previewer?
           -- default uses the 'builtin' previewer
-          border = 'noborder', -- border|noborder, applies only to native fzf previewers (bat/cat/git/etc)
+          border = 'border', -- border|noborder, applies only to native fzf previewers (bat/cat/git/etc)
           wrap = 'nowrap', -- wrap|nowrap
           hidden = 'nohidden', -- hidden|nohidden
           vertical = 'down:45%', -- up|down:size
@@ -116,20 +122,8 @@ return {
         on_create = function()
           -- map esc to ctrl-z which is mapped to abort
           vim.api.nvim_buf_set_keymap(0, 't', '<esc>', '<c-z>', { silent = true, noremap = true })
-          vim.api.nvim_buf_set_keymap(
-            0,
-            't',
-            '<c-j>',
-            '<down><down><down><down><down>',
-            { silent = true, noremap = true }
-          )
-          vim.api.nvim_buf_set_keymap(
-            0,
-            't',
-            '<c-k>',
-            '<up><up><up><up><up>',
-            { silent = true, noremap = true }
-          )
+          vim.api.nvim_buf_set_keymap(0, 't', '<c-j>', '<down><down><down><down><down>', { silent = true, noremap = true })
+          vim.api.nvim_buf_set_keymap(0, 't', '<c-k>', '<up><up><up><up><up>', { silent = true, noremap = true })
         end,
       },
       keymap = {
@@ -197,23 +191,11 @@ return {
         },
       },
       -- global fzf_opts
-      fzf_opts = global_fzf_opts,
+      -- fzf_opts = global_fzf_opts,
       -- fzf '--color=' options (optional)
-      --[[ fzf_colors = {
-              ["fg"]          = { "fg", "CursorLine" },
-              ["bg"]          = { "bg", "Normal" },
-              ["hl"]          = { "fg", "Comment" },
-              ["fg+"]         = { "fg", "Normal" },
-              ["bg+"]         = { "bg", "CursorLine" },
-              ["hl+"]         = { "fg", "Statement" },
-              ["info"]        = { "fg", "PreProc" },
-              ["prompt"]      = { "fg", "Conditional" },
-              ["pointer"]     = { "fg", "Exception" },
-              ["marker"]      = { "fg", "Keyword" },
-              ["spinner"]     = { "fg", "Label" },
-              ["header"]      = { "fg", "Comment" },
-              ["gutter"]      = { "bg", "Normal" },
-          }, ]]
+      -- fzf_colors = function()
+      --   return require('gruvsquirrel.plugins.fzf').fzf_colors()
+      -- end,
       previewers = {
         cat = {
           cmd = 'cat',
@@ -222,7 +204,7 @@ return {
         bat = {
           cmd = 'bat',
           args = '--style=numbers,changes --color always',
-          theme = 'gruvsquirrel', -- bat preview theme (bat --list-themes)
+          -- theme = 'boxsquirrel', -- bat preview theme (bat --list-themes)
           config = nil, -- nil uses $BAT_CONFIG_PATH
         },
         head = {
@@ -239,7 +221,7 @@ return {
         },
         man = {
           -- NOTE: remove the `-c` flag when using man-db
-          cmd = 'man -c %s | col -bx',
+          -- cmd = 'man -c %s | col -bx',
         },
         builtin = {
           syntax = true, -- preview syntax highlight?
@@ -267,7 +249,7 @@ return {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/files-history.txt',
         }),
-        -- previewer      = "bat",          -- uncomment to override previewer
+        -- previewer    = 'bat', -- uncomment to override previewer
         -- (name from 'previewers' table)
         -- set to 'false' to disable
         prompt = 'Files❯ ',
@@ -280,7 +262,12 @@ return {
         -- otherwise auto-detect prioritizes `fd`:`rg`:`find`
         -- default options are controlled by 'fd|rg|find|_opts'
         -- NOTE: 'find -printf' requires GNU find
-        cmd = [[ fd --color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]],
+        -- cmd =
+        -- [[ fd --color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]],
+
+        -- see ~/.config/fd/ignore for ignored files
+        cmd = [[ fd --color=never --type f --hidden --follow ]],
+
         -- find_opts    = [[-type f -not -path '*/\.git/*' -printf '%P\n']],
         -- rg_opts      = "--color=never --files --hidden --follow -g '!.git'",
         -- fd_opts      = '--color=never --type f --hidden --follow --exclude .git',
@@ -415,7 +402,7 @@ return {
         file_icons = true, -- show file icons?
         color_icons = true, -- colorize file|git icons
         -- prefer rg_opts over setting cmd explicitly because other commands (e.g., lgrep_curbuf) extend rg_opts
-        rg_opts = [[--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules}/']],
+        rg_opts = [[--sort-files --column --line-number --no-heading --color=never --smart-case --hidden --max-columns=512 -g '!{.git,.worktrees,node_modules,.Trash}/']],
         -- set to 'true' to always parse globs in both 'grep' and 'live_grep'
         -- search strings will be split using the 'glob_separator' and translated
         -- to '--iglob=' arguments, requires 'rg'
@@ -622,16 +609,24 @@ return {
           end,
         },
         code_actions = {
-          fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
-            ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/lsp-code-actions-history.txt',
-          }),
-          prompt = 'Code Actions> ',
-          ui_select = true, -- use 'vim.ui.select'?
+          -- fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
+          --   ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/lsp-code-actions-history.txt',
+          -- }),
+          previewer = 'codeaction_native',
+          -- previewer = 'codeaction_native',
+          preview_pager = "delta --side-by-side --width=$FZF_PREVIEW_COLUMNS --hunk-header-style='omit' --file-style='omit' --syntax-theme gruvsquirrel",
+          prompt = 'Code Actions❯ ',
+          -- ui_select = false, -- use 'vim.ui.select'?
           async_or_timeout = 5000,
           winopts = {
-            row = 0.40,
-            height = 0.35,
-            width = 0.60,
+            -- row = 0.40,
+            -- height = 0.60,
+            -- width = 0.60,
+            preview = {
+              border = 'border-thinblock',
+              layout = 'vertical',
+              vertical = 'down:75%',
+            },
           },
         },
       },
@@ -690,13 +685,13 @@ return {
       -- 'EN SPACE' (U+2002), the below sets it to 'NBSP' (U+00A0) instead
       -- nbsp = '\xc2\xa0',
     })
-    fzflua.register_ui_select({
-      winopts = {
-        height = 0.40, -- window height
-        width = 0.65, -- window width
-        row = 0.4, -- window row position (0=top, 1=bottom)
-        col = 0.5, -- window col position (0=left, 1=right)
-      },
-    })
+    -- fzflua.register_ui_select({
+    --   winopts = {
+    --     height = 0.40, -- window height
+    --     width = 0.65, -- window width
+    --     row = 0.4, -- window row position (0=top, 1=bottom)
+    --     col = 0.5, -- window col position (0=left, 1=right)
+    --   },
+    -- })
   end,
 }

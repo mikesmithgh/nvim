@@ -26,29 +26,8 @@ return {
       vim.opt_local.fillchars:append({ eob = ' ' })
       vim.opt_local.scrolloff = 0
       vim.opt_local.showmode = true
-      vim.opt_local.rulerformat = '%5(%1*󰄛 %2* %3*%)'
-      vim.opt_local.virtualedit = 'block,onemore'
-      vim.api.nvim_set_hl(0, 'User1', { link = 'ModeMsg' })
-      vim.api.nvim_set_hl(0, 'User2', { link = 'ErrorMsg' })
-      vim.api.nvim_set_hl(0, 'User3', { link = 'DevIconVim' })
-      vim.cmd([[silent! %s/.*\\//g]])
+      vim.cmd([[silent! %!sed -E ]] .. [[-e 's/]8;;[^\]*[\]//g' ]] .. [[-e 's/]133;[AC][;k=s]*\\//g' ]] .. [[-e 's/$/[0m/' ]])
       baleia.once(vim.fn.bufnr(bufnr))
-
-      vim.api.nvim_create_augroup('CmdHeightToggle', { clear = true })
-      vim.api.nvim_create_autocmd({ 'ModeChanged' }, {
-        group = 'CmdHeightToggle',
-        pattern = { '*:n' },
-        callback = function()
-          vim.opt_local.cmdheight = 0
-        end,
-      })
-      vim.api.nvim_create_autocmd({ 'ModeChanged' }, {
-        group = 'CmdHeightToggle',
-        pattern = { 'n:*' },
-        callback = function()
-          vim.opt_local.cmdheight = 1
-        end,
-      })
     end, {})
     vim.api.nvim_create_user_command('BaleiaClear', function()
       local ns = vim.api.nvim_get_namespaces()['BaleiaColors']

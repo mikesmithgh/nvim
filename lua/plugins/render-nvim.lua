@@ -1,18 +1,16 @@
 return {
   {
-    'mikesmithgh/render.nvim/render.nvim',
+    'mikesmithgh/render.nvim',
     -- dir = '~/gitrepos/render.nvim/.worktrees/ci',
-    enabled = true,
+    enabled = false,
     lazy = false,
     dev = true,
     init = function()
-      require('render').setup(
-        -- {
-        --   notify = {
-        --     level = vim.log.levels.INFO,
-        --   },
-        -- }
-      )
+      require('render').setup({
+        notify = {
+          level = vim.log.levels.TRACE,
+        },
+      })
     end,
   },
 }

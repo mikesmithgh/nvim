@@ -236,10 +236,8 @@ return {
           request = 'launch',
           name = 'Launch file',
           showDebugOutput = false,
-          pathBashdb = vim.fn.stdpath('data')
-            .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir/bashdb',
-          pathBashdbLib = vim.fn.stdpath('data')
-            .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir',
+          pathBashdb = vim.fn.stdpath('data') .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir/bashdb',
+          pathBashdbLib = vim.fn.stdpath('data') .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir',
           trace = false,
           file = '${file}',
           program = '${file}',
@@ -257,10 +255,8 @@ return {
           request = 'launch',
           name = 'Launch file with arguments',
           showDebugOutput = false,
-          pathBashdb = vim.fn.stdpath('data')
-            .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir/bashdb',
-          pathBashdbLib = vim.fn.stdpath('data')
-            .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir',
+          pathBashdb = vim.fn.stdpath('data') .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir/bashdb',
+          pathBashdbLib = vim.fn.stdpath('data') .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir',
           trace = false,
           file = '${file}',
           program = '${file}',

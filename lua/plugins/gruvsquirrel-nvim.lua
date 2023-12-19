@@ -5,7 +5,7 @@ return {
     enabled = true,
     lazy = false,
     dev = true,
-    init = function()
+    config = function()
       -- load colorscheme on startup
       vim.cmd([[colorscheme gruvsquirrel]])
     end,

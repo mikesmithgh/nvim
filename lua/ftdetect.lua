@@ -20,9 +20,27 @@ local json_or_yaml = {
   end,
 }
 
+local yaml_or_gotmpl = {
+  priority = -math.huge,
+  function(_, bufnr)
+    if vim.fn.did_filetype() ~= 0 then
+      -- Filetype was already detected
+      return
+    end
+    local lines_table = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+    local content = table.concat(lines_table, '\n')
+    local is_gotmpl = vim.fn.match(content, '{{.*}}') >= 0
+    if is_gotmpl then
+      return 'gotmpl'
+    end
+    return 'yaml'
+  end,
+}
+
 M.setup = function()
   vim.filetype.add({
     pattern = {
+      ['.*.ya?ml'] = yaml_or_gotmpl,
       ['.*.pipeline'] = json_or_yaml,
       ['%.releaserc'] = json_or_yaml,
       ['.*%.%d*T%d*%.bak'] = function(path, bufnr)

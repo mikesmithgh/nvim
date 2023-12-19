@@ -1,6 +1,7 @@
 return {
   'folke/noice.nvim',
   enabled = true,
+  -- cond = vim.env.TERM ~= 'xterm-ghostty', -- see https://github.com/mitchellh/ghostty/issues/1054
   lazy = false,
   dependencies = {
     -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
@@ -12,9 +13,28 @@ return {
     'norcalli/nvim-colorizer.lua',
   },
   config = function()
+    local noiceconfig = require('noice.config')
     require('noice').setup({
       cmdline = {
         view = 'cmdline',
+        format = vim.tbl_extend('force', noiceconfig.defaults().cmdline.format, {
+          -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
+          -- view: (default is cmdline view)
+          -- opts: any options passed to the view
+          -- icon_hl_group: optional hl_group for the icon
+          -- title: set to anything or empty string to hide
+          cmdline = { pattern = '^:', icon = '󰅂', lang = 'vim' },
+          search_down = { kind = 'search', pattern = '^/', icon = ' ', lang = 'regex' },
+          search_up = { kind = 'search', pattern = '^%?', icon = ' ', lang = 'regex' },
+          filter = { pattern = '^:%s*!', icon = '', lang = 'bash' },
+          lua = { pattern = { '^:%s*lua%s+', '^:%s*lua%s*=%s*', '^:%s*=%s*' }, icon = '', lang = 'lua', icon_hl_group = 'DevIconLua' },
+          help = { pattern = '^:%s*he?l?p?%s+', icon = '' },
+          -- register <c-r> =
+          calculator = { pattern = '^=', icon = '󰃬', lang = 'vimnormal' },
+          input = {}, -- Used by input()
+          -- lua = false, -- to disable a format, set to `false`
+          increname = { pattern = '^:%s*IncRename%s+', icon = '󰑕', icon_hl_group = 'NoiceCmdlinePrompt' },
+        }),
       },
       messages = {
         -- NOTE: If you enable messages, then the cmdline is enabled automatically.
@@ -26,9 +46,6 @@ return {
         view_history = 'messages', -- view for :messages
         view_search = 'virtualtext', -- view for search count messages. Set to `false` to disable
       },
-      -- format = {
-      --   notify = { "{message}", "{message}" },
-      -- },
       lsp = {
         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
         override = {
@@ -54,51 +71,28 @@ return {
           },
           view = 'mini',
         },
-        -- {
-        --   filter = {
-        --     event = 'notify',
-        --     warning = true,
-        --     find = 'scrollback.nvim',
-        --   },
-        --   view = 'mini',
-        -- },
-        {
-          view = 'hover',
-          opts = {
-            -- border = {
-            --   style = require('style').border.thinblock,
-            -- },
-            position = { row = 2, col = 2 },
-          },
-          filter = { event = 'lsp', kind = 'signature' },
-        },
-        {
-          view = 'hover',
-          opts = {
-            -- border = {
-            --   style = require('style').border.thinblock,
-            -- },
-            position = { row = 2, col = 2 },
-          },
-          filter = { event = 'lsp', kind = 'hover' },
-        },
       },
+      --   {
+      --     view = 'hover',
+      --     opts = {
+      --       -- border = {
+      --       --   style = require('style').border.thinblock,
+      --       -- },
+      --       position = { row = 2, col = 2 },
+      --     },
+      --     filter = { event = 'lsp', kind = 'signature' },
+      --   },
+      --   {
+      --     view = 'hover',
+      --     opts = {
+      --       -- border = {
+      --       --   style = require('style').border.thinblock,
+      --       -- },
+      --       position = { row = 2, col = 2 },
+      --     },
+      --     filter = { event = 'lsp', kind = 'hover' },
+      --   },
+      -- },
     })
-
-    -- local Config = require('noice.config')
-    -- local after_noice_load = function()
-    --   if Config._running then
-    --     vim.schedule(function()
-    --       local stylize_markdown_fn = vim.lsp.util.stylize_markdown
-    --       vim.lsp.util.stylize_markdown = function(buf, contents, _opts)
-    --         stylize_markdown_fn(buf, contents, _opts)
-    --         require('colorizer').attach_to_buffer(buf)
-    --       end
-    --     end)
-    --   else
-    --     vim.schedule(after_lazy_load)
-    --   end
-    -- end
-    -- vim.schedule(after_noice_load)
   end,
 }

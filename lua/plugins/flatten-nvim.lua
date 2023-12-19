@@ -1,5 +1,6 @@
-return {
-  'willothy/flatten.nvim',
-  lazy = false,
-  config = true,
-}
+return {}
+-- {
+--   'willothy/flatten.nvim',
+--   lazy = false,
+--   config = true,
+-- }

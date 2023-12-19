@@ -1,10 +1,12 @@
 return {
   'romgrk/barbar.nvim',
-  enabled = true and not vim.g.is_kitty_scrollback_pager,
+  enabled = true,
+  -- cond = not vim.g.is_kitty_scrollback_pager,
   dependencies = 'nvim-web-devicons',
   init = function()
     vim.g.barbar_auto_setup = false
   end,
+  event = 'User IntroDone',
   config = function()
     require('barbar').setup({
       hide = { extensions = false, inactive = false },

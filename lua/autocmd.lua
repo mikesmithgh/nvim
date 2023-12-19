@@ -4,7 +4,16 @@ M.setup = function()
   vim.api.nvim_create_augroup('BashFixCommandPreventExecuteWithoutSave', { clear = true })
   vim.api.nvim_create_augroup('Unhighlight', { clear = true })
   vim.api.nvim_create_augroup('Backup', { clear = true })
-  -- vim.api.nvim_create_augroup('BarBarMoveStart', { clear = true })
+  -- vim.api.nvim_create_augroup('LspOnStartup', { clear = true })
+  vim.api.nvim_create_augroup('AfterIntro', { clear = true })
+
+  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'ModeChanged', 'InsertEnter', 'StdinReadPre' }, {
+    group = 'AfterIntro',
+    pattern = { '<buffer=1>' },
+    callback = function()
+      vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
+    end,
+  })
 
   vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
     group = 'BashFixCommandPreventExecuteWithoutSave',
@@ -18,11 +27,16 @@ M.setup = function()
     group = 'BashFixCommandPreventExecuteWithoutSave',
     pattern = { 'bash-fc.*' },
     callback = function()
-      vim.api.nvim_notify(
-        'To execute the command you must write the buffer contents.',
-        vim.log.levels.WARN,
-        {}
-      )
+      local ok, incline = pcall(require, 'incline')
+      if ok then
+        vim.schedule(function()
+          incline.disable()
+          vim.schedule(vim.cmd.only) -- I don't know why I need a nested schedule
+          vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone' })
+        end)
+      end
+      vim.api.nvim_notify('To execute the command you must write the buffer contents.', vim.log.levels.WARN, {})
+      return true
     end,
   })
 
@@ -66,11 +80,7 @@ M.setup = function()
         vertical_help = false
       end
       local help_ok, help_err
-      help_ok, help_err = pcall(
-        vim.api.nvim_cmd,
-        { cmd = 'help', args = params.fargs, mods = { vertical = vertical_help } },
-        {}
-      )
+      help_ok, help_err = pcall(vim.api.nvim_cmd, { cmd = 'help', args = params.fargs, mods = { vertical = vertical_help } }, {})
       if not help_ok then
         vim.notify(help_err, vim.log.levels.INFO)
       end
@@ -91,11 +101,17 @@ M.setup = function()
   vim.api.nvim_create_augroup('FormatSave', { clear = true })
   vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
     group = 'FormatSave',
-    pattern = { '*.lua', '*.go' },
-    callback = function()
+    pattern = { '*.go' },
+    callback = function(e)
       vim.lsp.buf.format({ async = false })
     end,
   })
+
+  -- vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+  --   group = vim.api.nvim_create_augroup('FormatLuaSave', { clear = true }),
+  --   pattern = { '*.lua' },
+  --   command = 'normal! mzHmygggqG`yzt`z',
+  -- })
 
   vim.api.nvim_create_user_command('WithRole', function()
     local creds_file_path = vim.api.nvim_get_runtime_file('tmp/temp-aws-creds.json', false)
@@ -127,20 +143,94 @@ M.setup = function()
     nargs = 0,
   })
 
-  -- vim.api.nvim_create_autocmd({ 'BufEnter' }, {
-  --   group = 'BarBarMoveStart',
-  --   callback = function()
-  --     local index_of = require('barbar.utils.list').index_of
-  --     local state = require('barbar.state')
-  --     local api = require('barbar.api')
-  --
-  --     local current_bufnr = vim.api.nvim_get_current_buf()
-  --     local idx = index_of(state.buffers, current_bufnr)
-  --     if idx ~= nil then
-  --       api.move_current_buffer_to(1)
-  --     end
-  --   end,
-  -- })
+  vim.api.nvim_create_autocmd('User', {
+    pattern = 'NotVeryLazy',
+    once = true,
+    callback = function()
+      vim.defer_fn(function()
+        local kls = require('lspconfig.configs')['kotlin_language_server']
+        local util = require('lspconfig.util')
+        local proj_root = util.root_pattern('settings.gradle', '.git')(vim.fn.getcwd())
+        kls.manager.add(proj_root)
+        local winid = nil
+        local bufid = nil
+        local count = 0
+        local spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' }
+        local msg = 'Starting language server...'
+        vim.fn.timer_start(80, function()
+          count = count + 1
+          if count > #spinner then
+            count = 1
+          end
+          local client = 'kotlin_language_server'
+          local fmt_msg = ' ' .. spinner[count] .. ' ' .. msg .. ' ' .. client
+          local winconfig = {
+            relative = 'editor',
+            width = #fmt_msg - 1,
+            height = 2,
+            row = vim.o.lines - 1,
+            col = vim.o.columns,
+            style = 'minimal',
+            focusable = false,
+            zindex = 55,
+            anchor = 'SE',
+          }
+
+          if winid and not pcall(vim.api.nvim_win_get_config, winid) then
+            winid = nil
+          end
+          if bufid and not pcall(vim.api.nvim_buf_get_name, bufid) then
+            bufid = nil
+          end
+
+          if winid then
+            vim.api.nvim_win_set_config(winid, winconfig)
+          else
+            bufid = vim.api.nvim_create_buf(false, true)
+            winid = vim.api.nvim_open_win(bufid, false, winconfig)
+          end
+          if not bufid then
+            bufid = vim.api.nvim_create_buf(false, true)
+            winid = vim.api.nvim_win_set_buf(winid, bufid)
+          end
+          vim.api.nvim_buf_set_lines(bufid, 0, -1, false, {})
+          vim.api.nvim_buf_set_lines(bufid, 0, -1, false, {
+            fmt_msg,
+          })
+          -- vim.api.nvim_buf_clear_namespace(bufid, -1, 1, -1)
+          local nid = vim.api.nvim_create_namespace('mike')
+          local startcol = 0
+          local endcol = #spinner[count] + 2
+          vim.api.nvim_buf_set_extmark(bufid, nid, 0, startcol, {
+            hl_group = 'NoiceLspProgressSpinner',
+            end_col = endcol,
+          })
+          startcol = endcol
+          endcol = endcol + #msg
+          vim.api.nvim_buf_set_extmark(bufid, nid, 0, startcol, {
+            hl_group = 'NoiceLspProgressTitle',
+            end_col = endcol,
+          })
+          startcol = endcol
+          endcol = #fmt_msg
+          vim.api.nvim_buf_set_extmark(bufid, nid, 0, startcol, {
+            hl_group = 'NoiceLspProgressClient',
+            end_col = endcol,
+          })
+        end, {
+          ['repeat'] = -1,
+        })
+      end, 1)
+    end,
+  })
+end
+
+M.schedule_after_intro = function(cb)
+  vim.api.nvim_create_autocmd({ 'User' }, {
+    group = 'AfterIntro',
+    pattern = { 'IntroDone' },
+    callback = vim.schedule_wrap(cb),
+  })
 end
 
 return M

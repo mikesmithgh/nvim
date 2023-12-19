@@ -25,7 +25,7 @@ M.setup = function()
       patterns = {
         'mikesmithgh',
       },
-      fallback = false, -- Fallback to git when local plugin doesn't exist
+      fallback = true, -- Fallback to git when local plugin doesn't exist
     },
     ui = {
       border = 'rounded',
@@ -34,7 +34,7 @@ M.setup = function()
       -- install missing plugins on startup. This doesn't increase startup time.
       missing = true,
       -- try to load one of these colorschemes when starting an installation during startup
-      colorscheme = { 'gruvsquirrel' },
+      colorscheme = { 'gruvsquirrel', 'gruvbox', 'retrobox' },
     },
   })
 end

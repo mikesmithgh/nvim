@@ -54,6 +54,18 @@ return {
         end,
       },
     }
+    local venv = vim.fn.expand('~/.virtualenvs/debugpy/bin/python')
+
+    if vim.fn.filereadable(venv) == 0 then
+      vim.schedule(function()
+        vim.api.nvim_notify('missing venv: ' .. venv, vim.log.levels.WARN, {})
+        vim.api.nvim_notify(
+          'try: mkdir -p ~/.virtualenvs && cd ~/.virtualenvs && python -m venv debugpy && pip install --no-cache-dir --upgrade debugpy',
+          vim.log.levels.WARN,
+          {}
+        )
+      end)
+    end
     dappython.setup('~/.virtualenvs/debugpy/bin/python', {
       include_configs = true,
       console = 'integratedTerminal',

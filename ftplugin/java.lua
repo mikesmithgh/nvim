@@ -28,7 +28,8 @@ if not vim.g.jdtls then
   -- print(java_home)
   local java_version = string.gsub(
     vim.fn.system(
-      [[/usr/libexec/java_home --verbose |& grep 'Amazon Corretto 17' | awk '{ print $9 }']]
+      [[java --version | head -1 | awk '{ print $2 }']]
+      -- [[/usr/libexec/java_home --verbose |& grep 'Amazon Corretto 17' | awk '{ print $9 }']]
     ),
     '%s+',
     ''
@@ -46,7 +47,13 @@ if not vim.g.jdtls then
   }
 end
 
+local brew_jdtls_libexec = '/opt/homebrew/opt/jdtls/libexec'
+
+local launcher_jar =
+  vim.fn.system([[grep ^osgi.bundles= /opt/homebrew/opt/jdtls/libexec/config_mac/config.ini ]]):match([[org%.eclipse%.equinox%.launcher.-jar]])
+
 local config = {
+
   -- The command that starts the language server
   -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
   cmd = {
@@ -66,9 +73,9 @@ local config = {
     'java.base/java.lang=ALL-UNNAMED',
 
     '-jar',
-    '/opt/homebrew/opt/jdtls/libexec/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
+    brew_jdtls_libexec .. '/plugins/' .. launcher_jar,
     '-configuration',
-    '/opt/homebrew/opt/jdtls/libexec/config_mac',
+    brew_jdtls_libexec .. '/config_mac',
 
     '-data',
     workspace_folder,
@@ -177,12 +184,7 @@ local on_attach = function(_, bufnr)
   buf_set_keymap('n', '<C-h>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap(
-    'n',
-    '<leader>wl',
-    '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
-    opts
-  )
+  buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
   buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
@@ -192,12 +194,7 @@ local on_attach = function(_, bufnr)
   buf_set_keymap('n', '<leader>di', "<Cmd>lua require'jdtls'.organize_imports()<CR>", opts)
   buf_set_keymap('n', '<leader>dt', "<Cmd>lua require'jdtls'.test_class()<CR>", opts)
   buf_set_keymap('n', '<leader>dn', "<Cmd>lua require'jdtls'.test_nearest_method()<CR>", opts)
-  buf_set_keymap(
-    'v',
-    '<leader>de',
-    "<Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>",
-    opts
-  )
+  buf_set_keymap('v', '<leader>de', "<Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>", opts)
   buf_set_keymap('n', '<leader>de', "<Cmd>lua require('jdtls').extract_variable()<CR>", opts)
   buf_set_keymap('v', '<leader>dm', "<Esc><Cmd>lua require('jdtls').extract_method(true)<CR>", opts)
 
@@ -252,40 +249,22 @@ local bundles = {
   -- java 19 not compatible as of 12/20/22 https://github.com/eclipse-tycho/tycho/issues/958 fails on mvnw clean install
   -- git clone git@github.com:microsoft/java-debug.git && cd java-debug
   -- JAVA_HOME="$(/usr/libexec/java_home -F -v 18)" M2_HOME="$(dirname $(dirname $(readlink -f $(which mvn))))" ./mvnw clean install
-  vim.fn.glob(
-    '/Users/mike/gitrepos/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar',
-    1
-  ),
+  vim.fn.glob('/Users/mike/gitrepos/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar', 1),
   '\n',
 }
 
 -- git clone git@github.com:dgileadi/vscode-java-decompiler.git
-vim.list_extend(
-  bundles,
-  vim.split(vim.fn.glob('/Users/mike/gitrepos/vscode-java-decompiler/server/*.jar', 1), '\n')
-)
+vim.list_extend(bundles, vim.split(vim.fn.glob('/Users/mike/gitrepos/vscode-java-decompiler/server/*.jar', 1), '\n'))
 
 -- git clone git@github.com:microsoft/vscode-java-test.git && cd vscode-java-test/java-extension
 -- npm install
 -- JAVA_HOME="$(/usr/libexec/java_home -F -v 18)" M2_HOME='/opt/homebrew/Cellar/maven/3.8.6' npm run build-plugin
 -- JAVA_HOME="$(/usr/libexec/java_home -F -v 18)" M2_HOME="$(dirname $(dirname $(readlink -f $(which mvn))))" ./mvnw clean install
-vim.list_extend(
-  bundles,
-  vim.split(vim.fn.glob('/Users/mike/gitrepos/vscode-java-test/server/*.jar', 1), '\n')
-)
+vim.list_extend(bundles, vim.split(vim.fn.glob('/Users/mike/gitrepos/vscode-java-test/server/*.jar', 1), '\n'))
 
 -- git clone git@github.com:testforstephen/vscode-pde.git && cd vscode-pde/pde/
 -- JAVA_HOME="$(/usr/libexec/java_home -F -v 18)" M2_HOME="$(dirname $(dirname $(readlink -f $(which mvn))))" ./mvnw clean install
-vim.list_extend(
-  bundles,
-  vim.split(
-    vim.fn.glob(
-      '/Users/mike/gitrepos/vscode-pde/pde/org.eclipse.jdt.ls.importer.pde/target/*.jar',
-      1
-    ),
-    '\n'
-  )
-)
+vim.list_extend(bundles, vim.split(vim.fn.glob('/Users/mike/gitrepos/vscode-pde/pde/org.eclipse.jdt.ls.importer.pde/target/*.jar', 1), '\n'))
 
 local extendedClientCapabilities = jdtls.extendedClientCapabilities
 extendedClientCapabilities.resolveAdditionalTextEditsSupport = true

@@ -71,7 +71,7 @@ M.setup = function()
   -- Show hybrid line numbers, the current line is absolute line number and all other
   -- will be relative line numbers
   vim.opt.number = true
-  vim.opt.relativenumber = true
+  vim.opt.relativenumber = false
 
   -- Turn on the Wild menu
   vim.opt.wildmenu = true
@@ -130,10 +130,6 @@ M.setup = function()
   -- Disable wrap lines
   vim.opt.wrap = false
 
-  -- => Status line
-  -- Always show the status line
-  vim.opt.laststatus = 2
-
   -- disable show mode in favor of airline status line
   vim.opt.showmode = false
 
@@ -185,6 +181,16 @@ M.setup = function()
   vim.opt.keywordprg = ':Woman'
 
   vim.opt.cmdheight = 0
+
+  -- => Status line
+  vim.opt.laststatus = 3
+
+  -- not using this, this gives better treesitter highlights for TODO, NOTE, ERROR but disables lua lang server highlights
+  -- highlight priorities
+  -- see https://github.com/NvChad/NvChad/issues/1907
+  -- this lets treesitter take precedence over semantic tokens
+  -- I am not sure if I want this long term
+  -- vim.highlight.priorities.semantic_tokens = vim.highlight.priorities.treesitter - 1
 end
 
 return M

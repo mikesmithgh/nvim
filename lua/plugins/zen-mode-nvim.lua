@@ -1,30 +1,52 @@
+-- HACK: add padding to window, overriding fix_layout to offset the window
+local function hack_fix_layout_with_padding(padding)
+  local M = require('zen-mode.view')
+  M.fix_layout = function(win_resized)
+    if M.is_open() then
+      if win_resized then
+        local l = M.layout(M.opts)
+        vim.api.nvim_win_set_config(M.win, { width = l.width, height = l.height })
+        vim.api.nvim_win_set_config(M.bg_win, { width = vim.o.columns, height = M.height() })
+      end
+      local height = vim.api.nvim_win_get_height(M.win)
+      local width = vim.api.nvim_win_get_width(M.win)
+      local actual_padding = vim.o.columns > 200 and padding or 0
+      local col = M.round((vim.o.columns - width) / 2) + actual_padding -- HACK: add padding to window
+      local row = M.round((M.height() - height) / 2)
+      local cfg = vim.api.nvim_win_get_config(M.win)
+      -- HACK: col is an array?
+      local wcol = type(cfg.col) == 'number' and cfg.col or cfg.col[false]
+      local wrow = type(cfg.row) == 'number' and cfg.row or cfg.row[false]
+      if wrow ~= row or wcol ~= col then
+        vim.api.nvim_win_set_config(M.win, { col = col, row = row, relative = 'editor' })
+      end
+    end
+  end
+end
+
 return {
   'folke/zen-mode.nvim',
   enabled = true,
+  cmd = 'ZenMode',
   config = function()
+    hack_fix_layout_with_padding(49)
     require('zen-mode').setup({
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
+      on_open = function()
+        local ok, incline = pcall(require, 'incline')
+        if ok then
+          vim.defer_fn(incline.disable, 100)
+        end
+      end,
+      on_close = function()
+        local ok, incline = pcall(require, 'incline')
+        if ok then
+          vim.defer_fn(incline.enable, 100)
+        end
+      end,
       window = {
-        backdrop = 0.95, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
-        -- height and width can be:
-        -- * an absolute number of cells when > 1
-        -- * a percentage of the width / height of the editor when <= 1
-        -- * a function that returns the width or the height
-        width = 160, -- width of the Zen window
-        height = 1, -- height of the Zen window
-        -- by default, no options are changed for the Zen window
-        -- uncomment any of the options below, or add other vim.wo options you want to apply
-        options = {
-          -- signcolumn = "no", -- disable signcolumn
-          -- number = false, -- disable number column
-          -- relativenumber = false, -- disable relative numbers
-          -- cursorline = false, -- disable cursorline
-          -- cursorcolumn = false, -- disable cursor column
-          -- foldcolumn = "0", -- disable fold column
-          -- list = false, -- disable whitespace characters
-        },
+        backdrop = 1,
+        width = 190,
+        height = 1,
       },
     })
   end,
