@@ -9,4 +9,8 @@ return {
     'https://github.com/vim-scripts/applescript.vim',
     enabled = false,
   },
+  {
+    'fladson/vim-kitty',
+    enabled = true,
+  },
 }

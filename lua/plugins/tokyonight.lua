@@ -1,7 +1,7 @@
 return {
   {
     'folke/tokyonight.nvim',
-    enabled = true,
+    enabled = false,
     lazy = true,
     opts = {},
     -- config = function()

@@ -5,13 +5,34 @@ M.setup = function()
   vim.api.nvim_create_augroup('Unhighlight', { clear = true })
   vim.api.nvim_create_augroup('Backup', { clear = true })
   -- vim.api.nvim_create_augroup('LspOnStartup', { clear = true })
-  vim.api.nvim_create_augroup('AfterIntro', { clear = true })
 
-  vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'ModeChanged', 'InsertEnter', 'StdinReadPre' }, {
-    group = 'AfterIntro',
-    pattern = { '<buffer=1>' },
+  vim.api.nvim_create_autocmd({ 'User' }, {
+    group = vim.api.nvim_create_augroup('VeryLazyAfterIntro', { clear = true }),
+    pattern = { 'VeryLazy' },
     callback = function()
-      vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
+      ---@diagnostic disable-next-line: param-type-mismatch
+      if next(vim.fn.argv()) ~= nil then
+        vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
+      else
+        vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'ModeChanged', 'InsertEnter', 'StdinReadPre' }, {
+          group = vim.api.nvim_create_augroup('AfterIntro', { clear = true }),
+          pattern = { '<buffer=1>' },
+          callback = function()
+            vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
+            return true
+          end,
+        })
+      end
+      return true
+    end,
+  })
+
+  vim.api.nvim_create_autocmd({ 'FileType' }, {
+    group = vim.api.nvim_create_augroup('WinNewBorderline', { clear = true }),
+    pattern = { '*' },
+    callback = function()
+      vim.cmd.Borderline()
+      return true
     end,
   })
 
@@ -222,14 +243,6 @@ M.setup = function()
         })
       end, 1)
     end,
-  })
-end
-
-M.schedule_after_intro = function(cb)
-  vim.api.nvim_create_autocmd({ 'User' }, {
-    group = 'AfterIntro',
-    pattern = { 'IntroDone' },
-    callback = vim.schedule_wrap(cb),
   })
 end
 

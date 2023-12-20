@@ -1,7 +1,7 @@
 return {
   {
     'ellisonleao/gruvbox.nvim',
-    enabled = true,
+    enabled = false,
     lazy = true,
     opts = {},
   },

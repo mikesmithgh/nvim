@@ -18,8 +18,12 @@ local opts = {
 }
 return {
   'nvim-telescope/telescope.nvim',
+  enabled = true,
+  lazy = true,
   branch = '0.1.x',
   dependencies = { 'nvim-lua/plenary.nvim' },
+  event = 'User IntroDone',
+  cmd = 'Telescope',
   config = function()
     require('telescope').setup({
       defaults = opts,

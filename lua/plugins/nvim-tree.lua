@@ -1,10 +1,13 @@
 return {
   'nvim-tree/nvim-tree.lua',
   enabled = true,
+  lazy = true,
   dependencies = {
     'nvim-tree/nvim-web-devicons', -- optional, for file icons
   },
   version = 'nightly', -- optional, updated every week. (see issue #1193)
+  event = 'User IntroDone',
+  cmd = { 'NvimTreeToggle', 'NvimTreeFindFile', 'NvimTreeFocus' },
   config = function()
     local status, nvim_tree = pcall(require, 'nvim-tree')
     if not status then

@@ -1,11 +1,14 @@
 return {
   'ibhagwan/fzf-lua',
   enabled = true,
-  lazy = false,
+  lazy = true,
   dependencies = {
     'nvim-tree/nvim-web-devicons', -- optional, for file icons
     'mikesmithgh/gruvsquirrel.nvim',
+    'mikesmithgh/borderline.nvim',
   },
+  event = 'User IntroDone',
+  cmd = 'FzfLua',
   init = function()
     vim.fn.mkdir(vim.fn.stdpath('state') .. '/fzf-lua/', '-p')
   end,

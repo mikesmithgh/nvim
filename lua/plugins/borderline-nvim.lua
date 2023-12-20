@@ -2,7 +2,18 @@ return {
   'mikesmithgh/borderline.nvim',
   enabled = true,
   lazy = true,
-  event = 'VeryLazy',
+  event = { 'User IntroDone' },
+  cmd = {
+    'Borderline',
+    'BorderlineDev',
+    'BorderlineInfo',
+    'BorderlineNext',
+    'BorderlinePrevious',
+    'BorderlineRegister',
+    'BorderlineDeregister',
+    'BorderlineStopNextTimer',
+    'BorderlineStartNextTimer',
+  },
   config = function()
     require('borderline').setup({
       border = 'thinblock',

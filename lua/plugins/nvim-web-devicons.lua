@@ -1,9 +1,9 @@
 return {
   'nvim-tree/nvim-web-devicons',
   dev = false,
-  priority = 1000,
   enabled = true,
-  lazy = false,
+  lazy = true,
+  event = 'User IntroDone',
   config = function()
     require('gruvsquirrel.plugins.nvim-web-devicons').setup()
   end,

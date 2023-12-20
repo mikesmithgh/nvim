@@ -1,4 +1,4 @@
 return {
   'jbyuki/venn.nvim',
-  enabled = true,
+  enabled = false,
 }
