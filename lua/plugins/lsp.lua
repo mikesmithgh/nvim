@@ -3,8 +3,8 @@ return {
     'williamboman/mason.nvim',
     dependencies = {
       -- LSP Support
-      'williamboman/mason-lspconfig.nvim',
       'neovim/nvim-lspconfig',
+      'williamboman/mason-lspconfig.nvim',
 
       -- -- null-ls
       -- 'jose-elias-alvarez/null-ls.nvim',
@@ -28,9 +28,11 @@ return {
       'mfussenegger/nvim-dap',
       'jay-babu/mason-nvim-dap.nvim',
 
+      -- IMPORTANT: make sure to setup neodev BEFORE lspconfig
       'folke/neodev.nvim',
     },
     enabled = true,
+    lazy = false,
     config = function()
       require('mason').setup({
         ui = {
@@ -44,10 +46,6 @@ return {
       -- TODO: look into the below command for importing all required packages
       -- require("mason.api.command").MasonInstall({'shfmt'}, {})
 
-      -- IMPORTANT: make sure to setup neodev BEFORE lspconfig
-      require('neodev').setup({
-        library = { plugins = { 'nvim-dap-ui' }, types = true },
-      })
       require('neogen').setup({
         snippet_engine = 'luasnip',
       })
@@ -131,14 +129,14 @@ return {
                   showWord = 'Enable',
                   workspaceWord = true,
                 },
-                {
-                  workspace = {
-                    -- Make the server aware of Neovim runtime files
-                    library = vim.api.nvim_get_runtime_file('', true),
-                  },
+                -- Make the server aware of Neovim runtime files
+                workspace = {
+                  checkThirdParty = false,
+                  library = vim.api.nvim_get_runtime_file('lua', true),
                 },
                 runtime = {
-                  -- :lua print(jit.version)  =>  LuaJIT 2.1.0-beta3
+                  -- Tell the language server which version of Lua you're using
+                  -- (most likely LuaJIT in the case of Neovim)
                   version = 'LuaJIT',
                 },
                 telemetry = {

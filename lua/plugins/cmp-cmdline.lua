@@ -1,7 +1,8 @@
 return {
   'hrsh7th/cmp-cmdline',
   enabled = true,
-  lazy = false,
+  lazy = true,
+  event = { 'InsertEnter', 'CmdlineEnter' },
   dependencies = {
     'hrsh7th/nvim-cmp',
     'hrsh7th/cmp-buffer',
@@ -63,7 +64,7 @@ return {
           if cmp.visible() then
             cmp.select_next_item(select_opts)
           else
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, false, true), 'c', true)
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, false, true), 'n', true)
           end
         end,
       },
@@ -72,7 +73,7 @@ return {
           if cmp.visible() then
             cmp.select_prev_item(select_opts)
           else
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, false, true), 'c', true)
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, false, true), 'n', true)
           end
         end,
       },
@@ -85,7 +86,7 @@ return {
       --       local a = cmp.abort()
       --       vim.print(a)
       --
-      --       -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, false, true), 'c', true)
+      --       -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, false, true), 'n', true)
       --     end
       --   end,
       -- },
@@ -102,7 +103,7 @@ return {
             end
           end
           if leave_cmd_mode then
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-c>', true, false, true), 'c', true)
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-c>', true, false, true), 'n', true)
           end
         end,
       },
@@ -158,7 +159,10 @@ return {
           name = 'cmdline',
           keyword_length = 1,
           option = {
-            ignore_cmds = { 'Man', '!' },
+            ignore_cmds = {
+              'Man',
+              '!',
+            },
           },
         },
       }),

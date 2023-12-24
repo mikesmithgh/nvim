@@ -14,7 +14,7 @@ M.setup = function()
       if next(vim.fn.argv()) ~= nil then
         vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
       else
-        vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'ModeChanged', 'InsertEnter', 'StdinReadPre' }, {
+        vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'ModeChanged', 'InsertEnter' }, {
           group = vim.api.nvim_create_augroup('AfterIntro', { clear = true }),
           pattern = { '<buffer=1>' },
           callback = function()
@@ -23,6 +23,14 @@ M.setup = function()
           end,
         })
       end
+      return true
+    end,
+  })
+
+  vim.api.nvim_create_autocmd({ 'StdinReadPost' }, {
+    group = vim.api.nvim_create_augroup('StdinAfterIntro', { clear = true }),
+    callback = function()
+      vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
       return true
     end,
   })

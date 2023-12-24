@@ -1,6 +1,8 @@
 return {
   'hrsh7th/nvim-cmp',
   enabled = true,
+  lazy = true,
+  event = { 'InsertEnter', 'CmdlineEnter' },
   config = function()
     -- If you want insert `(` after select function or method item
     local cmp_autopairs = require('nvim-autopairs.completion.cmp')

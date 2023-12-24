@@ -10,7 +10,7 @@ return {
   event = 'User IntroDone',
   cmd = 'FzfLua',
   init = function()
-    vim.fn.mkdir(vim.fn.stdpath('state') .. '/fzf-lua/', '-p')
+    vim.fn.mkdir(vim.fn.stdpath('state') .. '/fzf-lua/', 'p')
   end,
   config = function()
     local actions = require('fzf-lua.actions')

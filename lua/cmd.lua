@@ -6,6 +6,17 @@ M.setup = function()
       vim.cmd('w !sudo -A tee %')
     else
       vim.cmd.write()
+    end end, {
+    bang = true,
+    bar = false,
+    register = false,
+  })
+
+  vim.api.nvim_create_user_command('Naw', function(opts)
+    if opts.bang then
+      vim.cmd('noautocmd w!')
+    else
+      vim.cmd('noautocmd w')
     end
   end, {
     bang = true,
