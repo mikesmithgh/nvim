@@ -68,6 +68,7 @@ return {
 
       -- TODO: should this be moved?
       require('mason-nvim-dap').setup({
+        automatic_installation = false,
         ensure_installed = {
           'python@1.6.7', -- 1.6.8 no available in pip
           'delve',
@@ -88,11 +89,28 @@ return {
       local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
       local lsp_attach = function(client, bufnr)
+        local library = require('lspconfig').lua_ls.manager.config.settings.Lua.workspace.library
+        vim.schedule_wrap(vim.print)(library)
         -- vim.schedule_wrap(vim.print)(client, bufnr)
         -- Create your keybindings here...
       end
 
       -- require('lspconfig.ui.windows').default_options.border = require('style').border.thinblock
+
+      -- all plugins may not be loaded onto the runtime path due to lazy loading
+      -- so lets get all the directories in lazy.vim plugins and combine with the runtime path
+      local lazy_plugin_paths = vim.fs.find(function(name)
+        return name == 'lua'
+      end, { limit = math.huge, type = 'directory', path = vim.fn.stdpath('data') .. '/lazy' })
+      local lua_libraries = vim.list_extend(lazy_plugin_paths, vim.api.nvim_get_runtime_file('lua', true))
+      local hash = {}
+      local lua_ls_workspace_library = {}
+      for _, v in ipairs(lua_libraries) do
+        if not hash[v] then
+          lua_ls_workspace_library[#lua_ls_workspace_library + 1] = v -- you could print here instead of saving to result table if you wanted
+          hash[v] = true
+        end
+      end
 
       local lspconfig = require('lspconfig')
       require('mason-lspconfig').setup_handlers({
@@ -109,13 +127,6 @@ return {
               Lua = {
                 format = {
                   enable = false,
-                  defaultConfig = {},
-                  -- Put format options here
-                  -- NOTE: the value should be STRING!!
-                  -- defaultConfig = {
-                  --   indent_style = 'space',
-                  --   indent_size = '2',
-                  -- }
                 },
                 completion = {
                   autoRequire = true,
@@ -132,7 +143,7 @@ return {
                 -- Make the server aware of Neovim runtime files
                 workspace = {
                   checkThirdParty = false,
-                  library = vim.api.nvim_get_runtime_file('lua', true),
+                  library = lua_ls_workspace_library,
                 },
                 runtime = {
                   -- Tell the language server which version of Lua you're using
