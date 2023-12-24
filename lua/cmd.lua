@@ -6,7 +6,8 @@ M.setup = function()
       vim.cmd('w !sudo -A tee %')
     else
       vim.cmd.write()
-    end end, {
+    end
+  end, {
     bang = true,
     bar = false,
     register = false,
