@@ -28,12 +28,17 @@ return {
       'mfussenegger/nvim-dap',
       'jay-babu/mason-nvim-dap.nvim',
 
-      -- IMPORTANT: make sure to setup neodev BEFORE lspconfig
+      -- IMPORTANT: make sure to setup neodev and neoconf BEFORE lspconfig
+      'folke/neoconf.nvim',
       'folke/neodev.nvim',
     },
     enabled = true,
     lazy = false,
     config = function()
+      -- IMPORTANT: make sure to setup neodev and neoconf BEFORE lspconfig
+      require('neoconf').setup()
+      require('neodev').setup()
+
       require('mason').setup({
         ui = {
           border = 'rounded',
@@ -88,7 +93,7 @@ return {
       require('nvim-cmp-setup').call_setup()
       local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-      local lsp_attach = function(client, bufnr)
+      local lsp_attach = function()
         local library = require('lspconfig').lua_ls.manager.config.settings.Lua.workspace.library
         vim.schedule_wrap(vim.print)(library)
         -- vim.schedule_wrap(vim.print)(client, bufnr)
@@ -96,21 +101,6 @@ return {
       end
 
       -- require('lspconfig.ui.windows').default_options.border = require('style').border.thinblock
-
-      -- all plugins may not be loaded onto the runtime path due to lazy loading
-      -- so lets get all the directories in lazy.vim plugins and combine with the runtime path
-      local lazy_plugin_paths = vim.fs.find(function(name)
-        return name == 'lua'
-      end, { limit = math.huge, type = 'directory', path = vim.fn.stdpath('data') .. '/lazy' })
-      local lua_libraries = vim.list_extend(lazy_plugin_paths, vim.api.nvim_get_runtime_file('lua', true))
-      local hash = {}
-      local lua_ls_workspace_library = {}
-      for _, v in ipairs(lua_libraries) do
-        if not hash[v] then
-          lua_ls_workspace_library[#lua_ls_workspace_library + 1] = v -- you could print here instead of saving to result table if you wanted
-          hash[v] = true
-        end
-      end
 
       local lspconfig = require('lspconfig')
       require('mason-lspconfig').setup_handlers({
@@ -124,9 +114,11 @@ return {
           lspconfig.lua_ls.setup({
             filetypes = { 'lua' },
             settings = {
+              ---@diagnostic disable-next-line: missing-fields
               Lua = {
                 format = {
                   enable = false,
+                  defaultConfig = {},
                 },
                 completion = {
                   autoRequire = true,
@@ -141,10 +133,16 @@ return {
                   workspaceWord = true,
                 },
                 -- Make the server aware of Neovim runtime files
+                ---@diagnostic disable-next-line: missing-fields
                 workspace = {
                   checkThirdParty = false,
-                  library = lua_ls_workspace_library,
+                  library = {
+                    vim.env.VIMRUNTIME,
+                  },
+                  -- Make the server aware of Neovim runtime files
+                  -- library = vim.api.nvim_get_runtime_file('', true),
                 },
+                ---@diagnostic disable-next-line: missing-fields
                 runtime = {
                   -- Tell the language server which version of Lua you're using
                   -- (most likely LuaJIT in the case of Neovim)
@@ -153,6 +151,7 @@ return {
                 telemetry = {
                   enable = false,
                 },
+                ---@diagnostic disable-next-line: missing-fields
                 diagnostics = {
                   globals = {
                     'vim',
@@ -174,6 +173,7 @@ return {
                   previewFields = 50,
                   viewNumber = true,
                   viewStringMax = 1000,
+                  viewString = true,
                 },
                 codeLens = {
                   enable = true,
@@ -196,20 +196,26 @@ return {
               return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
             end,
             settings = {
+              ---@diagnostic disable-next-line: missing-fields
               pylsp = {
+                ---@diagnostic disable-next-line: missing-fields
                 plugins = {
                   autopep8 = {
                     enabled = false, -- conflicts with yapf
                   },
+                  ---@diagnostic disable-next-line: missing-fields
                   pycodestyle = {
                     enabled = true,
                   },
+                  ---@diagnostic disable-next-line: missing-fields
                   flake8 = {
                     enabled = false, -- conflicts with yapf
                   },
+                  ---@diagnostic disable-next-line: missing-fields
                   yapf = {
                     enabled = true,
                   },
+                  ---@diagnostic disable-next-line: missing-fields
                   mccabe = {
                     enabled = true,
                   },
@@ -224,11 +230,15 @@ return {
         ['yamlls'] = function()
           lspconfig.yamlls.setup({
             filetypes = { 'yaml', 'yaml.docker-compose', 'yml' },
+            ---@diagnostic disable-next-line: missing-fields
             settings = {
+              ---@diagnostic disable-next-line: missing-fields
               yaml = {
+                ---@diagnostic disable-next-line: missing-fields
                 format = {
                   enable = true,
                 },
+                ---@diagnostic disable-next-line: missing-fields
                 schemaStore = {
                   enable = true,
                 },
@@ -241,6 +251,7 @@ return {
             filetypes = { 'sh', 'bash' },
             settings = {
               -- see https://github.com/bash-lsp/bash-language-server/blob/main/server/src/config.ts
+              ---@diagnostic disable-next-line: missing-fields
               bashIde = {
                 backgroundAnalysisMaxFiles = 500,
 
@@ -259,15 +270,14 @@ return {
           })
         end,
         ['kotlin_language_server'] = function()
-          local util = require('lspconfig.util')
-          lspconfig.kotlin_language_server.setup({
-            -- kotlin = {
-            --   -- root_dir = function()
-            --   --   vim.print('root dir here')
-            --   --   util.root_pattern('settings.gradle', 'settings.gradle.kts')
-            --   -- end
-            -- },
-          })
+          ---@diagnostic disable-next-line: missing-fields
+          lspconfig.kotlin_language_server.setup({})
+          -- kotlin = {
+          --   -- root_dir = function()
+          --   --   vim.print('root dir here')
+          --   --   util.root_pattern('settings.gradle', 'settings.gradle.kts')
+          --   -- end
+          -- },
         end,
       })
 

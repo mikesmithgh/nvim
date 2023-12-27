@@ -13,151 +13,175 @@ return {
     local cmp_api = require('cmp.utils.api')
     local select_opts = { behavior = cmp.SelectBehavior.Insert }
 
-    cmp.event:on('menu_opened', function(menu)
+    cmp.event:on('menu_opened', function()
       if cmp_api.is_cmdline_mode() then
+        ---@diagnostic disable-next-line: invisible
         cmp.core.view.custom_entries_view:_select(0, select_opts)
       end
     end)
 
-    local mappings = {
-      ['<C-z>'] = {
-        c = function()
-          if cmp.visible() then
-            cmp.select_next_item()
-          else
-            cmp.complete()
-          end
-        end,
-      },
+    local common_mappings = {
       ['<Tab>'] = {
         c = function()
+          local fn = cmp.mapping.complete()
           if cmp.visible() then
-            cmp.select_next_item()
-          else
-            cmp.complete()
+            fn = cmp.mapping.select_next_item(select_opts)
           end
+          fn()
         end,
       },
       ['<S-Tab>'] = {
         c = function()
+          local fn = cmp.mapping.complete()
           if cmp.visible() then
-            cmp.select_prev_item()
-          else
-            cmp.complete()
+            fn = cmp.mapping.select_prev_item(select_opts)
           end
+          fn()
         end,
       },
       ['<C-e>'] = {
-        c = cmp.mapping.abort(),
+        c = function(fallback)
+          local fn = fallback
+          if cmp.visible() then
+            fn = cmp.mapping.abort()
+          end
+          fn()
+        end,
       },
       ['<C-y>'] = {
-        c = cmp.mapping.confirm({ select = false }),
-      },
-      ['<CR>'] = {
         c = function(fallback)
-          cmp.mapping.confirm({ select = true })
-          fallback()
+          local fn = fallback
+          if cmp.visible() then
+            fn = cmp.mapping.confirm({ select = false })
+          end
+          fn()
         end,
       },
       ['<Down>'] = {
         c = function(fallback)
+          local fn = fallback
           if cmp.visible() then
-            cmp.select_next_item(select_opts)
-          else
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, false, true), 'n', true)
+            fn = cmp.mapping.select_next_item(select_opts)
           end
+          fn()
         end,
       },
       ['<Up>'] = {
         c = function(fallback)
+          local fn = fallback
           if cmp.visible() then
-            cmp.select_prev_item(select_opts)
-          else
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, false, true), 'n', true)
+            fn = cmp.mapping.select_prev_item(select_opts)
           end
+          fn()
         end,
       },
-      -- ['<C-p>'] = {
-      --   c = function(fallback)
-      --     if cmp.visible() then
-      --       cmp.select_prev_item(select_opts)
-      --     else
-      --       fallback()
-      --       local a = cmp.abort()
-      --       vim.print(a)
-      --
-      --       -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, false, true), 'n', true)
-      --     end
-      --   end,
-      -- },
       ['<Esc>'] = {
         c = function()
-          local cmp_is_visible = cmp.core.view:visible()
-          local leave_cmd_mode = not cmp_is_visible
-          if cmp_is_visible then
-            local e = cmp.core.view:get_selected_entry()
-            local is_active = cmp.core.view.custom_entries_view.active
-            leave_cmd_mode = e == nil or not is_active
-            if not leave_cmd_mode then
-              cmp.core.view.custom_entries_view:_select(0, select_opts)
-            end
-          end
-          if leave_cmd_mode then
+          -- do not use fallback, it executes the command we want to cancel
+          local fn = function()
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-c>', true, false, true), 'n', true)
           end
+          if cmp.visible() then
+            fn = cmp.mapping.abort()
+          end
+          fn()
         end,
       },
       ['<C-j>'] = {
         c = function(fallback)
+          local fn = fallback
           if cmp.visible() then
-            cmp.select_next_item({ count = 5 })
-          else
-            fallback()
+            fn = cmp.mapping.select_next_item(vim.tbl_extend('force', select_opts, { count = 5 }))
           end
+          fn()
         end,
       },
       ['<C-k>'] = {
         c = function(fallback)
+          local fn = fallback
           if cmp.visible() then
-            cmp.select_prev_item({ count = 5 })
-          else
-            fallback()
+            fn = cmp.mapping.select_prev_item(vim.tbl_extend('force', select_opts, { count = 5 }))
           end
+          fn()
         end,
       },
     }
+
+    local cmd_mappings = {
+      ['<C-a>'] = {
+        c = function()
+          -- move to start of line
+          local move_to_start_of_line = function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-b>', true, false, true), 'n', true)
+          end
+          local fn = move_to_start_of_line
+          if cmp.visible() then
+            fn = function()
+              local confirm = cmp.mapping.confirm({ select = false })
+              confirm()
+              move_to_start_of_line()
+            end
+          end
+          fn()
+        end,
+      },
+      ['<CR>'] = {
+        c = function(fallback)
+          local fn = fallback
+          if cmp.visible() then
+            fn = function()
+              local confirm = cmp.mapping.confirm({ select = true })
+              confirm() -- select entry
+              fallback() -- execute entry
+            end
+          end
+          fn()
+        end,
+      },
+    }
+
     -- `/` cmdline setup.
     cmp.setup.cmdline('/', {
+      completion = {
+        autocomplete = false,
+      },
       view = {
         entries = 'custom',
       },
-      mapping = mappings,
+      mapping = common_mappings,
       sources = {
         { name = 'buffer' },
       },
     })
     -- `?` cmdline setup.
     cmp.setup.cmdline('?', {
+      completion = {
+        autocomplete = false,
+      },
       view = {
         entries = 'custom',
       },
-      mapping = mappings,
+      mapping = common_mappings,
       sources = {
         { name = 'buffer' },
       },
     })
     -- `:` cmdline setup.
     cmp.setup.cmdline(':', {
+      ---@diagnostic disable-next-line: missing-fields
+      completion = {
+        autocomplete = false,
+      },
       view = {
         entries = 'custom',
       },
-      mapping = mappings,
+      mapping = vim.tbl_extend('force', common_mappings, cmd_mappings),
       sources = cmp.config.sources({
         { name = 'path' },
       }, {
         {
           name = 'cmdline',
-          keyword_length = 1,
+          autocomplete = false,
           option = {
             ignore_cmds = {
               'Man',
