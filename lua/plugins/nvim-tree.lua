@@ -5,7 +5,6 @@ return {
   dependencies = {
     'nvim-tree/nvim-web-devicons', -- optional, for file icons
   },
-  version = 'nightly', -- optional, updated every week. (see issue #1193)
   event = 'User IntroDone',
   cmd = { 'NvimTreeToggle', 'NvimTreeFindFile', 'NvimTreeFocus' },
   config = function()

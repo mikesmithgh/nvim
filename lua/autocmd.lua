@@ -27,8 +27,8 @@ M.setup = function()
     end,
   })
 
-  vim.api.nvim_create_autocmd({ 'StdinReadPost' }, {
-    group = vim.api.nvim_create_augroup('StdinAfterIntro', { clear = true }),
+  vim.api.nvim_create_autocmd({ 'StdinReadPost', 'WinEnter' }, {
+    group = vim.api.nvim_create_augroup('PostAfterIntro', { clear = true }),
     callback = function()
       vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
       return true

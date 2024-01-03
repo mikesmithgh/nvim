@@ -191,6 +191,9 @@ M.setup = function()
   -- this lets treesitter take precedence over semantic tokens
   -- I am not sure if I want this long term
   -- vim.highlight.priorities.semantic_tokens = vim.highlight.priorities.treesitter - 1
+
+  vim.cmd.cabbrev('naw noautocmd w')
+  vim.cmd.cabbrev('naw! noautocmd w!')
 end
 
 return M

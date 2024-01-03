@@ -16,6 +16,9 @@ M.setup = function()
   vim.keymap.set({ 'n', 'i', 't', 'v' }, '<c-w>o', '<cmd>ZenMode<cr>', { noremap = true, silent = true })
   vim.keymap.set({ 'n', 'i', 't', 'v' }, '<c-w><c-o>', '<cmd>ZenMode<cr>', { noremap = true, silent = true })
 
+  -- prefer <C-f> over q:
+  vim.keymap.set('n', 'q:', ':')
+
   -- enable hlsearch before search
   vim.keymap.set('n', '/', ':set hlsearch<cr>/')
   vim.keymap.set('n', '?', ':set hlsearch<cr>?')
@@ -85,11 +88,11 @@ M.setup = function()
 
   vim.keymap.set({ 'n' }, '<c-n>n', ':NvimTreeToggle<CR>', {})
   vim.keymap.set('n', '<C-n><C-n>', function()
-    -- TODO: improve in lua
     if vim.opt.filetype:get() == 'NvimTree' then
       vim.cmd('wincmd p')
     else
-      vim.cmd('NvimTreeFindFile | NvimTreeFocus')
+      vim.cmd('NvimTreeFindFile')
+      vim.cmd('NvimTreeFocus')
     end
   end, {})
   vim.keymap.set({ 'n' }, '<c-n><C-q>', ':copen<CR>', {})

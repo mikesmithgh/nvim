@@ -105,6 +105,19 @@ return {
           fn()
         end,
       },
+      ['<C-f>'] = {
+        c = function(fallback)
+          local fn = fallback
+          if cmp.visible() then
+            fn = function()
+              local close = cmp.mapping.close()
+              close()
+              fallback()
+            end
+          end
+          fn()
+        end,
+      },
     }
 
     local cmd_mappings = {
@@ -127,7 +140,10 @@ return {
       },
       ['<CR>'] = {
         c = function(fallback)
-          local fn = fallback
+          local fn = function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-]>', true, false, true), 'n', true)
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<CR>', true, false, true), 'n', true)
+          end
           if cmp.visible() then
             fn = function()
               local confirm = cmp.mapping.confirm({ select = true })
@@ -186,6 +202,7 @@ return {
             ignore_cmds = {
               'Man',
               '!',
+              'naw',
             },
           },
         },

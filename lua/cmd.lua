@@ -13,17 +13,17 @@ M.setup = function()
     register = false,
   })
 
-  vim.api.nvim_create_user_command('Naw', function(opts)
-    if opts.bang then
-      vim.cmd('noautocmd w!')
-    else
-      vim.cmd('noautocmd w')
-    end
-  end, {
-    bang = true,
-    bar = false,
-    register = false,
-  })
+  -- vim.api.nvim_create_user_command('Naw', function(opts)
+  --   if opts.bang then
+  --     vim.cmd('noautocmd w!')
+  --   else
+  --     vim.cmd('noautocmd w')
+  --   end
+  -- end, {
+  --   bang = true,
+  --   bar = false,
+  --   register = false,
+  -- })
 
   -- these PRs are hardcoded because they were not merged directly but in other work
   -- example command used to generate: gh pr view https://github.com/neovim/neovim/pull/25034 --json title,url,number,headRepositoryOwner,headRepository,updatedAt --jq '. | { number: .number, title: .title, url: .url, updatedAt: .updatedAt, repository: { name : "neovim", nameWithOwner: "neovim/neovim" } }'
