@@ -6,6 +6,15 @@ M.setup = function()
   vim.api.nvim_create_augroup('Backup', { clear = true })
   -- vim.api.nvim_create_augroup('LspOnStartup', { clear = true })
 
+  vim.api.nvim_create_autocmd({ 'CmdlineEnter' }, {
+    group = vim.api.nvim_create_augroup('CmdlineEnterRemoveIncRename', { clear = true }),
+    pattern = { ':' },
+    callback = function()
+      -- prevents errors when navigating previous command history
+      vim.fn.histdel('cmd', 'IncRename.*')
+    end,
+  })
+
   vim.api.nvim_create_autocmd({ 'User' }, {
     group = vim.api.nvim_create_augroup('VeryLazyAfterIntro', { clear = true }),
     pattern = { 'VeryLazy' },
@@ -18,7 +27,9 @@ M.setup = function()
           group = vim.api.nvim_create_augroup('AfterIntro', { clear = true }),
           pattern = { '<buffer=1>' },
           callback = function()
-            vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
+            vim.defer_fn(function()
+              vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
+            end, 50)
             return true
           end,
         })
@@ -131,7 +142,7 @@ M.setup = function()
   vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
     group = 'FormatSave',
     pattern = { '*.go' },
-    callback = function(e)
+    callback = function()
       vim.lsp.buf.format({ async = false })
     end,
   })

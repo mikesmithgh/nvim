@@ -74,6 +74,7 @@ M.setup = function()
       ['ellisonleao/gruvbox.nvim'] = 'https://github.com/mikesmithgh/mikesmithgh/assets/10135646/f37f9c84-3463-4de8-8d03-4c6490f379f1',
       ['rockerBOO/awesome-neovim'] = 'https://github.com/mikesmithgh/mikesmithgh/assets/10135646/44b2ee30-9ee5-4e67-bb39-851eb76aedb5',
       ['letsencrypt/boulder'] = 'https://github.com/mikesmithgh/mikesmithgh/assets/10135646/ddbb3b6e-d251-4c22-8afb-0bf458f645a8',
+      ['kovidgoyal/kitty'] = 'https://github.com/mikesmithgh/mikesmithgh/assets/10135646/fe100777-42ac-493d-85f6-948a2d13b53e',
     }
 
     local emojis = {

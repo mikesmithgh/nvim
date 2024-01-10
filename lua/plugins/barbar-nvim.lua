@@ -3,7 +3,7 @@ return {
   enabled = true,
   lazy = true,
   -- cond = not vim.g.is_kitty_scrollback_pager,
-  dependencies = 'nvim-web-devicons',
+  dependencies = 'nvim-tree/nvim-web-devicons',
   init = function()
     vim.g.barbar_auto_setup = false
   end,

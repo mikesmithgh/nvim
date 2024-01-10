@@ -120,3 +120,6 @@ urls
 gif
 mov
 v3
+SIGTERM
+autocommand
+TextYankPost

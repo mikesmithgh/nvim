@@ -94,8 +94,8 @@ return {
       local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
       local lsp_attach = function()
-        local library = require('lspconfig').lua_ls.manager.config.settings.Lua.workspace.library
-        vim.schedule_wrap(vim.print)(library)
+        -- local library = require('lspconfig').lua_ls.manager.config.settings.Lua.workspace.library
+        -- vim.schedule_wrap(vim.print)(library)
         -- vim.schedule_wrap(vim.print)(client, bufnr)
         -- Create your keybindings here...
       end
@@ -108,6 +108,21 @@ return {
           lspconfig[server_name].setup({
             on_attach = lsp_attach,
             capabilities = lsp_capabilities,
+          })
+        end,
+        ['gopls'] = function()
+          -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#gopls
+          -- and https://github.com/golang/tools/blob/master/gopls/doc/settings.md
+          lspconfig.gopls.setup({
+            filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+            settings = {
+              gopls = {
+                -- This setting is experimental and may be deleted.
+                -- staticcheck enables additional analyses from staticcheck.io. These analyses are documented on Staticcheck's website.
+                -- https://staticcheck.dev/docs/checks/
+                staticcheck = true,
+              },
+            },
           })
         end,
         ['lua_ls'] = function()

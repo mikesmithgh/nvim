@@ -92,7 +92,13 @@ local opts = {
   },
   mapping = {
     -- confirm selection
-    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    ['<CR>'] = function(fallback)
+      local fn = fallback
+      if cmp.visible() then
+        fn = cmp.mapping.confirm({ select = false })
+      end
+      fn()
+    end,
     ['<C-y>'] = cmp.mapping.confirm({ select = false }),
     -- navigate items on the list
     ['<Up>'] = cmp.mapping.select_prev_item(select_opts),

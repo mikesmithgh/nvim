@@ -58,8 +58,12 @@ return {
         end,
       },
       ['<Down>'] = {
-        c = function(fallback)
-          local fn = fallback
+        c = function()
+          local fn = function()
+            -- <C-u> to clear commands like :%s to avoid issues with navigating history
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-u>', true, false, true), 'n', true)
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Down>', true, false, true), 'n', true)
+          end
           if cmp.visible() then
             fn = cmp.mapping.select_next_item(select_opts)
           end
@@ -67,8 +71,12 @@ return {
         end,
       },
       ['<Up>'] = {
-        c = function(fallback)
-          local fn = fallback
+        c = function()
+          local fn = function()
+            -- <C-u> to clear commands like :%s to avoid issues with navigating history
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-u>', true, false, true), 'n', true)
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Up>', true, false, true), 'n', true)
+          end
           if cmp.visible() then
             fn = cmp.mapping.select_prev_item(select_opts)
           end
@@ -139,16 +147,17 @@ return {
         end,
       },
       ['<CR>'] = {
-        c = function(fallback)
-          local fn = function()
+        c = function()
+          local expand_and_execute = function()
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-]>', true, false, true), 'n', true)
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<CR>', true, false, true), 'n', true)
           end
+          local fn = expand_and_execute
           if cmp.visible() then
             fn = function()
               local confirm = cmp.mapping.confirm({ select = true })
               confirm() -- select entry
-              fallback() -- execute entry
+              expand_and_execute()
             end
           end
           fn()

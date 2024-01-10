@@ -12,9 +12,22 @@ return {
       vim.g.mapleader = ' '
       vim.g.maplocalleader = ','
       require('kitty-scrollback').setup({
-        custom = function()
-          vim.print('customstuff')
-        end,
+        -- global = function()
+        --   vim.keymap.set({ 'v' }, 'Y', '<Plug>(KsbVisualYankLine)', {})
+        --   vim.keymap.set({ 'v' }, 'y', '<Plug>(KsbVisualYank)', {})
+        --   vim.keymap.set({ 'n' }, 'Y', '<Plug>(KsbNormalYankEnd)', {})
+        --   vim.keymap.set({ 'n' }, 'y', '<Plug>(KsbNormalYank)', {})
+        --   vim.keymap.set({ 'n' }, 'yy', '<Plug>(KsbYankLine)', {})
+        --
+        --   vim.keymap.set({ 'v' }, '<leader>Y', '"aY', {})
+        --   vim.keymap.set({ 'v' }, '<leader>y', '"ay', {})
+        --   vim.keymap.set({ 'n' }, '<leader>Y', '"aY', {})
+        --   vim.keymap.set({ 'n' }, '<leader>y', '"ay', {})
+        --   vim.keymap.set({ 'n' }, '<leader>yy', '"ayy', {})
+        --   return {
+        --     paste_window = { yank_register = 'a' },
+        --   }
+        -- end,
       })
     end,
   },
