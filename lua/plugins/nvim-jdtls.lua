@@ -3,4 +3,8 @@
 return {
   'mfussenegger/nvim-jdtls',
   enabled = true,
+  lazy = true,
+  ft = {
+    'java',
+  },
 }

@@ -1,6 +1,6 @@
 return {
   'jbyuki/one-small-step-for-vimkind',
-  enabled = true,
+  enabled = false,
   dependencies = { 'mfussenegger/nvim-dap' },
   config = function()
     local dap

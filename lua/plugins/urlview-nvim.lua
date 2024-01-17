@@ -1,5 +1,10 @@
 return {
   'axieax/urlview.nvim',
+  enabled = true,
+  lazy = true,
+  cmd = {
+    'UrlView',
+  },
   config = function()
     require('urlview').setup({
       -- custom configuration options --

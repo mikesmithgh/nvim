@@ -12,5 +12,9 @@ return {
   {
     'fladson/vim-kitty',
     enabled = true,
+    lazy = true,
+    ft = {
+      'kitty',
+    },
   },
 }
