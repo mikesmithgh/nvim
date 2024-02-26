@@ -255,7 +255,7 @@ return {
         -- previewer    = 'bat', -- uncomment to override previewer
         -- (name from 'previewers' table)
         -- set to 'false' to disable
-        prompt = 'Files❯ ',
+        prompt = 'Files󰅂 ',
         multiprocess = true, -- run command in a separate process
         git_icons = true, -- show git icons?
         file_icons = true, -- show file icons?
@@ -289,7 +289,7 @@ return {
           fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
             ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/git-files-history.txt',
           }),
-          prompt = 'GitFiles❯ ',
+          prompt = 'GitFiles󰅂 ',
           cmd = 'git ls-files --exclude-standard',
           multiprocess = true, -- run command in a separate process
           git_icons = true, -- show git icons?
@@ -303,7 +303,7 @@ return {
           fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
             ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/git-status-history.txt',
           }),
-          prompt = 'GitStatus❯ ',
+          prompt = 'GitStatus󰅂 ',
           -- consider using `git status -su` if you wish to see
           -- untracked files individually under their subfolders
           cmd = 'git status -s',
@@ -323,7 +323,7 @@ return {
           fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
             ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/git-commits-history.txt',
           }),
-          prompt = 'Commits❯ ',
+          prompt = 'Commits󰅂 ',
           cmd = "git log --color --pretty=format:'%C(yellow)%h%Creset %Cgreen(%><(12)%cr%><|(12))%Creset %s %C(blue)<%an>%Creset'",
           preview = "git show --pretty='%Cred%H%n%Cblue%an <%ae>%n%C(yellow)%cD%n%Cgreen%s' --color {1}",
           -- uncomment if you wish to use git-delta as pager
@@ -336,7 +336,7 @@ return {
           fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
             ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/git-bcommits-history.txt',
           }),
-          prompt = 'BCommits❯ ',
+          prompt = 'BCommits󰅂 ',
           -- default preview shows a git diff vs the previous commit
           -- if you prefer to see the entire commit you can use:
           --   git show --color {1} --rotate-to=<file>
@@ -357,12 +357,18 @@ return {
           fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
             ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/git-branches-history.txt',
           }),
-          prompt = 'Branches❯ ',
+          prompt = 'Branches󰅂 ',
           cmd = 'git branch --all --color',
           preview = 'git log --graph --pretty=oneline --abbrev-commit --color {1}',
           actions = {
             ['default'] = actions.git_switch,
           },
+        },
+        tags = {
+          fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
+            ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/git-tags-history.txt',
+          }),
+          prompt = 'Tags󰅂 ',
         },
         stash = {
           fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
@@ -370,7 +376,7 @@ return {
             ['--no-multi'] = '',
             ['--delimiter'] = "'[:]'",
           }),
-          prompt = 'Stash> ',
+          prompt = 'Stash󰅂 ',
           cmd = 'git --no-pager stash list',
           preview = 'git --no-pager stash show --patch --color {1}',
           actions = {
@@ -398,8 +404,8 @@ return {
         }),
         debug = false,
         exec_empty_query = true,
-        prompt = 'Rg❯ ',
-        input_prompt = 'Grep For❯ ',
+        prompt = 'Rg󰅂 ',
+        input_prompt = 'Grep For󰅂 ',
         multiprocess = true, -- run command in a separate process
         git_icons = true, -- show git icons?
         file_icons = true, -- show file icons?
@@ -433,7 +439,7 @@ return {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/args-history.txt',
         }),
-        prompt = 'Args❯ ',
+        prompt = 'Args󰅂 ',
         files_only = true,
         -- actions inherit from 'actions.files' and merge
         actions = { ['ctrl-x'] = { actions.arg_del, actions.resume } },
@@ -442,7 +448,7 @@ return {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/oldfiles-history.txt',
         }),
-        prompt = 'History❯ ',
+        prompt = 'History󰅂 ',
         cwd_only = false,
         stat_file = true, -- verify files exist on disk
         include_current_session = false, -- include bufs from current session
@@ -451,7 +457,7 @@ return {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/buffers-history.txt',
         }),
-        prompt = 'Buffers❯ ',
+        prompt = 'Buffers󰅂 ',
         file_icons = true, -- show file icons?
         color_icons = true, -- colorize file|git icons
         sort_lastused = true, -- sort buffers() by last used
@@ -471,7 +477,7 @@ return {
           ['--delimiter'] = "'[\\):]'",
           ['--with-nth'] = '2..',
         }),
-        prompt = 'Tabs❯ ',
+        prompt = 'Tabs󰅂 ',
         tab_title = 'Tab',
         tab_marker = '<<',
         file_icons = true, -- show file icons?
@@ -492,7 +498,7 @@ return {
           ['--tiebreak'] = 'index',
         }),
         previewer = 'builtin', -- set to 'false' to disable
-        prompt = 'Lines❯ ',
+        prompt = 'Lines󰅂 ',
         show_unlisted = false, -- exclude 'help' buffers
         no_term_buffers = true, -- exclude 'term' buffers
         -- actions inherit from 'actions.buffers' and merge
@@ -511,7 +517,7 @@ return {
           ['--tiebreak'] = 'index',
         }),
         previewer = 'builtin', -- set to 'false' to disable
-        prompt = 'BLines❯ ',
+        prompt = 'BLines󰅂 ',
         show_unlisted = true, -- include 'help' buffers
         no_term_buffers = false, -- include 'term' buffers
         -- actions inherit from 'actions.buffers' and merge
@@ -525,7 +531,7 @@ return {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/tags-history.txt',
         }),
-        prompt = 'Tags❯ ',
+        prompt = 'Tags󰅂 ',
         ctags_file = 'tags',
         multiprocess = true,
         file_icons = true,
@@ -549,7 +555,7 @@ return {
           ['--with-nth'] = '2..',
           ['--tiebreak'] = 'index',
         }),
-        prompt = 'BTags❯ ',
+        prompt = 'BTags󰅂 ',
         ctags_file = 'tags',
         ctags_autogen = false, -- dynamically generate ctags each call
         multiprocess = true,
@@ -564,7 +570,7 @@ return {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/colorschemes-history.txt',
         }),
-        prompt = 'Colorschemes❯ ',
+        prompt = 'Colorschemes󰅂 ',
         live_preview = true, -- apply the colorscheme on preview?
         actions = { ['default'] = actions.colorscheme },
         winopts = { height = 0.55, width = 0.30 },
@@ -585,7 +591,7 @@ return {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/lsp--history.txt',
         }),
-        prompt_postfix = '❯ ', -- will be appended to the LSP label
+        prompt_postfix = '󰅂 ', -- will be appended to the LSP label
         -- to override use 'prompt' instead
         cwd_only = false, -- LSP/diagnostics for cwd only?
         async_or_timeout = 5000, -- timeout(ms) or 'true' for async calls
@@ -618,7 +624,7 @@ return {
           previewer = 'codeaction_native',
           -- previewer = 'codeaction_native',
           preview_pager = "delta --side-by-side --width=$FZF_PREVIEW_COLUMNS --hunk-header-style='omit' --file-style='omit' --syntax-theme gruvsquirrel",
-          prompt = 'Code Actions❯ ',
+          prompt = 'Code Actions󰅂 ',
           -- ui_select = false, -- use 'vim.ui.select'?
           async_or_timeout = 5000,
           winopts = {
@@ -637,7 +643,7 @@ return {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/diagnostics-history.txt',
         }),
-        prompt = 'Diagnostics❯ ',
+        prompt = 'Diagnostics󰅂 ',
         cwd_only = false,
         file_icons = true,
         git_icons = false,
@@ -664,6 +670,82 @@ return {
         -- severity_only:   keep any matching exact severity
         -- severity_limit:  keep any equal or more severe (lower)
         -- severity_bound:  keep any equal or less severe (higher)
+      },
+      helptags = {
+        fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
+          ['--delimiter'] = "'[ ]'",
+          ['--with-nth'] = '1',
+          ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/helptags-history.txt',
+        }),
+        prompt = 'Help󰅂 ',
+      },
+      builtin = {
+        prompt = 'Builtin󰅂 ',
+      },
+      autocmds = {
+        prompt = 'Autocmds󰅂 ',
+      },
+      command_history = {
+        prompt = 'Command History󰅂 ',
+      },
+      search_history = {
+        prompt = 'Search History󰅂 ',
+      },
+      registers = {
+        prompt = 'Registers󰅂 ',
+      },
+      keymaps = {
+        prompt = 'Keymaps󰅂 ',
+      },
+      spell_suggest = {
+        prompt = 'Spelling Suggestions󰅂 ',
+      },
+      filetypes = {
+        prompt = 'Filetypes󰅂 ',
+      },
+      packadd = {
+        prompt = 'packadd󰅂 ',
+      },
+      menus = {
+        prompt = 'Menu󰅂 ',
+      },
+      tmux = {
+        prompt = 'Tmux󰅂 ',
+      },
+      dap = {
+        commands = {
+          prompt = 'DAP Commands󰅂 ',
+        },
+        configurations = {
+          prompt = 'DAP Configurations󰅂 ',
+        },
+        variables = {
+          prompt = 'DAP Variables󰅂 ',
+        },
+        frames = {
+          prompt = 'DAP Frames󰅂 ',
+        },
+        breakpoints = {
+          prompt = 'DAP Breakpoints󰅂 ',
+        },
+      },
+      changes = {
+        prompt = 'Changes󰅂 ',
+      },
+      jumps = {
+        prompt = 'Jumps󰅂 ',
+      },
+      marks = {
+        prompt = 'Marks󰅂 ',
+      },
+      commands = {
+        prompt = 'Commands󰅂 ',
+      },
+      highlights = {
+        prompt = 'Highlights󰅂 ',
+      },
+      tagstack = {
+        prompt = 'Tagstack󰅂 ',
       },
       -- uncomment to use the old help previewer which used a
       -- minimized help window to generate the help tag preview

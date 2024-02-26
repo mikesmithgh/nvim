@@ -86,7 +86,7 @@ M.setup = function()
   -- Don't use Q for Ex mode, use it for formatting.  Except for Select mode.
   -- vim.keymap.set("n", "Q", "gq")
 
-  vim.keymap.set({ 'n' }, '<c-n>n', ':NvimTreeToggle<CR>', {})
+  vim.keymap.set({ 'n', 't', 'v' }, '<c-n>n', ':NvimTreeToggle<CR>', {})
   vim.keymap.set('n', '<C-n><C-n>', function()
     if vim.opt.filetype:get() == 'NvimTree' then
       vim.cmd('wincmd p')
@@ -105,32 +105,6 @@ M.setup = function()
   vim.keymap.set({ 't' }, '<c-w>o', '<c-\\><c-n><cmd>ZenMode<CR>', {})
 
   vim.keymap.set('i', '<c-w>', '<esc><c-w>')
-
-  -- assumption sidepane on left TODO: turn into function
-  vim.keymap.set({ 'n', 'i', 't' }, '<c-w>k', function()
-    -- if vim.opt.filetype:get() == 'toggleterm' then
-    vim.cmd('wincmd k')
-    if vim.opt.filetype:get() == 'NvimTree' then
-      vim.cmd('wincmd l')
-    end
-    -- else
-    -- vim.cmd('wincmd k')
-    -- end
-  end, {})
-
-  -- assumption sidepane on left TODO: turn into function
-  vim.keymap.set({ 'n', 'i', 't' }, '<c-w>j', function()
-    -- if vim.opt.filetype:get() == 'toggleterm' then
-    vim.cmd('wincmd j')
-    if vim.opt.filetype:get() == 'NvimTree' then
-      vim.cmd('wincmd l')
-    end
-    -- else
-    -- vim.cmd('wincmd k')
-    -- end
-  end, {})
-
-  --- Enable completion triggered by <c-x><c-o>
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -176,7 +150,7 @@ M.setup = function()
 
     dapui.toggle()
   end)
-  vim.keymap.set('n', '<leader><leader>n', function()
+  vim.keymap.set({ 'n', 't', 'v' }, '<leader><leader>n', function()
     vim.cmd('NvimTreeToggle')
   end)
   vim.keymap.set('n', '<leader><leader>v', function()
@@ -347,28 +321,57 @@ M.setup = function()
   -- toggle keymappings for venn using <leader>v
   vim.keymap.set({ 'n' }, '<leader>v', ':lua Toggle_venn()<CR>', {})
 
-  local osv
-  status, osv = pcall(require, 'osv')
-  if status then
-    vim.keymap.set('n', '<leader><f5>', function()
-      osv.launch({ port = 8086 })
-    end, { silent = true })
-  end
+  -- local osv
+  -- status, osv = pcall(require, 'osv')
+  -- if status then
+  --   vim.keymap.set('n', '<leader><f5>', function()
+  --     osv.launch({ port = 8086 })
+  --   end, { silent = true })
+  -- end
 
-  local ok, smart_splits = pcall(require, 'smart-splits')
-  if ok then
-    vim.keymap.set('n', '<c-w>h', smart_splits.move_cursor_left, { noremap = true, silent = true })
-    vim.keymap.set('n', '<c-w>j', smart_splits.move_cursor_down, { noremap = true, silent = true })
-    vim.keymap.set('n', '<c-w>k', smart_splits.move_cursor_up, { noremap = true, silent = true })
-    vim.keymap.set('n', '<c-w>l', smart_splits.move_cursor_right, { noremap = true, silent = true })
+  vim.keymap.set({ 'n', 'i', 't' }, '<c-w>h', function()
+    vim.cmd.stopinsert()
+    vim.schedule(function()
+      require('smart-splits.api').move_cursor_left()
+    end)
+  end, { noremap = true, silent = true })
+  vim.keymap.set({ 'n', 'i', 't' }, '<c-w>j', function()
+    vim.cmd.stopinsert()
+    vim.schedule(function()
+      require('smart-splits.api').move_cursor_down()
+      if vim.opt.filetype:get() == 'NvimTree' then
+        vim.cmd('wincmd l')
+      end
+    end)
+  end, { noremap = true, silent = true })
+  vim.keymap.set({ 'n', 'i', 't' }, '<c-w>k', function()
+    vim.cmd.stopinsert()
+    vim.schedule(function()
+      require('smart-splits.api').move_cursor_up()
+      if vim.opt.filetype:get() == 'NvimTree' then
+        vim.cmd('wincmd l')
+      end
+    end)
+  end, { noremap = true, silent = true })
+  vim.keymap.set({ 'n', 'i', 't' }, '<c-w>l', function()
+    vim.cmd.stopinsert()
+    vim.schedule(function()
+      require('smart-splits.api').move_cursor_right()
+    end)
+  end, { noremap = true, silent = true })
 
-    vim.keymap.set('n', '<a-left>', smart_splits.resize_left)
-    vim.keymap.set('n', '<a-down>', smart_splits.resize_down)
-    vim.keymap.set('n', '<a-up>', smart_splits.resize_up)
-    vim.keymap.set('n', '<a-right>', smart_splits.resize_right)
-  else
-    vim.notify('mike: failed to load smart-splits', vim.log.levels.WARN, {})
-  end
+  vim.keymap.set({ 'n', 'i', 't' }, '<a-left>', function()
+    require('smart-splits.api').resize_left()
+  end)
+  vim.keymap.set({ 'n', 'i', 't' }, '<a-down>', function()
+    require('smart-splits.api').resize_down()
+  end)
+  vim.keymap.set({ 'n', 'i', 't' }, '<a-up>', function()
+    require('smart-splits.api').resize_up()
+  end)
+  vim.keymap.set({ 'n', 'i', 't' }, '<a-right>', function()
+    require('smart-splits.api').resize_right()
+  end)
 
   vim.keymap.set('n', '<leader>q', function()
     for _, ui in pairs(vim.api.nvim_list_uis()) do

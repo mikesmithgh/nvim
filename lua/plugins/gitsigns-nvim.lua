@@ -1,6 +1,8 @@
 return {
   'lewis6991/gitsigns.nvim',
   enabled = true,
+  lazy = true,
+  event = { 'BufEnter' },
   config = function()
     local status, gitsigns = pcall(require, 'gitsigns')
     if not status then

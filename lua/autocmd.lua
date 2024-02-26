@@ -23,16 +23,16 @@ M.setup = function()
       if next(vim.fn.argv()) ~= nil then
         vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
       else
-        vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'ModeChanged', 'InsertEnter' }, {
-          group = vim.api.nvim_create_augroup('AfterIntro', { clear = true }),
-          pattern = { '<buffer=1>' },
-          callback = function()
-            vim.defer_fn(function()
+        if vim.env.KITTY_SCROLLBACK_NVIM ~= 'true' then
+          vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'ModeChanged', 'InsertEnter' }, {
+            group = vim.api.nvim_create_augroup('AfterIntro', { clear = true }),
+            pattern = { '<buffer=1>' },
+            callback = function()
               vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
-            end, 50)
-            return true
-          end,
-        })
+              return true
+            end,
+          })
+        end
       end
       return true
     end,
@@ -136,16 +136,16 @@ M.setup = function()
     end,
   })
 
+  -- no longer using because conform is handling it with gofmt and goimports
   -- Auto-format files prior to saving them
   -- (async = false is the default for format)
-  vim.api.nvim_create_augroup('FormatSave', { clear = true })
-  vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-    group = 'FormatSave',
-    pattern = { '*.go' },
-    callback = function()
-      vim.lsp.buf.format({ async = false })
-    end,
-  })
+  -- vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+  --   group = vim.api.nvim_create_augroup('GoFormatSave', { clear = true }),
+  --   pattern = { '*.go' },
+  --   callback = function()
+  --     vim.lsp.buf.format({ async = false })
+  --   end,
+  -- })
 
   -- vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
   --   group = vim.api.nvim_create_augroup('FormatLuaSave', { clear = true }),
@@ -264,5 +264,30 @@ M.setup = function()
     end,
   })
 end
+
+vim.api.nvim_create_autocmd({ 'VimEnter' }, {
+  group = vim.api.nvim_create_augroup('KittySetVarVimEnter', { clear = true }),
+  callback = function()
+    io.stdout:write('\x1b]1337;SetUserVar=in_editor=MQo\007')
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'VimLeave' }, {
+  group = vim.api.nvim_create_augroup('KittyUnsetVarVimLeave', { clear = true }),
+  callback = function()
+    io.stdout:write('\x1b]1337;SetUserVar=in_editor\007')
+  end,
+})
+
+-- when switching to a terminal window, automatically switch to insert mode
+-- see: https://vi.stackexchange.com/a/43781/36430
+vim.api.nvim_create_autocmd({ 'TermOpen', 'BufEnter' }, {
+  pattern = { '*' },
+  callback = function()
+    if vim.env.KITTY_SCROLLBACK_NVIM ~= 'true' and vim.o.buftype == 'terminal' then
+      vim.cmd(':startinsert')
+    end
+  end,
+})
 
 return M

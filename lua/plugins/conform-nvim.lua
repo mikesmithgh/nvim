@@ -6,6 +6,7 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         sh = { 'shfmt' },
+        go = { 'goimports', 'gofmt' },
       },
       -- If this is set, Conform will run the formatter on save.
       -- It will pass the table to conform.format().

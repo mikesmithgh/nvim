@@ -3,10 +3,8 @@ return {
   'iamcco/markdown-preview.nvim',
   enabled = true,
   lazy = true,
-  cmd = {
-    'MarkdownPreview',
-    'MarkdownPreviewStop',
-    'MarkdownPreviewToggle',
+  ft = {
+    'markdown',
   },
   build = function()
     vim.fn['mkdp#util#install']()

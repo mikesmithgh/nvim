@@ -10,6 +10,7 @@ return {
   event = 'User IntroDone',
   config = function()
     require('barbar').setup({
+      auto_hide = vim.env.KITTY_SCROLLBACK_NVIM == 'true' and 1 or -1,
       hide = { extensions = false, inactive = false },
       insert_at_end = true,
       -- Set the filetypes which barbar will offset itself for

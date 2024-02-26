@@ -3,6 +3,8 @@ return {
   {
     'tpope/vim-unimpaired',
     enabled = true,
+    lazy = true,
+    event = 'User IntroDone',
     config = function()
       vim.cmd([[
         " --- below copied from https://github.com/tpope/vim-unimpaired/blob/master/plugin/unimpaired.vim
@@ -86,23 +88,26 @@ return {
   {
     'tpope/vim-repeat',
     enabled = true,
+    lazy = true,
+    event = 'User IntroDone',
   },
   {
     'andymass/vim-matchup',
     enabled = true,
+    lazy = true,
+    event = 'User IntroDone',
     config = function()
-      -- may set any options here
       vim.g.matchup_matchparen_offscreen = { method = 'popup' }
     end,
   },
   {
     'kylechui/nvim-surround',
     enabled = true,
+    lazy = true,
+    event = 'User IntroDone',
     version = '*', -- Use for stability; omit to use `main` branch for the latest features
     config = function()
-      require('nvim-surround').setup({
-        -- Configuration here, or leave empty to use defaults
-      })
+      require('nvim-surround').setup()
     end,
   },
 }

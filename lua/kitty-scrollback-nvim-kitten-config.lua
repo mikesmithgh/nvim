@@ -1,16 +1,18 @@
+-- kitty-scrollback-nvim-kitten-config.lua
+
+-- put your general Neovim configurations here
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
-vim.opt.runtimepath:append('/Users/mike/gitrepos/kitty-scrollback.nvim')
 
 vim.keymap.set({ 'n' }, '<C-e>', '5<C-e>', {})
 vim.keymap.set({ 'n' }, '<C-y>', '5<C-y>', {})
-vim.keymap.set({ 'n' }, '<C-h>', '3h', {})
-vim.keymap.set({ 'n' }, '<C-j>', '5j', {})
-vim.keymap.set({ 'n' }, '<C-k>', '5k', {})
-vim.keymap.set({ 'n' }, '<C-l>', '3l', {})
-vim.keymap.set({ 'v' }, '<C-h>', '3h', {})
-vim.keymap.set({ 'v' }, '<C-j>', '5j', {})
-vim.keymap.set({ 'v' }, '<C-k>', '5k', {})
-vim.keymap.set({ 'v' }, '<C-l>', '3l', {})
 
-require('kitty-scrollback').setup()
+-- add kitty-scrollback.nvim to the runtimepath to allow us to require the kitty-scrollback module
+-- pick a runtimepath that corresponds with your package manager, if you are not sure leave them all it will not cause any issues
+vim.opt.runtimepath:append('/Users/mike/gitrepos/kitty-scrollback.nvim')
+vim.opt.runtimepath:append(vim.fn.stdpath('data') .. '/lazy/kitty-scrollback.nvim') -- lazy.nvim
+vim.opt.runtimepath:append(vim.fn.stdpath('data') .. '/site/pack/packer/opt/kitty-scrollback.nvim') -- packer
+vim.opt.runtimepath:append(vim.fn.stdpath('data') .. '/site/pack/mikesmithgh/start/kitty-scrollback.nvim') -- pack
+require('kitty-scrollback').setup({
+  -- put your kitty-scrollback.nvim configurations here
+})

@@ -1,6 +1,8 @@
 return {
   'leoluz/nvim-dap-go',
   enabled = true,
+  lazy = true,
+  ft = { 'go' },
   dependencies = { 'nvim-lua/plenary.nvim', 'mfussenegger/nvim-dap' },
   config = function()
     local status, Job = pcall(require, 'plenary.job')

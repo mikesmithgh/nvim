@@ -2,6 +2,8 @@ return {
   'mfussenegger/nvim-dap-python',
   dependencies = { 'mfussenegger/nvim-dap' },
   enabled = true,
+  lazy = true,
+  ft = { 'python' },
   config = function()
     local status, dap = pcall(require, 'dap')
     if not status then

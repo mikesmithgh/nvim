@@ -18,6 +18,9 @@ end
 
 M.setup = function()
   require('lazy').setup('plugins', {
+    defaults = {
+      lazy = false,
+    },
     dev = {
       -- directory where you store your local plugin projects
       path = '~/gitrepos/',

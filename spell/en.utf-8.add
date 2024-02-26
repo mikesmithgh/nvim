@@ -123,3 +123,12 @@ v3
 SIGTERM
 autocommand
 TextYankPost
+api
+myconfig
+v4
+kitty
+Filetypes
+filetype
+tmux
+winid
+bufid

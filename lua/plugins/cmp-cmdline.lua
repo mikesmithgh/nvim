@@ -60,8 +60,6 @@ return {
       ['<Down>'] = {
         c = function()
           local fn = function()
-            -- <C-u> to clear commands like :%s to avoid issues with navigating history
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-u>', true, false, true), 'n', true)
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Down>', true, false, true), 'n', true)
           end
           if cmp.visible() then
@@ -73,8 +71,6 @@ return {
       ['<Up>'] = {
         c = function()
           local fn = function()
-            -- <C-u> to clear commands like :%s to avoid issues with navigating history
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-u>', true, false, true), 'n', true)
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Up>', true, false, true), 'n', true)
           end
           if cmp.visible() then

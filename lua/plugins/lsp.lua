@@ -21,8 +21,8 @@ return {
       'onsails/lspkind.nvim',
 
       -- Snippets
-      { 'L3MON4D3/LuaSnip' },
-      { 'rafamadriz/friendly-snippets' },
+      'L3MON4D3/LuaSnip',
+      'rafamadriz/friendly-snippets',
 
       -- DAP
       'mfussenegger/nvim-dap',
@@ -33,7 +33,8 @@ return {
       'folke/neodev.nvim',
     },
     enabled = true,
-    lazy = false,
+    lazy = true,
+    event = 'User IntroDone',
     config = function()
       -- IMPORTANT: make sure to setup neodev and neoconf BEFORE lspconfig
       require('neoconf').setup()
@@ -50,10 +51,6 @@ return {
 
       -- TODO: look into the below command for importing all required packages
       -- require("mason.api.command").MasonInstall({'shfmt'}, {})
-
-      require('neogen').setup({
-        snippet_engine = 'luasnip',
-      })
 
       require('mason-lspconfig').setup({
         -- Do not use the java language server in this config, it is setup independently
@@ -91,6 +88,7 @@ return {
 
       -- copied from lsp zero
       require('nvim-cmp-setup').call_setup()
+
       local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
       local lsp_attach = function()
@@ -316,6 +314,10 @@ return {
       vim.fn.sign_define('DiagnosticSignWarn', { texthl = 'DiagnosticSignWarn', text = '▲', numhl = '' })
       vim.fn.sign_define('DiagnosticSignHint', { texthl = 'DiagnosticSignHint', text = '⚑', numhl = '' })
       vim.fn.sign_define('DiagnosticSignInfo', { texthl = 'DiagnosticSignInfo', text = '', numhl = '' })
+
+      -- since we are lazy loading lsp via the User IntroDone event, it is possible the file is already open and
+      -- doesn't trigger the FileType autocmd so lets manually start any LSP servers that may have been missed
+      vim.schedule_wrap(vim.cmd.LspStart)()
     end,
   },
 }
