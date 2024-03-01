@@ -1,6 +1,9 @@
 return {
   'mikesmithgh/borderline.nvim',
   enabled = true,
+  cond = function()
+    return vim.env.TERM == 'xterm-kitty'
+  end,
   lazy = true,
   event = { 'User IntroDone' },
   cmd = {

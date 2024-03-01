@@ -1,7 +1,6 @@
 local M = {}
 
 M.setup = function()
-  vim.api.nvim_create_augroup('BashFixCommandPreventExecuteWithoutSave', { clear = true })
   vim.api.nvim_create_augroup('Unhighlight', { clear = true })
   vim.api.nvim_create_augroup('Backup', { clear = true })
   -- vim.api.nvim_create_augroup('LspOnStartup', { clear = true })
@@ -56,7 +55,7 @@ M.setup = function()
   })
 
   vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
-    group = 'BashFixCommandPreventExecuteWithoutSave',
+    group = vim.api.nvim_create_augroup('BashFCRemoveFile', { clear = true }),
     pattern = { 'bash-fc.*' },
     callback = function()
       vim.cmd('silent! !rm <afile>')
@@ -64,14 +63,13 @@ M.setup = function()
   })
 
   vim.api.nvim_create_autocmd({ 'FileChangedShell' }, {
-    group = 'BashFixCommandPreventExecuteWithoutSave',
+    group = vim.api.nvim_create_augroup('BashFCChangedShell', { clear = true }),
     pattern = { 'bash-fc.*' },
     callback = function()
       local ok, incline = pcall(require, 'incline')
       if ok then
         vim.schedule(function()
           incline.disable()
-          vim.schedule(vim.cmd.only) -- I don't know why I need a nested schedule
           vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone' })
         end)
       end
@@ -265,20 +263,6 @@ M.setup = function()
   })
 end
 
-vim.api.nvim_create_autocmd({ 'VimEnter' }, {
-  group = vim.api.nvim_create_augroup('KittySetVarVimEnter', { clear = true }),
-  callback = function()
-    io.stdout:write('\x1b]1337;SetUserVar=in_editor=MQo\007')
-  end,
-})
-
-vim.api.nvim_create_autocmd({ 'VimLeave' }, {
-  group = vim.api.nvim_create_augroup('KittyUnsetVarVimLeave', { clear = true }),
-  callback = function()
-    io.stdout:write('\x1b]1337;SetUserVar=in_editor\007')
-  end,
-})
-
 -- when switching to a terminal window, automatically switch to insert mode
 -- see: https://vi.stackexchange.com/a/43781/36430
 vim.api.nvim_create_autocmd({ 'TermOpen', 'BufEnter' }, {
@@ -289,5 +273,24 @@ vim.api.nvim_create_autocmd({ 'TermOpen', 'BufEnter' }, {
     end
   end,
 })
+
+-- Kitty specific autocmds
+if vim.env.TERM == 'xterm-kitty' then
+  vim.api.nvim_create_autocmd({ 'VimEnter' }, {
+    group = vim.api.nvim_create_augroup('KittySetVarVimEnter', { clear = true }),
+    callback = function()
+      io.stdout:write('\x1b]1337;SetUserVar=in_editor=MQo\007')
+      return true
+    end,
+  })
+
+  vim.api.nvim_create_autocmd({ 'VimLeave' }, {
+    group = vim.api.nvim_create_augroup('KittyUnsetVarVimLeave', { clear = true }),
+    callback = function()
+      io.stdout:write('\x1b]1337;SetUserVar=in_editor\007')
+      return true
+    end,
+  })
+end
 
 return M
