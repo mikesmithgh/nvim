@@ -45,15 +45,6 @@ M.setup = function()
     end,
   })
 
-  vim.api.nvim_create_autocmd({ 'FileType' }, {
-    group = vim.api.nvim_create_augroup('WinNewBorderline', { clear = true }),
-    pattern = { '*' },
-    callback = function()
-      vim.cmd.Borderline()
-      return true
-    end,
-  })
-
   vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
     group = vim.api.nvim_create_augroup('BashFCRemoveFile', { clear = true }),
     pattern = { 'bash-fc.*' },
@@ -276,6 +267,17 @@ vim.api.nvim_create_autocmd({ 'TermOpen', 'BufEnter' }, {
 
 -- Kitty specific autocmds
 if vim.env.TERM == 'xterm-kitty' then
+  vim.api.nvim_create_autocmd({ 'FileType' }, {
+    group = vim.api.nvim_create_augroup('WinNewBorderline', { clear = true }),
+    pattern = { '*' },
+    callback = function()
+      if vim.env.TERM == 'xterm-kitty' then
+        vim.cmd.Borderline()
+      end
+      return true
+    end,
+  })
+
   vim.api.nvim_create_autocmd({ 'VimEnter' }, {
     group = vim.api.nvim_create_augroup('KittySetVarVimEnter', { clear = true }),
     callback = function()
