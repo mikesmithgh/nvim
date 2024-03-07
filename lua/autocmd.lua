@@ -25,7 +25,6 @@ M.setup = function()
         if vim.env.KITTY_SCROLLBACK_NVIM ~= 'true' then
           vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'ModeChanged', 'InsertEnter' }, {
             group = vim.api.nvim_create_augroup('AfterIntro', { clear = true }),
-            pattern = { '<buffer=1>' },
             callback = function()
               vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
               return true
@@ -267,17 +266,6 @@ vim.api.nvim_create_autocmd({ 'TermOpen', 'BufEnter' }, {
 
 -- Kitty specific autocmds
 if vim.env.TERM == 'xterm-kitty' then
-  vim.api.nvim_create_autocmd({ 'FileType' }, {
-    group = vim.api.nvim_create_augroup('WinNewBorderline', { clear = true }),
-    pattern = { '*' },
-    callback = function()
-      if vim.env.TERM == 'xterm-kitty' then
-        vim.cmd.Borderline()
-      end
-      return true
-    end,
-  })
-
   vim.api.nvim_create_autocmd({ 'VimEnter' }, {
     group = vim.api.nvim_create_augroup('KittySetVarVimEnter', { clear = true }),
     callback = function()

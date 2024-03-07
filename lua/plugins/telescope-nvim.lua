@@ -21,7 +21,9 @@ return {
   enabled = true,
   lazy = true,
   branch = '0.1.x',
-  dependencies = { 'nvim-lua/plenary.nvim' },
+  dependencies = {
+    'nvim-lua/plenary.nvim',
+  },
   event = 'User IntroDone',
   cmd = 'Telescope',
   config = function()

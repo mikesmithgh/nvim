@@ -2,7 +2,8 @@ return {
   'folke/noice.nvim',
   enabled = true,
   -- cond = vim.env.TERM ~= 'xterm-ghostty', -- see https://github.com/mitchellh/ghostty/issues/1054
-  lazy = false,
+  lazy = true,
+  event = 'User IntroDone',
   dependencies = {
     -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
     'MunifTanjim/nui.nvim',
