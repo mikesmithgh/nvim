@@ -90,6 +90,7 @@ local opts = {
       luasnip.lsp_expand(args.body)
     end,
   },
+  preselect = cmp.PreselectMode.None, -- if set to Item, it may select an item that is not the first in the list
   mapping = {
     -- confirm selection
     ['<CR>'] = function(fallback)
