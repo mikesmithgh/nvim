@@ -264,6 +264,20 @@ vim.api.nvim_create_autocmd({ 'TermOpen', 'BufEnter' }, {
   end,
 })
 
+-- Bob specific autocmds https://github.com/MordechaiHadad/bob
+if vim.env.VIM:match('.*bob.*') then
+  vim.api.nvim_create_autocmd({ 'User' }, {
+    group = vim.api.nvim_create_augroup('BobNvimIntroDone', { clear = true }),
+    pattern = { 'IntroDone' },
+    callback = function()
+      vim.defer_fn(function()
+        vim.api.nvim_notify('Using a bob neovim instance', vim.log.levels.WARN, {})
+      end, 1000)
+      return true
+    end,
+  })
+end
+
 -- Kitty specific autocmds
 if vim.env.TERM == 'xterm-kitty' then
   vim.api.nvim_create_autocmd({ 'VimEnter' }, {
