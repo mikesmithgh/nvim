@@ -141,6 +141,7 @@ M.setup = function()
       ['folke/noice.nvim'] = '💥',
       ['folke/lazy.nvim'] = '💤',
       ['folke/zen-mode.nvim'] = '🧘',
+      ['Homebrew/homebrew-cask'] = '🍺',
     }
 
     local extra_icons = {
