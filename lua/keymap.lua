@@ -6,6 +6,17 @@ M.init = function()
   vim.g.maplocalleader = ','
 end
 
+local function resize_nvim_tree()
+  local status, nvim_tree_view = pcall(require, 'nvim-tree.view')
+  if not status then
+    return
+  end
+  local nvim_tree_winnr = nvim_tree_view.get_winnr()
+  if nvim_tree_winnr then
+    nvim_tree_view.resize(vim.fn.winwidth(nvim_tree_winnr))
+  end
+end
+
 M.setup = function()
   vim.keymap.set('n', '<space>', '<nop>')
 
@@ -362,15 +373,19 @@ M.setup = function()
 
   vim.keymap.set({ 'n', 'i', 't' }, '<a-left>', function()
     require('smart-splits.api').resize_left()
+    resize_nvim_tree()
   end)
   vim.keymap.set({ 'n', 'i', 't' }, '<a-down>', function()
     require('smart-splits.api').resize_down()
+    resize_nvim_tree()
   end)
   vim.keymap.set({ 'n', 'i', 't' }, '<a-up>', function()
     require('smart-splits.api').resize_up()
+    resize_nvim_tree()
   end)
   vim.keymap.set({ 'n', 'i', 't' }, '<a-right>', function()
     require('smart-splits.api').resize_right()
+    resize_nvim_tree()
   end)
 
   vim.keymap.set('n', '<leader>q', function()
