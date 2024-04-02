@@ -27,16 +27,14 @@ M.setup = function()
   vim.opt.undodir = vim.fn.stdpath('state') .. '/undo'
   vim.opt.undofile = true
 
-  vim.opt.scroll = 5
-  vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  vim.api.nvim_create_autocmd({ 'BufEnter' }, {
     group = 'Options',
     pattern = { '*' },
-    callback = function()
-      -- causes error with DiffviewOpen so swallowing the error for now
+    callback = vim.schedule_wrap(function()
       pcall(function()
-        vim.opt.scroll = 5
+        vim.o.scroll = 5
       end)
-    end,
+    end),
   })
 
   -- Set 7 lines visible above/below the cursor

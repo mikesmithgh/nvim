@@ -40,8 +40,8 @@ M.setup = function()
 
   -- tasty keymaps modified from https://github.com/ThePrimeagen/init.lua/blob/bc8324fa1c31bd1bc81fb8a5dde684dffd324f84/lua/theprimeagen/remap.lua
   vim.keymap.set('n', 'J', 'mzJ`z')
-  vim.keymap.set('n', '<C-d>', '<C-d>zz')
-  vim.keymap.set('n', '<C-u>', '<C-u>zz')
+  -- vim.keymap.set('n', '<C-d>', '<C-d>zz') -- I don't like these because you can't scroll on a single page
+  -- vim.keymap.set('n', '<C-u>', '<C-u>zz') -- I don't like these because you can't scroll on a single page
   vim.keymap.set('n', '<C-o>', '<C-o>zz')
   vim.keymap.set('n', '<C-i>', '<C-i>zz')
   vim.keymap.set('n', '<C-t>', '<C-t>zz')
