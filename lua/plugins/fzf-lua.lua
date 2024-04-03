@@ -452,6 +452,7 @@ return {
         cwd_only = false,
         stat_file = true, -- verify files exist on disk
         include_current_session = false, -- include bufs from current session
+        file_ignore_patterns = { 'COMMIT_EDITMSG' },
       },
       buffers = {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
