@@ -37,6 +37,21 @@ return {
       }
     end
 
+    local git_prompt_string_section = function()
+      local git_prompt_string = function()
+        return vim.system({ 'git-prompt-string', '--color-disabled' }):wait().stdout
+      end
+      if not lualine.git_prompt_string then
+        lualine.git_prompt_string = git_prompt_string()
+      elseif not lualine.git_prompt_string_timer then
+        lualine.git_prompt_string_timer = vim.defer_fn(function()
+          lualine.git_prompt_string = git_prompt_string()
+          lualine.git_prompt_string_timer = nil
+        end, 3000)
+      end
+      return lualine.git_prompt_string
+    end
+
     lualine.setup({
       options = {
         icons_enabled = true,
@@ -58,7 +73,14 @@ return {
       },
       sections = {
         lualine_a = { 'mode' },
-        lualine_b = { 'branch' },
+        lualine_b = {
+          {
+            git_prompt_string_section,
+            -- color = function()
+            --   return { fg = 'green' }
+            -- end,
+          },
+        },
         -- lualine_b = { 'branch', 'diff', 'diagnostics' },
         lualine_c = { 'filename' },
         -- lualine_x = { 'encoding', 'fileformat', 'filetype' },
