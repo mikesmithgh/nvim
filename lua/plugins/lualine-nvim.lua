@@ -10,9 +10,6 @@ return {
     if not status then
       return true
     end
-    local noice
-    status, noice = pcall(require, 'noice')
-
     local git_prompt_string_section = {
       icon = '',
       function()
@@ -22,23 +19,6 @@ return {
         return lualine.git_prompt_string_color or {}
       end,
     }
-
-    local noice_status = { 'filetype' }
-    if status then
-      noice_status = {
-        {
-          noice.api.status.command.get,
-          cond = require('noice').api.status.command.has,
-        },
-        {
-          noice.api.status.mode.get,
-          cond = require('noice').api.status.mode.has,
-          color = { fg = '#dbbc5f' },
-        },
-        git_prompt_string_section,
-        { 'filetype' },
-      }
-    end
 
     local set_git_prompt_string_lualine = function()
       lualine.git_prompt_string = vim.system({ 'git-prompt-string', '--prompt-prefix=', '--json' }):wait().stdout
@@ -67,21 +47,13 @@ return {
       pattern = '*',
       callback = set_git_prompt_string_lualine,
     })
-    vim.api.nvim_create_autocmd({ 'BufEnter', 'ModeChanged' }, {
-      group = vim.api.nvim_create_augroup('GitPromptStringBufEnter', { clear = true }),
-      pattern = '*',
-      callback = function()
-        set_git_prompt_string_lualine()
-        return true
-      end,
-    })
     vim.api.nvim_create_autocmd({ 'User' }, {
-      group = vim.api.nvim_create_augroup('GitPromptStringFugitive', { clear = true }),
-      pattern = 'FugitiveChanged',
-      callback = function()
-        set_git_prompt_string_lualine()
-      end,
+      group = vim.api.nvim_create_augroup('GitPromptStringUser', { clear = true }),
+      pattern = { 'FugitiveChanged', 'VeryLazy', 'IntroDone' },
+      callback = set_git_prompt_string_lualine,
     })
+
+    set_git_prompt_string_lualine()
 
     lualine.setup({
       options = {
@@ -104,7 +76,6 @@ return {
       },
       sections = {
         lualine_a = { 'mode' },
-        -- lualine_b = { 'branch', 'diff', 'diagnostics' },
         lualine_b = {
           {
             function()
@@ -112,9 +83,19 @@ return {
             end,
           },
         },
-        lualine_c = { { 'filename', path = 1 } },
-        -- lualine_x = { 'encoding', 'fileformat', 'filetype' },
-        lualine_x = noice_status,
+        lualine_c = { git_prompt_string_section },
+        lualine_x = {
+          {
+            require('noice').api.status.command.get, ---@diagnostic disable-line: undefined-field
+            cond = require('noice').api.status.command.has, ---@diagnostic disable-line: undefined-field
+          },
+          {
+            require('noice').api.status.mode.get, ---@diagnostic disable-line: undefined-field
+            cond = require('noice').api.status.mode.has, ---@diagnostic disable-line: undefined-field
+            color = { fg = '#d6991d' },
+          },
+          { 'filetype' },
+        },
         lualine_y = { 'progress' },
         lualine_z = { 'location' },
       },
