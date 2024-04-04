@@ -37,20 +37,42 @@ return {
       }
     end
 
-    local git_prompt_string_section = function()
-      local git_prompt_string = function()
-        return vim.system({ 'git-prompt-string', '--color-disabled' }):wait().stdout
-      end
+    local git_prompt_string = function()
+      return vim.system({ 'git-prompt-string', '--prompt-prefix= ', '--json' }):wait().stdout
+    end
+    local git_prompt_string_status = function()
       if not lualine.git_prompt_string then
         lualine.git_prompt_string = git_prompt_string()
       elseif not lualine.git_prompt_string_timer then
         lualine.git_prompt_string_timer = vim.defer_fn(function()
           lualine.git_prompt_string = git_prompt_string()
           lualine.git_prompt_string_timer = nil
-        end, 3000)
+        end, 1000)
       end
-      return lualine.git_prompt_string
+
+      local git_prompt_string_json = vim.json.decode(lualine.git_prompt_string)
+      local colors = {}
+      if git_prompt_string_json.fgColor and git_prompt_string_json.fgColor ~= '' then
+        colors.fg = git_prompt_string_json.fgColor
+      end
+      if git_prompt_string_json.bgColor and git_prompt_string_json.bgColor ~= '' then
+        colors.bg = git_prompt_string_json.bgColor
+      end
+      lualine.git_prompt_string_color = colors
+      return git_prompt_string_json.promptPrefix
+        .. git_prompt_string_json.branchInfo
+        .. git_prompt_string_json.branchStatus
+        .. git_prompt_string_json.promptSuffix
     end
+
+    local git_prompt_string_section = {
+      {
+        git_prompt_string_status,
+        color = function()
+          return lualine.git_prompt_string_color
+        end,
+      },
+    }
 
     lualine.setup({
       options = {
@@ -73,16 +95,9 @@ return {
       },
       sections = {
         lualine_a = { 'mode' },
-        lualine_b = {
-          {
-            git_prompt_string_section,
-            -- color = function()
-            --   return { fg = 'green' }
-            -- end,
-          },
-        },
         -- lualine_b = { 'branch', 'diff', 'diagnostics' },
-        lualine_c = { 'filename' },
+        lualine_b = { 'filename' },
+        lualine_c = git_prompt_string_section,
         -- lualine_x = { 'encoding', 'fileformat', 'filetype' },
         lualine_x = noice_status,
         lualine_y = { 'progress' },
