@@ -15,10 +15,6 @@ return {
     local noice_status = { 'filetype' }
     if status then
       noice_status = {
-        -- {
-        --   require("noice").api.status.message.get_hl,
-        --   cond = require("noice").api.status.message.has,
-        -- },
         {
           noice.api.status.command.get,
           cond = require('noice').api.status.command.has,
@@ -28,28 +24,12 @@ return {
           cond = require('noice').api.status.mode.has,
           color = { fg = '#dbbc5f' },
         },
-        -- {
-        --   require("noice").api.status.search.get,
-        --   cond = require("noice").api.status.search.has,
-        --   color = { fg = "#dbbc5f" },
-        -- },
         { 'filetype' },
       }
     end
 
-    local git_prompt_string = function()
-      lualine.git_prompt_string = vim.system({ 'git-prompt-string', '--prompt-prefix= ', '--json' }):wait().stdout
-    end
-    local git_prompt_string_status = function()
-      if not lualine.git_prompt_string then
-        git_prompt_string()
-      elseif not lualine.git_prompt_string_timer then
-        lualine.git_prompt_string_timer = vim.defer_fn(function()
-          lualine.git_prompt_string = git_prompt_string()
-          lualine.git_prompt_string_timer = nil
-        end, 3000)
-      end
-
+    local set_git_prompt_string_lualine = function()
+      lualine.git_prompt_string = vim.system({ 'git-prompt-string', '--prompt-prefix=', '--json' }):wait().stdout
       local git_prompt_string_json = vim.json.decode(lualine.git_prompt_string)
       local colors = {}
       if git_prompt_string_json.fgColor and git_prompt_string_json.fgColor ~= '' then
@@ -59,17 +39,34 @@ return {
         colors.bg = git_prompt_string_json.bgColor
       end
       lualine.git_prompt_string_color = colors
-      return git_prompt_string_json.promptPrefix
+      lualine.git_prompt_string_status = git_prompt_string_json.promptPrefix
         .. git_prompt_string_json.branchInfo
         .. git_prompt_string_json.branchStatus
         .. git_prompt_string_json.promptSuffix
     end
 
+    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI', 'BufWritePost', 'FocusGained', 'FocusLost' }, {
+      group = vim.api.nvim_create_augroup('GitPromptStringCursorHold', { clear = true }),
+      pattern = '*',
+      callback = set_git_prompt_string_lualine,
+    })
+    vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+      group = vim.api.nvim_create_augroup('GitPromptStringBufEnter', { clear = true }),
+      pattern = '*',
+      callback = function()
+        set_git_prompt_string_lualine()
+        return true
+      end,
+    })
+
     local git_prompt_string_section = {
       {
-        git_prompt_string_status,
+        icon = '',
+        function()
+          return lualine.git_prompt_string_status or ''
+        end,
         color = function()
-          return lualine.git_prompt_string_color
+          return lualine.git_prompt_string_color or ''
         end,
       },
     }
