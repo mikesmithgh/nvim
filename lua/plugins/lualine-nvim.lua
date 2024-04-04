@@ -50,7 +50,7 @@ return {
       pattern = '*',
       callback = set_git_prompt_string_lualine,
     })
-    vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+    vim.api.nvim_create_autocmd({ 'BufEnter', 'ModeChanged' }, {
       group = vim.api.nvim_create_augroup('GitPromptStringBufEnter', { clear = true }),
       pattern = '*',
       callback = function()
