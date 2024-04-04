@@ -161,7 +161,7 @@ M.setup = function()
 
     dapui.toggle()
   end)
-  vim.keymap.set({ 'n', 't', 'v' }, '<leader><leader>n', function()
+  vim.keymap.set({ 'n', 'v' }, '<leader><leader>n', function()
     vim.cmd('NvimTreeToggle')
   end)
   vim.keymap.set('n', '<leader><leader>v', function()
