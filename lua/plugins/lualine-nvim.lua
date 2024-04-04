@@ -38,16 +38,16 @@ return {
     end
 
     local git_prompt_string = function()
-      return vim.system({ 'git-prompt-string', '--prompt-prefix= ', '--json' }):wait().stdout
+      lualine.git_prompt_string = vim.system({ 'git-prompt-string', '--prompt-prefix= ', '--json' }):wait().stdout
     end
     local git_prompt_string_status = function()
       if not lualine.git_prompt_string then
-        lualine.git_prompt_string = git_prompt_string()
+        git_prompt_string()
       elseif not lualine.git_prompt_string_timer then
         lualine.git_prompt_string_timer = vim.defer_fn(function()
           lualine.git_prompt_string = git_prompt_string()
           lualine.git_prompt_string_timer = nil
-        end, 1000)
+        end, 3000)
       end
 
       local git_prompt_string_json = vim.json.decode(lualine.git_prompt_string)
@@ -88,9 +88,9 @@ return {
         always_divide_middle = true,
         globalstatus = false,
         refresh = {
-          statusline = 1000,
-          tabline = 1000,
-          winbar = 1000,
+          statusline = 2000,
+          tabline = 2000,
+          winbar = 2000,
         },
       },
       sections = {
