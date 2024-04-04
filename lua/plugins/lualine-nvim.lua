@@ -12,6 +12,17 @@ return {
     end
     local noice
     status, noice = pcall(require, 'noice')
+
+    local git_prompt_string_section = {
+      icon = '',
+      function()
+        return lualine.git_prompt_string_status or ''
+      end,
+      color = function()
+        return lualine.git_prompt_string_color or {}
+      end,
+    }
+
     local noice_status = { 'filetype' }
     if status then
       noice_status = {
@@ -24,6 +35,7 @@ return {
           cond = require('noice').api.status.mode.has,
           color = { fg = '#dbbc5f' },
         },
+        git_prompt_string_section,
         { 'filetype' },
       }
     end
@@ -71,18 +83,6 @@ return {
       end,
     })
 
-    local git_prompt_string_section = {
-      {
-        icon = '',
-        function()
-          return lualine.git_prompt_string_status or ''
-        end,
-        color = function()
-          return lualine.git_prompt_string_color or {}
-        end,
-      },
-    }
-
     lualine.setup({
       options = {
         icons_enabled = true,
@@ -105,8 +105,14 @@ return {
       sections = {
         lualine_a = { 'mode' },
         -- lualine_b = { 'branch', 'diff', 'diagnostics' },
-        lualine_b = { 'filename' },
-        lualine_c = git_prompt_string_section,
+        lualine_b = {
+          {
+            function()
+              return vim.uv.cwd():gsub(vim.env.HOME, '~')
+            end,
+          },
+        },
+        lualine_c = { { 'filename', path = 1 } },
         -- lualine_x = { 'encoding', 'fileformat', 'filetype' },
         lualine_x = noice_status,
         lualine_y = { 'progress' },
