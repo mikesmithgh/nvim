@@ -58,6 +58,13 @@ return {
         return true
       end,
     })
+    vim.api.nvim_create_autocmd({ 'User' }, {
+      group = vim.api.nvim_create_augroup('GitPromptStringFugitive', { clear = true }),
+      pattern = 'FugitiveChanged',
+      callback = function()
+        set_git_prompt_string_lualine()
+      end,
+    })
 
     local git_prompt_string_section = {
       {
