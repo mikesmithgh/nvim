@@ -20,29 +20,74 @@ return {
       end,
     }
 
+    vim.api.nvim_set_hl(0, 'GitPromptStringClean', {
+      -- fg = 'DarkGreen',
+      fg = '#8faa80',
+      bg = '#1a1a1a',
+      default = true,
+    })
+    vim.api.nvim_set_hl(0, 'GitPromptStringDelta', {
+      -- fg = 'DarkYellow',
+      fg = '#dbbc5f',
+      bg = '#1a1a1a',
+      default = true,
+    })
+    vim.api.nvim_set_hl(0, 'GitPromptStringDirty', {
+      -- fg = 'DarkRed',
+      fg = '#ff6961',
+      bg = '#1a1a1a',
+      default = true,
+    })
+    vim.api.nvim_set_hl(0, 'GitPromptStringUntracked', {
+      -- fg = 'DarkMagenta',
+      fg = '#d3869b',
+      bg = '#1a1a1a',
+      default = true,
+    })
+    vim.api.nvim_set_hl(0, 'GitPromptStringNoUpstream', {
+      -- fg = 'DarkGray',
+      fg = '#968c81',
+      bg = '#1a1a1a',
+      default = true,
+    })
+    vim.api.nvim_set_hl(0, 'GitPromptStringMerging', {
+      -- fg = 'DarkBlue',
+      fg = '#83a598',
+      bg = '#1a1a1a',
+      default = true,
+    })
     local set_git_prompt_string_lualine = function()
-      lualine.git_prompt_string = vim.system({ 'git-prompt-string', '--prompt-prefix=', '--json' }):wait().stdout
+      lualine.git_prompt_string = vim
+        .system({
+          'git-prompt-string',
+          '--json',
+          '--prompt-prefix=',
+          '--color-clean=GitPromptStringClean',
+          '--color-delta=GitPromptStringDelta',
+          '--color-dirty=GitPromptStringDirty',
+          '--color-untracked=GitPromptStringUntracked',
+          '--color-no-upstream=GitPromptStringNoUpstream',
+          '--color-merging=GitPromptStringMerging',
+        })
+        :wait().stdout
       if lualine.git_prompt_string == '' then
         lualine.git_prompt_string_color = nil
         lualine.git_prompt_string_status = nil
         return
       end
       local git_prompt_string_json = vim.json.decode(lualine.git_prompt_string)
-      local colors = {}
-      if git_prompt_string_json.fgColor and git_prompt_string_json.fgColor ~= '' then
-        colors.fg = git_prompt_string_json.fgColor
+      local color = ''
+      if git_prompt_string_json.color and git_prompt_string_json.color ~= '' then
+        color = git_prompt_string_json.color
       end
-      if git_prompt_string_json.bgColor and git_prompt_string_json.bgColor ~= '' then
-        colors.bg = git_prompt_string_json.bgColor
-      end
-      lualine.git_prompt_string_color = colors
+      lualine.git_prompt_string_color = color
       lualine.git_prompt_string_status = git_prompt_string_json.promptPrefix
         .. git_prompt_string_json.branchInfo
         .. git_prompt_string_json.branchStatus
         .. git_prompt_string_json.promptSuffix
     end
 
-    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI', 'BufWritePost', 'FocusGained', 'FocusLost', 'DirChanged' }, {
+    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI', 'BufWritePost', 'FocusGained', 'FocusLost', 'DirChanged', 'TermLeave' }, {
       group = vim.api.nvim_create_augroup('GitPromptStringCursorHold', { clear = true }),
       pattern = '*',
       callback = set_git_prompt_string_lualine,
