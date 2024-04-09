@@ -1,7 +1,7 @@
 return {
   'nvim-lualine/lualine.nvim',
   enabled = true,
-  -- cond = not vim.g.is_kitty_scrollback_pager,
+  cond = vim.env.KITTY_SCROLLBACK_NVIM ~= 'true',
   dependencies = { 'nvim-tree/nvim-web-devicons', 'mikesmithgh/gruvsquirrel.nvim' },
   event = 'User IntroDone',
   config = function()
@@ -14,6 +14,7 @@ return {
       group = vim.api.nvim_create_augroup('LualineDirSection', { clear = true }),
       callback = function()
         cwd = relative_cwd()
+        require('lualine').refresh()
       end,
     })
     local b = {
@@ -34,9 +35,11 @@ return {
         else
           rec_msg = 'recording @' .. vim.fn.reg_recording()
         end
+        require('lualine').refresh()
       end,
     })
     local x = {
+      -- see https://github.com/nvim-lualine/lualine.nvim/issues/868
       {
         ---@diagnostic disable-next-line: undefined-field
         require('noice').api.status.command.get,
@@ -54,20 +57,12 @@ return {
 
     require('lualine').setup({
       options = {
-        icons_enabled = true,
         component_separators = { left = '', right = '' },
         section_separators = { left = '', right = '' },
-        disabled_filetypes = {
-          statusline = {},
-          winbar = {},
-        },
-        ignore_focus = {},
-        always_divide_middle = true,
-        globalstatus = true, -- sets laststatus = 3
         refresh = {
-          statusline = 5000,
-          tabline = 5000,
-          winbar = 5000,
+          statusline = 0, -- do not refresh on an interval
+          tabline = 0,
+          winbar = 0,
         },
       },
       sections = {
@@ -86,10 +81,6 @@ return {
         lualine_y = {},
         lualine_z = {},
       },
-      tabline = {},
-      winbar = {},
-      inactive_winbar = {},
-      extensions = {},
     })
   end,
 }
