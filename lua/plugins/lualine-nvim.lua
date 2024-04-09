@@ -5,105 +5,56 @@ return {
   dependencies = { 'nvim-tree/nvim-web-devicons', 'mikesmithgh/gruvsquirrel.nvim' },
   event = 'User IntroDone',
   config = function()
-    local ls = vim.o.laststatus
-    local status, lualine = pcall(require, 'lualine')
-    if not status then
-      return true
+    -- b section
+    local relative_cwd = function()
+      return vim.uv.cwd():gsub(vim.env.HOME, '~')
     end
-    local git_prompt_string_section = {
-      icon = '',
-      function()
-        return lualine.git_prompt_string_status or ''
+    local cwd = relative_cwd()
+    vim.api.nvim_create_autocmd({ 'DirChanged' }, {
+      group = vim.api.nvim_create_augroup('LualineDirSection', { clear = true }),
+      callback = function()
+        cwd = relative_cwd()
       end,
-      color = function()
-        return lualine.git_prompt_string_color or {}
-      end,
+    })
+    local b = {
+      {
+        function()
+          return cwd
+        end,
+      },
     }
 
-    vim.api.nvim_set_hl(0, 'GitPromptStringClean', {
-      -- fg = 'DarkGreen',
-      fg = '#8faa80',
-      bg = '#1a1a1a',
-      default = true,
+    -- x section
+    local rec_msg = ''
+    vim.api.nvim_create_autocmd({ 'RecordingEnter', 'RecordingLeave' }, {
+      group = vim.api.nvim_create_augroup('LualineRecordingSection', { clear = true }),
+      callback = function(e)
+        if e.event == 'RecordingLeave' then
+          rec_msg = ''
+        else
+          rec_msg = 'recording @' .. vim.fn.reg_recording()
+        end
+      end,
     })
-    vim.api.nvim_set_hl(0, 'GitPromptStringDelta', {
-      -- fg = 'DarkYellow',
-      fg = '#dbbc5f',
-      bg = '#1a1a1a',
-      default = true,
-    })
-    vim.api.nvim_set_hl(0, 'GitPromptStringDirty', {
-      -- fg = 'DarkRed',
-      fg = '#ff6961',
-      bg = '#1a1a1a',
-      default = true,
-    })
-    vim.api.nvim_set_hl(0, 'GitPromptStringUntracked', {
-      -- fg = 'DarkMagenta',
-      fg = '#d3869b',
-      bg = '#1a1a1a',
-      default = true,
-    })
-    vim.api.nvim_set_hl(0, 'GitPromptStringNoUpstream', {
-      -- fg = 'DarkGray',
-      fg = '#968c81',
-      bg = '#1a1a1a',
-      default = true,
-    })
-    vim.api.nvim_set_hl(0, 'GitPromptStringMerging', {
-      -- fg = 'DarkBlue',
-      fg = '#83a598',
-      bg = '#1a1a1a',
-      default = true,
-    })
-    local set_git_prompt_string_lualine = function()
-      lualine.git_prompt_string = vim
-        .system({
-          'git-prompt-string',
-          '--json',
-          '--prompt-prefix=',
-          '--color-clean=GitPromptStringClean',
-          '--color-delta=GitPromptStringDelta',
-          '--color-dirty=GitPromptStringDirty',
-          '--color-untracked=GitPromptStringUntracked',
-          '--color-no-upstream=GitPromptStringNoUpstream',
-          '--color-merging=GitPromptStringMerging',
-        })
-        :wait().stdout
-      if lualine.git_prompt_string == '' then
-        lualine.git_prompt_string_color = nil
-        lualine.git_prompt_string_status = nil
-        return
-      end
-      local git_prompt_string_json = vim.json.decode(lualine.git_prompt_string)
-      local color = ''
-      if git_prompt_string_json.color and git_prompt_string_json.color ~= '' then
-        color = git_prompt_string_json.color
-      end
-      lualine.git_prompt_string_color = color
-      lualine.git_prompt_string_status = git_prompt_string_json.promptPrefix
-        .. git_prompt_string_json.branchInfo
-        .. git_prompt_string_json.branchStatus
-        .. git_prompt_string_json.promptSuffix
-    end
+    local x = {
+      {
+        ---@diagnostic disable-next-line: undefined-field
+        require('noice').api.status.command.get,
+        ---@diagnostic disable-next-line: undefined-field
+        cond = require('noice').api.status.command.has,
+      },
+      {
+        function()
+          return rec_msg
+        end,
+        color = { fg = string.format('#%06x', vim.api.nvim_get_hl(0, { name = 'ModeMsg', link = false }).fg) },
+      },
+      { 'filetype' },
+    }
 
-    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI', 'BufWritePost', 'FocusGained', 'FocusLost', 'DirChanged', 'TermLeave' }, {
-      group = vim.api.nvim_create_augroup('GitPromptStringCursorHold', { clear = true }),
-      pattern = '*',
-      callback = set_git_prompt_string_lualine,
-    })
-    vim.api.nvim_create_autocmd({ 'User' }, {
-      group = vim.api.nvim_create_augroup('GitPromptStringUser', { clear = true }),
-      pattern = { 'FugitiveChanged', 'VeryLazy', 'IntroDone' },
-      callback = set_git_prompt_string_lualine,
-    })
-
-    set_git_prompt_string_lualine()
-
-    lualine.setup({
+    require('lualine').setup({
       options = {
         icons_enabled = true,
-        -- theme = 'gruvsquirrel',
         component_separators = { left = '', right = '' },
         section_separators = { left = '', right = '' },
         disabled_filetypes = {
@@ -112,35 +63,18 @@ return {
         },
         ignore_focus = {},
         always_divide_middle = true,
-        globalstatus = false,
+        globalstatus = true, -- sets laststatus = 3
         refresh = {
-          statusline = 1000,
-          tabline = 1000,
-          winbar = 1000,
+          statusline = 5000,
+          tabline = 5000,
+          winbar = 5000,
         },
       },
       sections = {
         lualine_a = { 'mode' },
-        lualine_b = {
-          {
-            function()
-              return vim.uv.cwd():gsub(vim.env.HOME, '~')
-            end,
-          },
-        },
-        lualine_c = { git_prompt_string_section },
-        lualine_x = {
-          {
-            require('noice').api.status.command.get, ---@diagnostic disable-line: undefined-field
-            cond = require('noice').api.status.command.has, ---@diagnostic disable-line: undefined-field
-          },
-          {
-            require('noice').api.status.mode.get, ---@diagnostic disable-line: undefined-field
-            cond = require('noice').api.status.mode.has, ---@diagnostic disable-line: undefined-field
-            color = { fg = '#d6991d' },
-          },
-          { 'filetype' },
-        },
+        lualine_b = b,
+        lualine_c = { 'git-prompt-string' },
+        lualine_x = x,
         lualine_y = { 'progress' },
         lualine_z = { 'location' },
       },
@@ -152,20 +86,10 @@ return {
         lualine_y = {},
         lualine_z = {},
       },
-      tabline = {
-        -- lualine_a = {'buffers'},
-        -- lualine_b = {},
-        -- lualine_c = {},
-        -- lualine_x = {},
-        -- lualine_y = {},
-        -- lualine_z = {'tabs'}
-      },
+      tabline = {},
       winbar = {},
       inactive_winbar = {},
       extensions = {},
     })
-
-    vim.o.laststatus = ls
-    return true -- return true to delete the autocommand
   end,
 }

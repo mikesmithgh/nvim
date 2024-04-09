@@ -28,7 +28,8 @@ M.setup = function()
   vim.keymap.set({ 'n', 'i', 't', 'v' }, '<c-w><c-o>', '<cmd>ZenMode<cr>', { noremap = true, silent = true })
 
   -- prefer <C-f> over q:
-  vim.keymap.set('n', 'q:', ':')
+  -- causes a delay when stopping a macro
+  -- vim.keymap.set('n', 'q:', ':')
 
   -- enable hlsearch before search
   vim.keymap.set('n', '/', ':set hlsearch<cr>/')

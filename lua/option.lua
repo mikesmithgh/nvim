@@ -177,7 +177,7 @@ M.setup = function()
   vim.opt.cmdheight = 0
 
   -- => Status line
-  vim.opt.laststatus = 3
+  vim.o.laststatus = 3
 
   -- not using this, this gives better treesitter highlights for TODO, NOTE, ERROR but disables lua lang server highlights
   -- highlight priorities
