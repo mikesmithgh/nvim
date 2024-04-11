@@ -104,8 +104,6 @@ return {
         quit_on_focus_loss = true,
         open_win_config = {
           relative = 'editor',
-          -- border = 'rounded',
-          -- border = require('style').border.thinblock,
           width = 30,
           height = 30,
           row = 1,
@@ -125,8 +123,6 @@ return {
           local center_x = (screen_w - window_w) / 2
           local center_y = ((vim.opt.lines:get() - window_h) / 2) - vim.opt.cmdheight:get()
           return {
-            -- border = 'none',
-            -- border = require('style').border.thinblock,
             relative = 'editor',
             row = center_y,
             col = center_x,
@@ -305,8 +301,6 @@ return {
               col = 1,
               row = 1,
               relative = 'cursor',
-              -- border = 'shadow',
-              -- border = require('style').border.thinblock,
               style = 'minimal',
             },
           },

@@ -99,8 +99,6 @@ return {
         -- Create your keybindings here...
       end
 
-      -- require('lspconfig.ui.windows').default_options.border = require('style').border.thinblock
-
       local lspconfig = require('lspconfig')
       require('mason-lspconfig').setup_handlers({
         function(server_name)

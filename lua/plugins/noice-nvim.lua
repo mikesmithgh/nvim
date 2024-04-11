@@ -73,27 +73,6 @@ return {
           view = 'mini',
         },
       },
-      --   {
-      --     view = 'hover',
-      --     opts = {
-      --       -- border = {
-      --       --   style = require('style').border.thinblock,
-      --       -- },
-      --       position = { row = 2, col = 2 },
-      --     },
-      --     filter = { event = 'lsp', kind = 'signature' },
-      --   },
-      --   {
-      --     view = 'hover',
-      --     opts = {
-      --       -- border = {
-      --       --   style = require('style').border.thinblock,
-      --       -- },
-      --       position = { row = 2, col = 2 },
-      --     },
-      --     filter = { event = 'lsp', kind = 'hover' },
-      --   },
-      -- },
     })
   end,
 }
