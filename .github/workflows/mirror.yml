@@ -1,0 +1,18 @@
+name: mirror
+on:
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-22.04
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: (debug) Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+
