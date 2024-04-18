@@ -68,7 +68,7 @@ return {
       sections = {
         lualine_a = { 'mode' },
         lualine_b = b,
-        lualine_c = { 'git-prompt-string' },
+        lualine_c = { 'git_prompt_string' },
         lualine_x = x,
         lualine_y = { 'progress' },
         lualine_z = { 'location' },
