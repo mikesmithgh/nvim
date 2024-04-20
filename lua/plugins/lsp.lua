@@ -38,7 +38,9 @@ return {
     config = function()
       -- IMPORTANT: make sure to setup neodev and neoconf BEFORE lspconfig
       require('neoconf').setup()
-      require('neodev').setup()
+      require('neodev').setup({
+        library = { plugins = { 'nvim-dap-ui' }, types = true },
+      })
 
       require('mason').setup({
         ui = {
