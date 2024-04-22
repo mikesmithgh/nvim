@@ -112,7 +112,6 @@ M.setup = function()
         '-org:mikesmithgh',
       })
       :wait().stdout or '{}'
-    so = contribs
 
     -- :wait().stdout or '{}'
     local contribs_json = vim.json.decode(contribs)
