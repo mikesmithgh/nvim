@@ -7,7 +7,7 @@ return {
   init = function()
     vim.g.barbar_auto_setup = false
   end,
-  event = 'User IntroDone',
+  event = 'VeryLazy',
   config = function()
     require('barbar').setup({
       auto_hide = vim.env.KITTY_SCROLLBACK_NVIM == 'true' and 1 or -1,

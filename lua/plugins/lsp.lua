@@ -34,7 +34,7 @@ return {
     },
     enabled = true,
     lazy = true,
-    event = 'User IntroDone',
+    event = 'VeryLazy',
     config = function()
       -- IMPORTANT: make sure to setup neodev and neoconf BEFORE lspconfig
       require('neoconf').setup()

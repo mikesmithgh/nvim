@@ -5,7 +5,7 @@ return {
   dependencies = {
     'nvim-tree/nvim-web-devicons', -- optional, for file icons
   },
-  event = 'User IntroDone',
+  event = 'VeryLazy',
   cmd = { 'NvimTreeToggle', 'NvimTreeFindFile', 'NvimTreeFocus' },
   config = function()
     local status, nvim_tree = pcall(require, 'nvim-tree')

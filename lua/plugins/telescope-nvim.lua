@@ -18,7 +18,7 @@ return {
   dependencies = {
     'nvim-lua/plenary.nvim',
   },
-  event = 'User IntroDone',
+  event = 'VeryLazy',
   cmd = 'Telescope',
   config = function()
     require('telescope').setup({

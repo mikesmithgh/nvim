@@ -7,7 +7,7 @@ return {
     'mikesmithgh/gruvsquirrel.nvim',
     'mikesmithgh/borderline.nvim',
   },
-  event = 'User IntroDone',
+  event = 'VeryLazy',
   cmd = 'FzfLua',
   init = function()
     vim.fn.mkdir(vim.fn.stdpath('state') .. '/fzf-lua/', 'p')

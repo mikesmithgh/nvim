@@ -10,20 +10,10 @@ return {
       vim.g.mapleader = ' '
       vim.g.maplocalleader = ','
       require('kitty-scrollback').setup({
-        {
-          callbacks = {
-            after_ready = function()
-              vim.defer_fn(function()
-                vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
-              end, 100)
-            end,
-          },
-        },
         search = {
           callbacks = {
             after_ready = function()
               vim.defer_fn(function()
-                vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
                 vim.api.nvim_feedkeys('?', 'n', false)
               end, 100)
             end,

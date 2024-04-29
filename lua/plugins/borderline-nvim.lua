@@ -5,7 +5,7 @@ return {
     return vim.env.TERM == 'xterm-kitty'
   end,
   lazy = true,
-  event = { 'User IntroDone' },
+  event = { 'VeryLazy' },
   cmd = {
     'Borderline',
     'BorderlineDev',

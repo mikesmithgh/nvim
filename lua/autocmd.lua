@@ -14,36 +14,6 @@ M.setup = function()
     end,
   })
 
-  vim.api.nvim_create_autocmd({ 'User' }, {
-    group = vim.api.nvim_create_augroup('VeryLazyAfterIntro', { clear = true }),
-    pattern = { 'VeryLazy' },
-    callback = function()
-      ---@diagnostic disable-next-line: param-type-mismatch
-      if next(vim.fn.argv()) ~= nil then
-        vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
-      else
-        if vim.env.KITTY_SCROLLBACK_NVIM ~= 'true' then
-          vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'ModeChanged', 'InsertEnter' }, {
-            group = vim.api.nvim_create_augroup('AfterIntro', { clear = true }),
-            callback = function()
-              vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
-              return true
-            end,
-          })
-        end
-      end
-      return true
-    end,
-  })
-
-  vim.api.nvim_create_autocmd({ 'StdinReadPost', 'WinEnter' }, {
-    group = vim.api.nvim_create_augroup('PostAfterIntro', { clear = true }),
-    callback = function()
-      vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone', modeline = false })
-      return true
-    end,
-  })
-
   vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
     group = vim.api.nvim_create_augroup('BashFCRemoveFile', { clear = true }),
     pattern = { 'bash-fc.*' },
@@ -60,7 +30,6 @@ M.setup = function()
       if ok then
         vim.schedule(function()
           incline.disable()
-          vim.api.nvim_exec_autocmds('User', { pattern = 'IntroDone' })
         end)
       end
       vim.api.nvim_notify('To execute the command you must write the buffer contents.', vim.log.levels.WARN, {})
@@ -186,7 +155,7 @@ vim.api.nvim_create_autocmd({ 'TermOpen', 'BufEnter' }, {
 if vim.env.VIM:match('.*%.local/share/bob.*') then
   vim.api.nvim_create_autocmd({ 'User' }, {
     group = vim.api.nvim_create_augroup('BobNvimIntroDone', { clear = true }),
-    pattern = { 'IntroDone' },
+    pattern = { 'VeryLazy' },
     callback = function()
       vim.defer_fn(function()
         vim.api.nvim_notify('Using a bob neovim instance', vim.log.levels.WARN, {})

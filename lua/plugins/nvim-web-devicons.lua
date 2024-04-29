@@ -3,7 +3,7 @@ return {
   dev = false,
   enabled = true,
   lazy = true,
-  event = 'User IntroDone',
+  event = 'VeryLazy',
   config = function()
     require('gruvsquirrel.plugins.nvim-web-devicons').setup()
   end,
