@@ -285,13 +285,11 @@ return {
         end,
         ['kotlin_language_server'] = function()
           ---@diagnostic disable-next-line: missing-fields
-          lspconfig.kotlin_language_server.setup({})
-          -- kotlin = {
-          --   -- root_dir = function()
-          --   --   vim.print('root dir here')
-          --   --   util.root_pattern('settings.gradle', 'settings.gradle.kts')
-          --   -- end
-          -- },
+          lspconfig.kotlin_language_server.setup({
+            -- kotlin language server is still not in a place to use for dev
+            -- keep config for now but do not autostart to avoid conflicts with IntelliJ
+            autostart = false,
+          })
         end,
       })
 
@@ -315,10 +313,6 @@ return {
       vim.fn.sign_define('DiagnosticSignWarn', { texthl = 'DiagnosticSignWarn', text = '▲', numhl = '' })
       vim.fn.sign_define('DiagnosticSignHint', { texthl = 'DiagnosticSignHint', text = '⚑', numhl = '' })
       vim.fn.sign_define('DiagnosticSignInfo', { texthl = 'DiagnosticSignInfo', text = '', numhl = '' })
-
-      -- since we are lazy loading lsp via the User IntroDone event, it is possible the file is already open and
-      -- doesn't trigger the FileType autocmd so lets manually start any LSP servers that may have been missed
-      vim.schedule_wrap(vim.cmd.LspStart)()
     end,
   },
 }

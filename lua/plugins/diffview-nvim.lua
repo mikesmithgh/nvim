@@ -1,5 +1,7 @@
 return {
   'sindrets/diffview.nvim',
+  -- 'mikesmithgh/diffview.nvim',
+  -- branch = 'fix-islist', -- see https://github.com/sindrets/diffview.nvim/pull/489
   lazy = true,
   cmd = {
     'DiffviewLog',
