@@ -55,11 +55,14 @@ M.setup = function()
   vim.keymap.set('n', '<a-n>', 'j0nzzzv')
   vim.keymap.set('n', '<a-s-n>', '0Nzzzv')
 
-  -- Show all diagnostics on current line in floating window
-
-  vim.keymap.set({ 'n' }, '<Leader>d', vim.diagnostic.open_float, { noremap = true, silent = true })
-  vim.keymap.set({ 'n' }, ']d', vim.diagnostic.goto_next, {})
-  vim.keymap.set({ 'n' }, '[d', vim.diagnostic.goto_prev, {})
+  --- Diagnostics
+  --- Differs from defaults by showing floating window
+  --- See https://github.com/neovim/neovim/blob/42aa69b076cb338e20b5b4656771f1873e8930d8/runtime/lua/vim/_defaults.lua#L154
+  do
+    vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Jump to the next diagnostic' })
+    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Jump to the previous diagnostic' })
+    -- removed <Leader>d, prefer default <C-W>d
+  end
 
   -- black hole register "_
   vim.keymap.set('n', 'x', '"_x')
@@ -208,7 +211,7 @@ M.setup = function()
   -- see https://github.com/nvim-tree/nvim-web-devicons/issues/355
 
   vim.keymap.set('n', 's<leader>', function()
-    require('fzf-lua.cmd').load_command()
+    require('fzf-lua.cmd').run_command()
   end)
   vim.keymap.set('n', 'sa', function()
     require('fzf-lua').files({
@@ -422,6 +425,15 @@ M.setup = function()
   vim.keymap.set('n', 'SS', '<Plug>(nvim-surround-normal-cur)')
   vim.keymap.set('n', 'Sc', '<Plug>(nvim-surround-change)')
   vim.keymap.set('n', 'Sd', '<Plug>(nvim-surround-delete)')
+
+  --- Commenting
+  --- See https://github.com/neovim/neovim/blob/42aa69b076cb338e20b5b4656771f1873e8930d8/runtime/lua/vim/_defaults.lua#L132
+  do
+    vim.keymap.set({ 'n' }, '<C-/>', 'gcc', { remap = true })
+    vim.keymap.set({ 'v' }, '<C-/>', 'gc', { remap = true })
+    vim.keymap.set({ 'n' }, '<D-/>', 'gcc', { remap = true })
+    vim.keymap.set({ 'v' }, '<D-/>', 'gc', { remap = true })
+  end
 end
 
 -- ideas

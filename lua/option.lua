@@ -1,9 +1,6 @@
 local M = {}
 
 M.setup = function()
-  vim.api.nvim_create_augroup('Options', { clear = true })
-  vim.api.nvim_create_augroup('Comments', { clear = true })
-
   -- globals
   -- disable netrw at the very start of your init.lua (strongly advised) Nvimtree
   -- vim.g.loaded_netrw = 1
@@ -28,7 +25,7 @@ M.setup = function()
   vim.opt.undofile = true
 
   vim.api.nvim_create_autocmd({ 'BufEnter' }, {
-    group = 'Options',
+    group = vim.api.nvim_create_augroup('Options', { clear = true }),
     pattern = { '*' },
     callback = vim.schedule_wrap(function()
       pcall(function()
@@ -163,7 +160,7 @@ M.setup = function()
   -- disable auto insert of comment after <cr> or o O
   vim.opt.formatoptions = vim.opt.formatoptions - { 'r', 'o' }
   vim.api.nvim_create_autocmd({ 'FileType' }, {
-    group = 'Comments',
+    group = vim.api.nvim_create_augroup('Comments', { clear = true }),
     pattern = { '*' },
     callback = function()
       vim.opt.formatoptions = vim.opt.formatoptions - { 'r', 'o' }
@@ -177,6 +174,8 @@ M.setup = function()
   vim.opt.cmdheight = 0
 
   -- => Status line
+  -- lualine will override these values
+  vim.o.statusline = [[%#EndOfBuffer#%<~%=neovim btw ]]
   vim.o.laststatus = 3
 
   -- not using this, this gives better treesitter highlights for TODO, NOTE, ERROR but disables lua lang server highlights

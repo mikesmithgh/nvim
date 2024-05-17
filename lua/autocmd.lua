@@ -14,6 +14,28 @@ M.setup = function()
     end,
   })
 
+  vim.api.nvim_create_autocmd({ 'User' }, {
+    group = vim.api.nvim_create_augroup('VeryLazyAfterIntro', { clear = true }),
+    pattern = { 'VeryLazy' },
+    callback = function()
+      ---@diagnostic disable-next-line: param-type-mismatch
+      if next(vim.fn.argv()) ~= nil then
+        vim.api.nvim_exec_autocmds('User', { pattern = 'AfterIntro', modeline = false })
+      else
+        if vim.env.KITTY_SCROLLBACK_NVIM ~= 'true' then
+          vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI', 'ModeChanged', 'InsertEnter' }, {
+            group = vim.api.nvim_create_augroup('AfterIntro', { clear = true }),
+            callback = function()
+              vim.api.nvim_exec_autocmds('User', { pattern = 'AfterIntro', modeline = false })
+              return true
+            end,
+          })
+        end
+      end
+      return true
+    end,
+  })
+
   vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
     group = vim.api.nvim_create_augroup('BashFCRemoveFile', { clear = true }),
     pattern = { 'bash-fc.*' },

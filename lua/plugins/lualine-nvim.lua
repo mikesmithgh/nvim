@@ -3,7 +3,8 @@ return {
   enabled = true,
   cond = vim.env.KITTY_SCROLLBACK_NVIM ~= 'true',
   dependencies = { 'nvim-tree/nvim-web-devicons', 'mikesmithgh/gruvsquirrel.nvim' },
-  event = 'VeryLazy',
+  lazy = true,
+  event = 'User AfterIntro',
   config = function()
     -- b section
     local relative_cwd = function()
