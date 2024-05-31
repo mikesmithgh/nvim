@@ -206,6 +206,9 @@ M.setup = function()
   vim.keymap.set('n', '<leader><leader>c', function()
     vim.cmd('ColorizerToggle')
   end)
+  vim.keymap.set({ 'n', 'v' }, '<leader><leader>h', function()
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+  end)
 
   -- all fzf-lua commands are wrapped in functions to avoid triggering nvim-web-devicons
   -- see https://github.com/nvim-tree/nvim-web-devicons/issues/355

@@ -94,11 +94,10 @@ return {
 
       local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-      local lsp_attach = function()
-        -- local library = require('lspconfig').lua_ls.manager.config.settings.Lua.workspace.library
-        -- vim.schedule_wrap(vim.print)(library)
-        -- vim.schedule_wrap(vim.print)(client, bufnr)
-        -- Create your keybindings here...
+      local lsp_attach = function(client, bufnr)
+        -- if client.server_capabilities.inlayHintProvider then
+        --   vim.lsp.inlay_hint.enable()
+        -- end
       end
 
       local lspconfig = require('lspconfig')
@@ -113,6 +112,7 @@ return {
           -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#gopls
           -- and https://github.com/golang/tools/blob/master/gopls/doc/settings.md
           lspconfig.gopls.setup({
+            on_attach = lsp_attach,
             filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
             settings = {
               gopls = {
@@ -120,12 +120,19 @@ return {
                 -- staticcheck enables additional analyses from staticcheck.io. These analyses are documented on Staticcheck's website.
                 -- https://staticcheck.dev/docs/checks/
                 staticcheck = true,
+                hints = {
+                  -- see https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md
+                  compositeLiteralFields = true,
+                  constantValues = true,
+                  parameterNames = true,
+                },
               },
             },
           })
         end,
         ['lua_ls'] = function()
           lspconfig.lua_ls.setup({
+            on_attach = lsp_attach,
             filetypes = { 'lua' },
             settings = {
               ---@diagnostic disable-next-line: missing-fields
@@ -172,7 +179,8 @@ return {
                   },
                 },
                 hint = {
-                  arrayIndex = 'Enable',
+                  -- see https://github.com/LuaLS/lua-language-server/wiki/Settings#hintenable
+                  arrayIndex = 'Auto',
                   await = true,
                   enable = true,
                   paramName = 'All',
@@ -198,6 +206,7 @@ return {
         end,
         ['pylsp'] = function()
           lspconfig.pylsp.setup({
+            on_attach = lsp_attach,
             root_dir = function(fname)
               local util = require('lspconfig.util')
               local root_files = {
@@ -243,6 +252,7 @@ return {
         end,
         ['yamlls'] = function()
           lspconfig.yamlls.setup({
+            on_attach = lsp_attach,
             filetypes = { 'yaml', 'yaml.docker-compose', 'yml' },
             ---@diagnostic disable-next-line: missing-fields
             settings = {
@@ -262,6 +272,7 @@ return {
         end,
         ['bashls'] = function()
           lspconfig.bashls.setup({
+            on_attach = lsp_attach,
             filetypes = { 'sh', 'bash' },
             settings = {
               -- see https://github.com/bash-lsp/bash-language-server/blob/main/server/src/config.ts
@@ -286,8 +297,8 @@ return {
         ['kotlin_language_server'] = function()
           ---@diagnostic disable-next-line: missing-fields
           lspconfig.kotlin_language_server.setup({
+            on_attach = lsp_attach,
             -- kotlin language server is still not in a place to use for dev
-            -- keep config for now but do not autostart to avoid conflicts with IntelliJ
             autostart = false,
           })
         end,
