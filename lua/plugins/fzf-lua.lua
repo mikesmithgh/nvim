@@ -674,7 +674,7 @@ return {
       },
       helptags = {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
-          ['--delimiter'] = "'[ ]'",
+          ['--delimiter'] = '[ ]',
           ['--with-nth'] = '1',
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/helptags-history.txt',
         }),
