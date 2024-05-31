@@ -475,7 +475,7 @@ return {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/tabs-history.txt',
           -- hide tabnr
-          ['--delimiter'] = "'[\\):]'",
+          ['--delimiter'] = '[\\):]',
           ['--with-nth'] = '2..',
         }),
         prompt = 'Tabs󰅂 ',
@@ -494,7 +494,7 @@ return {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/lines-history.txt',
           -- do not include bufnr in fuzzy matching
           -- tiebreak by line no.
-          ['--delimiter'] = "'[\\]:]'",
+          ['--delimiter'] = '[\\]:]',
           ['--nth'] = '2..',
           ['--tiebreak'] = 'index',
         }),
@@ -513,7 +513,7 @@ return {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/blines-history.txt',
           -- hide filename, tiebreak by line no.
-          ['--delimiter'] = "'[\\]:]'",
+          ['--delimiter'] = '[\\]:]',
           ['--with-nth'] = '2..',
           ['--tiebreak'] = 'index',
         }),
@@ -552,7 +552,7 @@ return {
       btags = {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
           ['--history'] = vim.fn.stdpath('state') .. '/fzf-lua/btags-history.txt',
-          ['--delimiter'] = "'[\\]:]'",
+          ['--delimiter'] = '[\\]:]',
           ['--with-nth'] = '2..',
           ['--tiebreak'] = 'index',
         }),
