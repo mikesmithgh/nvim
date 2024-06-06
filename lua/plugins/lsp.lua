@@ -38,6 +38,7 @@ return {
     config = function()
       -- IMPORTANT: make sure to setup neodev and neoconf BEFORE lspconfig
       require('neoconf').setup()
+      -- TODO: replace neodev with lazydev.nvim https://github.com/folke/lazydev.nvim
       require('neodev').setup({
         library = { plugins = { 'nvim-dap-ui' }, types = true },
       })
