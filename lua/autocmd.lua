@@ -173,6 +173,28 @@ vim.api.nvim_create_autocmd({ 'TermOpen', 'BufEnter' }, {
   end,
 })
 
+-- highlight yanks after yanking
+vim.api.nvim_create_autocmd({ 'TextYankPost' }, {
+  group = vim.api.nvim_create_augroup('TextYankPostGroup', { clear = true }),
+  callback = function()
+    vim.highlight.on_yank({
+      higroup = 'Visual',
+      timeout = 300,
+      on_visual = false,
+    })
+    local event = vim.v.event
+    if vim.fn.reg_executing() ~= '' or event.operator ~= 'y' or vim.regtype == '' or event.visual then
+      return
+    end
+    if vim.o.cursorline then
+      vim.o.cursorline = false
+      vim.defer_fn(function()
+        vim.o.cursorline = true
+      end, 300)
+    end
+  end,
+})
+
 -- Bob specific autocmds https://github.com/MordechaiHadad/bob
 if vim.env.VIM:match('.*%.local/share/bob.*') then
   vim.api.nvim_create_autocmd({ 'User' }, {
