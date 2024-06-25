@@ -34,6 +34,12 @@ local function sources()
   register('cmp_nvim_lua', { name = 'nvim_lua', keyword_length = 3 }) -- may not need, lsp seems to be handling this
   register('cmp_emoji', { name = 'emoji', keyword_length = 1 })
 
+  -- TODO: see if you can use register function
+  table.insert(result, {
+    name = 'lazydev',
+    group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+  })
+
   return result
 end
 

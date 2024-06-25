@@ -28,21 +28,13 @@ return {
       'mfussenegger/nvim-dap',
       'jay-babu/mason-nvim-dap.nvim',
 
-      -- IMPORTANT: make sure to setup neodev and neoconf BEFORE lspconfig
       'folke/neoconf.nvim',
-      'folke/neodev.nvim',
+      'folke/lazydev.nvim',
     },
     enabled = true,
     lazy = true,
     event = 'VeryLazy',
     config = function()
-      -- IMPORTANT: make sure to setup neodev and neoconf BEFORE lspconfig
-      require('neoconf').setup()
-      -- TODO: replace neodev with lazydev.nvim https://github.com/folke/lazydev.nvim
-      require('neodev').setup({
-        library = { plugins = { 'nvim-dap-ui' }, types = true },
-      })
-
       require('mason').setup({
         ui = {
           border = 'rounded',
@@ -327,4 +319,22 @@ return {
       vim.fn.sign_define('DiagnosticSignInfo', { texthl = 'DiagnosticSignInfo', text = '', numhl = '' })
     end,
   },
+  {
+    'folke/neoconf.nvim',
+    config = function()
+      require('neoconf').setup()
+    end,
+  },
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua', -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+      },
+    },
+  },
+  { 'Bilal2453/luvit-meta', lazy = true }, -- optional `vim.uv` typings
 }
