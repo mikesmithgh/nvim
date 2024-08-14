@@ -1,22 +1,39 @@
 return {
   {
     'nvim-neorg/neorg',
-    build = ':Neorg sync-parsers',
-    enabled = false,
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+    version = '*', -- Pin Neorg to the latest stable release
     config = function()
       require('neorg').setup({
         load = {
           ['core.defaults'] = {}, -- Loads default behaviour
-          ['core.concealer'] = {}, -- Adds pretty icons to your documents
           ['core.dirman'] = { -- Manages Neorg workspaces
             config = {
               default_workspace = 'notes',
               workspaces = {
-                notes = '~/Documents/notes',
+                notes = '~/neorg/notes',
               },
+              index = 'index.norg', -- The name of the main (root) .norg file
+              use_popup = true,
             },
           },
+          ['core.summary'] = {},
+          ['core.concealer'] = {
+            -- config = {
+            --   icons = {
+            --     todo = {
+            --       pending = {
+            --         icon = 'y',
+            --       },
+            --     },
+            --   },
+            -- },
+          }, -- Adds pretty icons to your documents
+          ['core.itero'] = {}, -- <M-CR> to add header/list items
+          ['core.promo'] = {}, -- promotes/demotes headers, etc
+          ['core.qol.toc'] = {},
+          ['core.qol.todo_items'] = {},
+          ['core.export'] = {},
         },
       })
     end,
