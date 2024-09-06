@@ -462,14 +462,7 @@ return {
         file_icons = true, -- show file icons?
         color_icons = true, -- colorize file|git icons
         sort_lastused = true, -- sort buffers() by last used
-        actions = {
-          -- actions inherit from 'actions.buffers' and merge
-          -- by supplying a table of functions we're telling
-          -- fzf-lua to not close the fzf window, this way we
-          -- can resume the buffers picker on the same window
-          -- eliminating an otherwise unaesthetic win "flash"
-          ['ctrl-x'] = { actions.buf_del, actions.resume },
-        },
+        actions = { ['ctrl-x'] = { fn = actions.buf_del, reload = true } },
       },
       tabs = {
         fzf_opts = vim.tbl_extend('force', global_fzf_opts, {
