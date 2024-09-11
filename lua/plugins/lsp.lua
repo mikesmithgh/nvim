@@ -60,7 +60,7 @@ return {
           'kotlin_language_server',
           'pylsp',
           'gopls',
-          'tsserver',
+          'ts_ls',
         },
       })
 
