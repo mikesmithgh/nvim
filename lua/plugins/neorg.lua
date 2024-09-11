@@ -1,6 +1,7 @@
 return {
   {
     'nvim-neorg/neorg',
+    enabled = true,
     lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
     version = '*', -- Pin Neorg to the latest stable release
     config = function()
@@ -34,6 +35,8 @@ return {
           ['core.qol.toc'] = {},
           ['core.qol.todo_items'] = {},
           ['core.export'] = {},
+          -- https://github.com/nvim-neorg/neorg/wiki/Metagen
+          ['core.esupports.metagen'] = { config = { update_date = false } }, -- do not update date until https://github.com/nvim-neorg/neorg/issues/1579 fixed
         },
       })
     end,

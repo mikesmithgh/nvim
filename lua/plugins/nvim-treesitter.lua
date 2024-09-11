@@ -14,10 +14,10 @@ return {
         -- A list of parser names, or "all"
         ensure_installed = {
           'bash',
-          'c',
+          -- 'c', -- provided by nvim
           'comment',
           'cpp',
-          'lua',
+          -- 'lua', -- provided by nvim
           'diff',
           'dockerfile',
           'fish',
@@ -39,7 +39,11 @@ return {
           -- 'json5', -- I think this was causing vi to crash on startup on 8/14/2023
           'lua',
           'make',
-          'markdown',
+          -- 'markdown', -- provided by nvim
+          -- 'markdown_inline', -- provided by nvim
+          -- 'norg', -- provided by :Neorg sync-parsers
+          -- 'norg_meta', -- provided by :Neorg sync-parsers
+          -- 'query', -- provided by nvim
           'python',
           'regex',
           'ruby',
@@ -47,8 +51,9 @@ return {
           'sql',
           'todotxt',
           'toml',
-          'vim',
-          'vimdoc',
+          'typescript',
+          -- 'vim', -- provided by nvim
+          -- 'vimdoc', -- provided by nvim
           'yaml',
         },
 
