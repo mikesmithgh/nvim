@@ -40,7 +40,7 @@ M.setup = function()
   vim.keymap.set('n', 'g#', ':set hlsearch<cr>g#')
 
   -- tasty keymaps modified from https://github.com/ThePrimeagen/init.lua/blob/bc8324fa1c31bd1bc81fb8a5dde684dffd324f84/lua/theprimeagen/remap.lua
-  vim.keymap.set('n', 'J', 'mzJ`z')
+  -- vim.keymap.set('n', 'J', 'mzJ`z') -- not a fan what can I say
   -- vim.keymap.set('n', '<C-d>', '<C-d>zz') -- I don't like these because you can't scroll on a single page
   -- vim.keymap.set('n', '<C-u>', '<C-u>zz') -- I don't like these because you can't scroll on a single page
   vim.keymap.set('n', '<C-o>', '<C-o>zz')
