@@ -6,6 +6,31 @@ return {
   lazy = true,
   event = 'User AfterIntro',
   config = function()
+    -- The events on which lualine redraws itself, this was removed from lualine in
+    -- commit = '640260d'
+    -- https://github.com/nvim-lualine/lualine.nvim/pull/1316
+    -- however, I prefer autocmds over polling so I'm keeping it
+    local default_refresh_events = {
+      'WinEnter',
+      'BufEnter',
+      'BufWritePost',
+      'SessionLoadPost',
+      'FileChangedShellPost',
+      'VimResized',
+      'Filetype',
+      'CursorMoved',
+      'CursorMovedI',
+      'ModeChanged',
+    }
+    vim.api.nvim_create_autocmd(default_refresh_events, {
+      group = vim.api.nvim_create_augroup('LualineRefreshEvents', { clear = true }),
+      callback = function()
+        vim.schedule(function()
+          require('lualine').refresh()
+        end)
+      end,
+    })
+
     -- b section
     local relative_cwd = function()
       return vim.uv.cwd():gsub(vim.env.HOME, '~')
