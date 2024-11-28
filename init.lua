@@ -1,3 +1,8 @@
+if vim.g.vscode then
+  vim.notify('Your personal config is disabled. VSCode Neovim is not supported.', vim.log.levels.WARN, {})
+  return
+end
+
 if vim.fn.has('nvim-0.10') == 0 then
   vim.notify('Your personal config is disabled. Neovim v0.10+ is required.', vim.log.levels.WARN, {})
   return
