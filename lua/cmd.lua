@@ -241,6 +241,37 @@ M.setup = function()
     bar = false,
     register = false,
   })
+
+  vim.api.nvim_create_user_command('FormatJira', function()
+    local issue_id = vim.fn.expand('<cWORD>'):match('FTE%-%d+')
+    if issue_id == nil then
+      issue_id = vim.fn.expand('<cWORD>'):match('^%d+$')
+      issue_id = issue_id and 'FTE-' .. issue_id
+    end
+    if issue_id == nil then
+      issue_id = vim.fn.expand('<cWORD>'):match('^%d+$')
+      vim.notify('could not parse Jira issue ID', vim.log.levels.ERROR, {})
+      return
+    end
+    local issue = vim
+      .system({
+        'curl',
+        '--user',
+        vim.env.JIRA_API_USER .. ':' .. vim.env.JIRA_API_TOKEN,
+        '--header',
+        'Accept: application/json',
+        vim.env.JIRA_API_URL .. '/rest/api/3/issue/' .. issue_id .. '?fields=summary',
+      })
+      :wait().stdout or '{}'
+
+    local issue_json = vim.json.decode(issue)
+    local issue_link = vim.env.JIRA_API_URL .. '/browse/' .. issue_json.key
+    vim.cmd.normal({ 'mmciW{' .. issue_link .. '}[' .. issue_json.key .. ' ' .. issue_json.fields.summary .. ']', bang = true })
+    vim.cmd.normal({ '0`m', bang = true })
+  end, {
+    bar = false,
+    register = false,
+  })
 end
 
 return M
