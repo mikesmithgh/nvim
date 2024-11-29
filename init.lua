@@ -8,9 +8,6 @@ if vim.fn.has('nvim-0.10') == 0 then
   return
 end
 
--- HACK: ignore deprecate warnings after upgrading to v0.11
-vim.deprecate = function() end ---@diagnostic disable-line: duplicate-set-field
-
 local keymap = require('keymap')
 
 local lazy = require('lazy-nvim')
