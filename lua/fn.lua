@@ -1,7 +1,9 @@
 local M = {}
 
 M.default_format_file = function()
-  vim.cmd.normal({ 'gg=G``', bang = true })
+  local current_view = vim.fn.winsaveview()
+  vim.cmd.normal({ 'gg=G', bang = true })
+  vim.fn.winrestview(current_view)
 end
 
 return M
