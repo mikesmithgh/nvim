@@ -6,6 +6,10 @@ end
 if vim.fn.has('nvim-0.10') == 0 then
   vim.notify('Your personal config is disabled. Neovim v0.10+ is required.', vim.log.levels.WARN, {})
   return
+else
+  if vim.fn.has('nvim-0.11') == 0 then
+    require('backport').setup()
+  end
 end
 
 local keymap = require('keymap')
