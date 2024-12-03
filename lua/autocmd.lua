@@ -1,10 +1,6 @@
 local M = {}
 
 M.setup = function()
-  vim.api.nvim_create_augroup('Unhighlight', { clear = true })
-  vim.api.nvim_create_augroup('Backup', { clear = true })
-  -- vim.api.nvim_create_augroup('LspOnStartup', { clear = true })
-
   vim.api.nvim_create_autocmd({ 'CmdlineEnter' }, {
     group = vim.api.nvim_create_augroup('CmdlineEnterRemoveIncRename', { clear = true }),
     pattern = { ':' },
@@ -61,17 +57,15 @@ M.setup = function()
 
   -- TODO: revisit this due to CursorHold
   vim.api.nvim_create_autocmd({ 'InsertEnter', 'TextChanged' }, {
-    group = 'Unhighlight',
+    group = vim.api.nvim_create_augroup('Unhighlight', { clear = true }),
     pattern = { '*' },
     callback = function()
       vim.opt_local.hlsearch = false
     end,
   })
 
-  vim.api.nvim_create_augroup('Backup', { clear = true })
   vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-    group = 'Backup',
-    pattern = { '*' },
+    group = vim.api.nvim_create_augroup('Backup', { clear = true }),
     callback = function()
       -- thank you https://gist.github.com/nepsilon/003dd7cfefc20ce1e894db9c94749755
       vim.opt.backupext = '.' .. vim.fn.strftime('%Y%m%dT%H%M%S') .. '.bak'
@@ -162,6 +156,7 @@ M.setup = function()
     nargs = 0,
   })
 end
+
 -- when switching to a terminal window, automatically switch to insert mode
 -- see: https://vi.stackexchange.com/a/43781/36430
 vim.api.nvim_create_autocmd({ 'TermOpen', 'BufEnter' }, {

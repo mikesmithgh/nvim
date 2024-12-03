@@ -143,7 +143,11 @@ M.setup = function()
   vim.keymap.set('n', '<leader>lc', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', '<leader>lR', vim.lsp.buf.references, bufopts)
   vim.keymap.set('n', '<leader>lf', function()
-    vim.lsp.buf.format({ async = true })
+    if vim.o.filetype == 'norg' then
+      require('fn').default_format_file()
+    else
+      vim.lsp.buf.format({ async = true })
+    end
   end, bufopts)
 
   -- TODO: keep this until it conflicts
