@@ -1,26 +1,26 @@
 local M = {}
 
 M.init = function()
-  -- package manager
+  -- Bootstrap lazy.nvim
   local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-  if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-      'git',
-      'clone',
-      '--filter=blob:none',
-      'https://github.com/folke/lazy.nvim.git',
-      '--branch=stable', -- latest stable release
-      lazypath,
-    })
+  if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
+    local out = vim.fn.system({ 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath })
+    if vim.v.shell_error ~= 0 then
+      vim.api.nvim_echo({
+        { 'Failed to clone lazy.nvim:\n', 'ErrorMsg' },
+        { out, 'WarningMsg' },
+        { '\nPress any key to exit...' },
+      }, true, {})
+      vim.fn.getchar()
+      os.exit(1)
+    end
   end
   vim.opt.rtp:prepend(lazypath)
 end
 
 M.setup = function()
   require('lazy').setup('plugins', {
-    defaults = {
-      lazy = false,
-    },
     dev = {
       -- directory where you store your local plugin projects
       path = '~/gitrepos/',
@@ -29,6 +29,13 @@ M.setup = function()
         'mikesmithgh',
       },
       fallback = true, -- Fallback to git when local plugin doesn't exist
+    },
+    defaults = {
+      lazy = false,
+    },
+    spec = {
+      -- import your plugins
+      { import = 'plugins' },
     },
     ui = {
       border = 'rounded',
@@ -39,6 +46,7 @@ M.setup = function()
       -- try to load one of these colorschemes when starting an installation during startup
       colorscheme = { 'gruvsquirrel', 'gruvbox', 'retrobox' },
     },
+    checker = { enabled = false },
   })
 end
 
