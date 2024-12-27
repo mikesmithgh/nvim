@@ -273,6 +273,28 @@ return {
           terminalKind = 'integrated',
         },
       }
+      -- c
+      dap.adapters.codelldb = {
+        type = 'server',
+        port = '${port}',
+        executable = {
+          command = vim.fn.stdpath('data') .. '/mason/packages/codelldb/codelldb',
+          args = { '--port', '${port}' },
+        },
+      }
+      -- TODO: add user to 'Developer Tools' group. Sigh security 😭
+      dap.configurations.c = {
+        {
+          name = 'codelldb',
+          type = 'codelldb',
+          request = 'launch',
+          program = function()
+            return vim.fn.input('Path to executable: ' .. vim.fn.getcwd() .. '/')
+          end,
+          cwd = '${workspaceFolder}',
+          terminal = 'integrated',
+        },
+      }
     end
 
     M.setup()

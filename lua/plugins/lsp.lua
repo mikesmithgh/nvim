@@ -74,6 +74,7 @@ return {
           'delve',
           'bash',
           'kotlin',
+          'codelldb',
         },
       })
 
