@@ -33,7 +33,7 @@ return {
     },
     enabled = true,
     lazy = true,
-    event = 'VeryLazy',
+    event = 'FileType',
     config = function()
       require('mason').setup({
         ui = {
@@ -48,6 +48,7 @@ return {
       -- require("mason.api.command").MasonInstall({'shfmt'}, {})
 
       require('mason-lspconfig').setup({
+        automatic_installation = false,
         -- Do not use the java language server in this config, it is setup independently
         -- local java_language_server = 'nvim-jdtls' -- https://github.com/mfussenegger/nvim-jdtls
         -- See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#jdtls
@@ -61,6 +62,7 @@ return {
           'pylsp',
           'gopls',
           'ts_ls',
+          'clangd',
         },
       })
 
@@ -101,8 +103,14 @@ return {
             capabilities = lsp_capabilities,
           })
         end,
+        ['clangd'] = function()
+          -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#clangd
+          lspconfig.clangd.setup({
+            on_attach = lsp_attach,
+          })
+        end,
         ['gopls'] = function()
-          -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#gopls
+          -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#gopls
           -- and https://github.com/golang/tools/blob/master/gopls/doc/settings.md
           lspconfig.gopls.setup({
             on_attach = lsp_attach,
@@ -313,10 +321,23 @@ return {
         },
       })
 
-      vim.fn.sign_define('DiagnosticSignError', { texthl = 'DiagnosticSignError', text = '×', numhl = 'DiagnosticSignError' })
-      vim.fn.sign_define('DiagnosticSignWarn', { texthl = 'DiagnosticSignWarn', text = '▲', numhl = '' })
-      vim.fn.sign_define('DiagnosticSignHint', { texthl = 'DiagnosticSignHint', text = '⚑', numhl = '' })
-      vim.fn.sign_define('DiagnosticSignInfo', { texthl = 'DiagnosticSignInfo', text = '', numhl = '' })
+      vim.diagnostic.config({
+        virtual_text = false,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = '×',
+            [vim.diagnostic.severity.WARN] = '▲',
+            [vim.diagnostic.severity.HINT] = '⚑',
+            [vim.diagnostic.severity.INFO] = '',
+          },
+          numhl = {
+            [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
+            [vim.diagnostic.severity.WARN] = '',
+            [vim.diagnostic.severity.HINT] = '',
+            [vim.diagnostic.severity.INFO] = '',
+          },
+        },
+      })
     end,
   },
   {
