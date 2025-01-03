@@ -274,13 +274,10 @@ return {
         },
       }
       -- c
+      -- see https://github.com/mfussenegger/nvim-dap/wiki/C-C---Rust-(via--codelldb)
       dap.adapters.codelldb = {
-        type = 'server',
-        port = '${port}',
-        executable = {
-          command = vim.fn.stdpath('data') .. '/mason/packages/codelldb/codelldb',
-          args = { '--port', '${port}' },
-        },
+        type = 'executable',
+        command = 'codelldb',
       }
       -- TODO: add user to 'Developer Tools' group. Sigh security 😭
       dap.configurations.c = {
@@ -293,6 +290,7 @@ return {
           end,
           cwd = '${workspaceFolder}',
           terminal = 'integrated',
+          stopOnEntry = false,
         },
       }
     end
