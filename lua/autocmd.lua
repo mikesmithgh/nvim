@@ -157,17 +157,6 @@ M.setup = function()
   })
 end
 
--- when switching to a terminal window, automatically switch to insert mode
--- see: https://vi.stackexchange.com/a/43781/36430
-vim.api.nvim_create_autocmd({ 'TermOpen', 'BufEnter' }, {
-  pattern = { '*' },
-  callback = function()
-    if vim.env.KITTY_SCROLLBACK_NVIM ~= 'true' and vim.o.buftype == 'terminal' then
-      vim.cmd(':startinsert')
-    end
-  end,
-})
-
 -- highlight yanks after yanking
 vim.api.nvim_create_autocmd({ 'TextYankPost' }, {
   group = vim.api.nvim_create_augroup('TextYankPostGroup', { clear = true }),
