@@ -6,6 +6,8 @@ M.setup = function()
   -- vim.g.loaded_netrw = 1
   -- vim.g.loaded_netrwPlugin = 1
 
+  vim.o.shell = 'fish'
+
   vim.opt.hidden = true
 
   -- vim.opt.mouse = 'a'
@@ -187,6 +189,8 @@ M.setup = function()
 
   vim.cmd.cabbrev('naw noautocmd w')
   vim.cmd.cabbrev('naw! noautocmd w!')
+
+  vim.cmd.colorscheme('gruvsquirrel')
 end
 
 return M

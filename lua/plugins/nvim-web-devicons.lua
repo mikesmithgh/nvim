@@ -5,6 +5,10 @@ return {
   lazy = true,
   event = 'VeryLazy',
   config = function()
-    require('gruvsquirrel.plugins.nvim-web-devicons').setup()
+    local ok, devicons = pcall(require, 'gruvsquirrel.plugins.nvim-web-devicons')
+    if not ok then
+      devicons = require('nvim-web-devicons')
+    end
+    devicons.setup()
   end,
 }

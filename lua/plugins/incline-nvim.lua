@@ -4,6 +4,10 @@ return {
   lazy = true,
   event = 'User AfterIntro',
   config = function()
-    require('gruvsquirrel.plugins.incline-nvim').setup() -- invokes require('incline').setup()
+    local ok, incline = pcall(require, 'gruvsquirrel.plugins.incline-nvim')
+    if not ok then
+      incline = require('incline')
+    end
+    incline.setup()
   end,
 }

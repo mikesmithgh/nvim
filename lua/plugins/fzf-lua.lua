@@ -38,7 +38,11 @@ return {
       ['--prompt'] = '$ ',
     }
 
-    require('gruvsquirrel.plugins.fzf-lua').setup({
+    local ok, fzf_lua = pcall(require, 'gruvsquirrel.plugins.fzf-lua')
+    if not ok then
+      fzf_lua = require('fzf-lua')
+    end
+    fzf_lua.setup({
       -- custom devicons setup file to be loaded when `multiprocess = true`
       -- _devicons_setup = '~/gitrepos/gruvsquirrel.nvim/lua/gruvsquirrel/util/nvim-web-devicons-overrides.lua',
 
