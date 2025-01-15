@@ -282,7 +282,7 @@ return {
       -- TODO: add user to 'Developer Tools' group. Sigh security 😭
       dap.configurations.c = {
         {
-          name = 'codelldb',
+          name = 'codelldb launch',
           type = 'codelldb',
           request = 'launch',
           program = function()
@@ -291,6 +291,18 @@ return {
           cwd = '${workspaceFolder}',
           terminal = 'integrated',
           stopOnEntry = false,
+        },
+        {
+          name = 'codelldb attach',
+          type = 'codelldb',
+          request = 'attach',
+          pid = function()
+            return vim.fn.input('pid: ')
+          end,
+          cwd = '${workspaceFolder}',
+          terminal = 'integrated',
+          stopOnEntry = false,
+          waitFor = true,
         },
       }
     end
