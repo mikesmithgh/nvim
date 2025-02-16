@@ -167,36 +167,6 @@ return {
           ['shift-up'] = 'preview-page-up',
         },
       },
-      actions = {
-        -- These override the default tables completely
-        -- no need to set to `false` to disable an action
-        -- delete or modify is sufficient
-        files = {
-          -- providers that inherit these actions:
-          --   files, git_files, git_status, grep, lsp
-          --   oldfiles, quickfix, loclist, tags, btags
-          --   args
-          -- default action opens a single selection
-          -- or sends multiple selection to quickfix
-          -- replace the default action with the below
-          -- to open all files whether single or multiple
-          -- ["default"]     = actions.file_edit,
-          ['default'] = actions.file_edit_or_qf,
-          ['ctrl-s'] = actions.file_split,
-          ['ctrl-v'] = actions.file_vsplit,
-          ['ctrl-t'] = actions.file_tabedit,
-          ['alt-q'] = actions.file_sel_to_qf,
-          ['alt-l'] = actions.file_sel_to_ll,
-        },
-        buffers = {
-          -- providers that inherit these actions:
-          --   buffers, tabs, lines, blines
-          ['default'] = actions.buf_edit,
-          ['ctrl-s'] = actions.buf_split,
-          ['ctrl-v'] = actions.buf_vsplit,
-          ['ctrl-t'] = actions.buf_tabedit,
-        },
-      },
       -- global fzf_opts
       -- fzf_opts = global_fzf_opts,
       -- fzf '--color=' options (optional)
@@ -273,20 +243,19 @@ return {
         -- [[ fd --color=never --type f --hidden --follow --no-ignore --exclude node_modules --exclude .worktrees --exclude .git --exclude '**/target/*classes/**' ]],
 
         -- see ~/.config/fd/ignore for ignored files
-        cmd = [[ fd --color=never --type f --hidden --follow ]],
+        -- cmd = [[ fd --color=never --type f --hidden --follow ]],
+        -- fd_opts = [[ --color=never --type f]],
+        fd_opts = [[--color=never --type f --type l]],
 
         -- find_opts    = [[-type f -not -path '*/\.git/*' -printf '%P\n']],
         -- rg_opts      = "--color=never --files --hidden --follow -g '!.git'",
         -- fd_opts      = '--color=never --type f --hidden --follow --exclude .git',
-        actions = {
-          -- inherits from 'actions.files', here we can override
-          -- or set bind to 'false' to disable a default action
-          ['default'] = actions.file_edit,
-          -- custom actions are available too
-          ['ctrl-y'] = function(selected)
-            print(selected[1])
-          end,
-        },
+        toggle_ignore_flag = '--no-ignore', -- flag toggled in `actions.toggle_ignore`
+        toggle_hidden_flag = '--hidden', -- flag toggled in `actions.toggle_hidden`
+        toggle_follow_flag = '--follow', -- flag toggled in `actions.toggle_follow`
+        hidden = true, -- enable hidden files by default
+        follow = true, -- do not follow symlinks by default
+        no_ignore = false, -- respect ".gitignore"  by default
       },
       git = {
         files = {
