@@ -3,7 +3,7 @@ return {
   cond = vim.env.KITTY_SCROLLBACK_NVIM ~= 'true',
   ft = { 'norg' },
   lazy = true,
-  enabled = true,
+  enabled = false,
   config = true,
   dependencies = { 'vhrro/luarocks.nvim' },
 }
