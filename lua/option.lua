@@ -187,8 +187,13 @@ M.setup = function()
   -- I am not sure if I want this long term
   -- vim.highlight.priorities.semantic_tokens = vim.highlight.priorities.treesitter - 1
 
-  vim.cmd.cabbrev('naw noautocmd w')
-  vim.cmd.cabbrev('naw! noautocmd w!')
+  -- write noautocmd
+  vim.cmd.cnoreabbrev('naw noautocmd w')
+  vim.cmd.cnoreabbrev('naw! noautocmd w!')
+
+  -- noop for :a and :i, I tend to type :a<CR> by accident
+  vim.cmd.cnoreabbrev('a <Nop>')
+  vim.cmd.cnoreabbrev('i <Nop>')
 
   vim.cmd.colorscheme('gruvsquirrel')
 end
