@@ -9,17 +9,7 @@ return {
     config = function()
       vim.g.mapleader = ' '
       vim.g.maplocalleader = ','
-      require('kitty-scrollback').setup({
-        search = {
-          callbacks = {
-            after_ready = function()
-              vim.defer_fn(function()
-                vim.api.nvim_feedkeys('?', 'n', false)
-              end, 100)
-            end,
-          },
-        },
-      })
+      require('kitty-scrollback').setup()
     end,
   },
 }
