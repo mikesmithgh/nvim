@@ -26,7 +26,7 @@ return {
           ['core.qol.todo_items'] = {},
           ['core.export'] = {},
           -- https://github.com/nvim-neorg/neorg/wiki/Metagen
-          ['core.esupports.metagen'] = { config = { update_date = false } }, -- do not update date until https://github.com/nvim-neorg/neorg/issues/1579 fixed
+          ['core.esupports.metagen'] = {},
         },
       })
     end,
