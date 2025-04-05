@@ -2,13 +2,16 @@ return {
   'hrsh7th/nvim-cmp',
   enabled = true,
   lazy = true,
-  dependencies = { 'windwp/nvim-autopairs' },
+  -- dependencies = { 'windwp/nvim-autopairs' },
   event = { 'InsertEnter', 'CmdlineEnter' },
   config = function()
     -- If you want insert `(` after select function or method item
-    local npairs = require('nvim-autopairs')
+    local ok, npairs = pcall(require, 'nvim-autopairs')
+    if not ok then
+      return
+    end
     local Rule = require('nvim-autopairs.rule')
-    local cond = require('nvim-autopairs.conds')
+    -- local cond = require('nvim-autopairs.conds')
     local cmp_autopairs = require('nvim-autopairs.completion.cmp')
     local cmp = require('cmp')
 
