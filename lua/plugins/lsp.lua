@@ -58,7 +58,6 @@ return {
         ensure_installed = {
           'lua_ls',
           'bashls',
-          'kotlin_language_server',
           'pylsp',
           'gopls',
           'ts_ls',
@@ -73,7 +72,6 @@ return {
           'python@1.6.7', -- 1.6.8 no available in pip
           'delve',
           'bash',
-          'kotlin',
           'codelldb',
         },
       })
@@ -96,214 +94,190 @@ return {
         -- end
       end
 
-      local lspconfig = require('lspconfig')
-      require('mason-lspconfig').setup_handlers({
-        function(server_name)
-          lspconfig[server_name].setup({
-            on_attach = lsp_attach,
-            capabilities = lsp_capabilities,
-          })
-        end,
-        ['clangd'] = function()
-          -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#clangd
-          lspconfig.clangd.setup({
-            on_attach = lsp_attach,
-          })
-        end,
-        ['gopls'] = function()
-          -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#gopls
-          -- and https://github.com/golang/tools/blob/master/gopls/doc/settings.md
-          lspconfig.gopls.setup({
-            on_attach = lsp_attach,
-            filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
-            settings = {
-              gopls = {
-                -- This setting is experimental and may be deleted.
-                -- staticcheck enables additional analyses from staticcheck.io. These analyses are documented on Staticcheck's website.
-                -- https://staticcheck.dev/docs/checks/
-                staticcheck = true,
-                hints = {
-                  -- see https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md
-                  compositeLiteralFields = true,
-                  constantValues = true,
-                  parameterNames = true,
-                },
-              },
-            },
-          })
-        end,
-        ['lua_ls'] = function()
-          lspconfig.lua_ls.setup({
-            on_attach = lsp_attach,
-            filetypes = { 'lua' },
-            settings = {
-              ---@diagnostic disable-next-line: missing-fields
-              Lua = {
-                format = {
-                  enable = false,
-                  defaultConfig = {},
-                },
-                completion = {
-                  autoRequire = true,
-                  callSnippet = 'Both',
-                  displayContext = 5,
-                  enable = true,
-                  keywordSnippet = 'Both',
-                  postfix = '@',
-                  requireSeparator = '.',
-                  showParams = true,
-                  showWord = 'Enable',
-                  workspaceWord = true,
-                },
-                -- Make the server aware of Neovim runtime files
-                ---@diagnostic disable-next-line: missing-fields
-                workspace = {
-                  checkThirdParty = false,
-                  library = {
-                    vim.env.VIMRUNTIME,
-                  },
-                  -- Make the server aware of Neovim runtime files
-                  -- library = vim.api.nvim_get_runtime_file('', true),
-                },
-                ---@diagnostic disable-next-line: missing-fields
-                runtime = {
-                  -- Tell the language server which version of Lua you're using
-                  -- (most likely LuaJIT in the case of Neovim)
-                  version = 'LuaJIT',
-                },
-                telemetry = {
-                  enable = false,
-                },
-                ---@diagnostic disable-next-line: missing-fields
-                diagnostics = {
-                  globals = {
-                    'vim',
-                  },
-                },
-                hint = {
-                  -- see https://github.com/LuaLS/lua-language-server/wiki/Settings#hintenable
-                  arrayIndex = 'Auto',
-                  await = true,
-                  enable = true,
-                  paramName = 'All',
-                  paramType = true,
-                  semicolon = 'SameLine',
-                  setType = true,
-                },
-                hover = {
-                  enable = true,
-                  enumsLimit = 10,
-                  expandAlias = true,
-                  previewFields = 50,
-                  viewNumber = true,
-                  viewStringMax = 1000,
-                  viewString = true,
-                },
-                codeLens = {
-                  enable = true,
-                },
-              },
-            },
-          })
-        end,
-        ['pylsp'] = function()
-          lspconfig.pylsp.setup({
-            on_attach = lsp_attach,
-            root_dir = function(fname)
-              local util = require('lspconfig.util')
-              local root_files = {
-                'pyproject.toml',
-                'setup.py',
-                'setup.cfg',
-                -- 'requirements.txt',
-                'Pipfile',
-              }
-              return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
-            end,
-            settings = {
-              ---@diagnostic disable-next-line: missing-fields
-              pylsp = {
-                ---@diagnostic disable-next-line: missing-fields
-                plugins = {
-                  autopep8 = {
-                    enabled = false, -- conflicts with yapf
-                  },
-                  ---@diagnostic disable-next-line: missing-fields
-                  pycodestyle = {
-                    enabled = true,
-                  },
-                  ---@diagnostic disable-next-line: missing-fields
-                  flake8 = {
-                    enabled = false, -- conflicts with yapf
-                  },
-                  ---@diagnostic disable-next-line: missing-fields
-                  yapf = {
-                    enabled = true,
-                  },
-                  ---@diagnostic disable-next-line: missing-fields
-                  mccabe = {
-                    enabled = true,
-                  },
-                  pyflakes = {
-                    enabled = true,
-                  },
-                },
-              },
-            },
-          })
-        end,
-        ['yamlls'] = function()
-          lspconfig.yamlls.setup({
-            on_attach = lsp_attach,
-            filetypes = { 'yaml', 'yaml.docker-compose', 'yml' },
-            ---@diagnostic disable-next-line: missing-fields
-            settings = {
-              ---@diagnostic disable-next-line: missing-fields
-              yaml = {
-                ---@diagnostic disable-next-line: missing-fields
-                format = {
-                  enable = true,
-                },
-                ---@diagnostic disable-next-line: missing-fields
-                schemaStore = {
-                  enable = true,
-                },
-              },
-            },
-          })
-        end,
-        ['bashls'] = function()
-          lspconfig.bashls.setup({
-            on_attach = lsp_attach,
-            filetypes = { 'sh', 'bash' },
-            settings = {
-              -- see https://github.com/bash-lsp/bash-language-server/blob/main/server/src/config.ts
-              ---@diagnostic disable-next-line: missing-fields
-              bashIde = {
-                backgroundAnalysisMaxFiles = 500,
+      vim.lsp.config('*', {
+        on_attach = lsp_attach,
+        capabilities = lsp_capabilities,
+      })
 
-                -- Glob pattern for finding and parsing shell script files in the workspace.
-                -- Used by the background analysis features across files.
-
-                -- Prevent recursive scanning which will cause issues when opening a file
-                -- directly in the home directory (e.g. ~/foo.sh).
-                --
-                -- Default upstream pattern is "**/*@(.sh|.inc|.bash|.command)".
-                globPattern = vim.env.GLOB_PATTERN or '*@(.sh|.inc|.bash|.command)',
-                shellcheckArguments = '',
-                logLevel = 'debug',
-              },
+      vim.lsp.config('gopls', {
+        -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#gopls
+        -- and https://github.com/golang/tools/blob/master/gopls/doc/settings.md
+        on_attach = lsp_attach,
+        filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+        settings = {
+          gopls = {
+            -- This setting is experimental and may be deleted.
+            -- staticcheck enables additional analyses from staticcheck.io. These analyses are documented on Staticcheck's website.
+            -- https://staticcheck.dev/docs/checks/
+            staticcheck = true,
+            hints = {
+              -- see https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md
+              compositeLiteralFields = true,
+              constantValues = true,
+              parameterNames = true,
             },
-          })
-        end,
-        ['kotlin_language_server'] = function()
+          },
+        },
+      })
+
+      vim.lsp.config('lua_ls', {
+        on_attach = lsp_attach,
+        filetypes = { 'lua' },
+        settings = {
           ---@diagnostic disable-next-line: missing-fields
-          lspconfig.kotlin_language_server.setup({
-            on_attach = lsp_attach,
-            -- kotlin language server is still not in a place to use for dev
-            autostart = false,
-          })
+          Lua = {
+            format = {
+              enable = false,
+              defaultConfig = {},
+            },
+            completion = {
+              autoRequire = true,
+              callSnippet = 'Both',
+              displayContext = 5,
+              enable = true,
+              keywordSnippet = 'Both',
+              postfix = '@',
+              requireSeparator = '.',
+              showParams = true,
+              showWord = 'Enable',
+              workspaceWord = true,
+            },
+            -- Make the server aware of Neovim runtime files
+            ---@diagnostic disable-next-line: missing-fields
+            workspace = {
+              checkThirdParty = false,
+              library = {
+                vim.env.VIMRUNTIME,
+              },
+              -- Make the server aware of Neovim runtime files
+              -- library = vim.api.nvim_get_runtime_file('', true),
+            },
+            ---@diagnostic disable-next-line: missing-fields
+            runtime = {
+              -- Tell the language server which version of Lua you're using
+              -- (most likely LuaJIT in the case of Neovim)
+              version = 'LuaJIT',
+            },
+            telemetry = {
+              enable = false,
+            },
+            ---@diagnostic disable-next-line: missing-fields
+            diagnostics = {
+              globals = {
+                'vim',
+              },
+            },
+            hint = {
+              -- see https://github.com/LuaLS/lua-language-server/wiki/Settings#hintenable
+              arrayIndex = 'Auto',
+              await = true,
+              enable = true,
+              paramName = 'All',
+              paramType = true,
+              semicolon = 'SameLine',
+              setType = true,
+            },
+            hover = {
+              enable = true,
+              enumsLimit = 10,
+              expandAlias = true,
+              previewFields = 50,
+              viewNumber = true,
+              viewStringMax = 1000,
+              viewString = true,
+            },
+            codeLens = {
+              enable = true,
+            },
+          },
+        },
+      })
+
+      vim.lsp.config('pylsp', {
+        on_attach = lsp_attach,
+        root_dir = function(fname)
+          local util = require('lspconfig.util')
+          local root_files = {
+            'pyproject.toml',
+            'setup.py',
+            'setup.cfg',
+            -- 'requirements.txt',
+            'Pipfile',
+          }
+          return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
         end,
+        settings = {
+          ---@diagnostic disable-next-line: missing-fields
+          pylsp = {
+            ---@diagnostic disable-next-line: missing-fields
+            plugins = {
+              autopep8 = {
+                enabled = false, -- conflicts with yapf
+              },
+              ---@diagnostic disable-next-line: missing-fields
+              pycodestyle = {
+                enabled = true,
+              },
+              ---@diagnostic disable-next-line: missing-fields
+              flake8 = {
+                enabled = false, -- conflicts with yapf
+              },
+              ---@diagnostic disable-next-line: missing-fields
+              yapf = {
+                enabled = true,
+              },
+              ---@diagnostic disable-next-line: missing-fields
+              mccabe = {
+                enabled = true,
+              },
+              pyflakes = {
+                enabled = true,
+              },
+            },
+          },
+        },
+      })
+
+      vim.lsp.config('yamlls', {
+        on_attach = lsp_attach,
+        filetypes = { 'yaml', 'yaml.docker-compose', 'yml' },
+        ---@diagnostic disable-next-line: missing-fields
+        settings = {
+          ---@diagnostic disable-next-line: missing-fields
+          yaml = {
+            ---@diagnostic disable-next-line: missing-fields
+            format = {
+              enable = true,
+            },
+            ---@diagnostic disable-next-line: missing-fields
+            schemaStore = {
+              enable = true,
+            },
+          },
+        },
+      })
+
+      vim.lsp.config('bashls', {
+        on_attach = lsp_attach,
+        filetypes = { 'sh', 'bash' },
+        settings = {
+          -- see https://github.com/bash-lsp/bash-language-server/blob/main/server/src/config.ts
+          ---@diagnostic disable-next-line: missing-fields
+          bashIde = {
+            backgroundAnalysisMaxFiles = 500,
+
+            -- Glob pattern for finding and parsing shell script files in the workspace.
+            -- Used by the background analysis features across files.
+
+            -- Prevent recursive scanning which will cause issues when opening a file
+            -- directly in the home directory (e.g. ~/foo.sh).
+            --
+            -- Default upstream pattern is "**/*@(.sh|.inc|.bash|.command)".
+            globPattern = vim.env.GLOB_PATTERN or '*@(.sh|.inc|.bash|.command)',
+            shellcheckArguments = '',
+            logLevel = 'debug',
+          },
+        },
       })
 
       vim.diagnostic.config({

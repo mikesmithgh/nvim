@@ -242,7 +242,13 @@ M.setup = function()
     register = false,
   })
 
-  vim.api.nvim_create_user_command('FormatJira', function()
+  vim.api.nvim_create_user_command('FormatJira', function(o)
+    local args = (o.fargs and next(o.fargs)) and o.fargs[1] or ''
+    local fields = 'summary'
+    if args == 'parent' then
+      fields = fields .. ',parent'
+    end
+
     local issue_id = vim.fn.expand('<cWORD>'):match('FTE%-%d+')
     if issue_id == nil then
       issue_id = vim.fn.expand('<cWORD>'):match('^%d+$')
@@ -260,17 +266,28 @@ M.setup = function()
         vim.env.JIRA_API_USER .. ':' .. vim.env.JIRA_API_TOKEN,
         '--header',
         'Accept: application/json',
-        vim.env.JIRA_API_URL .. '/rest/api/3/issue/' .. issue_id .. '?fields=summary',
+        vim.env.JIRA_API_URL .. '/rest/api/3/issue/' .. issue_id .. '?fields=' .. fields,
       })
       :wait().stdout or '{}'
 
     local issue_json = vim.json.decode(issue)
-    local issue_link = vim.env.JIRA_API_URL .. '/browse/' .. issue_json.key
-    vim.cmd.normal({ 'mmciW{' .. issue_link .. '}[' .. issue_json.key .. ' ' .. issue_json.fields.summary .. ']', bang = true })
+
+    local issue_key = issue_json.key
+    local issue_summary = issue_json.fields.summary
+    if args == 'parent' then
+      issue_key = issue_json.fields.parent.key
+      issue_summary = issue_json.fields.parent.fields.summary
+    end
+    local issue_link = vim.env.JIRA_API_URL .. '/browse/' .. issue_key
+    vim.cmd.normal({ 'mmciW{' .. issue_link .. '}[' .. issue_key .. ' ' .. issue_summary .. ']', bang = true })
     vim.cmd.normal({ '0`m', bang = true })
   end, {
     bar = false,
     register = false,
+    nargs = '?',
+    complete = function()
+      return { 'parent' }
+    end,
   })
 
   vim.api.nvim_create_user_command('TermHl', function()
