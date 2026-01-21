@@ -196,6 +196,13 @@ M.setup = function()
   vim.cmd.cnoreabbrev('i <Nop>')
 
   vim.cmd.colorscheme('gruvsquirrel')
+
+  -- open float window when diagnostic.jump is called
+  vim.diagnostic.config({
+    jump = {
+      float = true,
+    },
+  })
 end
 
 return M

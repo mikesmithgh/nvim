@@ -55,15 +55,6 @@ M.setup = function()
   vim.keymap.set('n', '<a-n>', 'j0nzzzv')
   vim.keymap.set('n', '<a-s-n>', '0Nzzzv')
 
-  --- Diagnostics
-  --- Differs from defaults by showing floating window
-  --- See https://github.com/neovim/neovim/blob/42aa69b076cb338e20b5b4656771f1873e8930d8/runtime/lua/vim/_defaults.lua#L154
-  do
-    vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Jump to the next diagnostic' })
-    vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Jump to the previous diagnostic' })
-    -- removed <Leader>d, prefer default <C-W>d
-  end
-
   -- black hole register "_
   vim.keymap.set('n', 'x', '"_x')
 
