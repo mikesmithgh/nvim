@@ -13,78 +13,6 @@ M.setup = function()
     register = false,
   })
 
-  local function split_preserve_double_quotes(s)
-    local double_quoted_strings = {}
-    s = s:gsub([[%S*".-"%S*]], function(capture)
-      table.insert(double_quoted_strings, capture)
-      return 'PLACEHOLDER'
-    end)
-    local result = {}
-    for word in s:gmatch('%S+') do
-      if word == 'PLACEHOLDER' then
-        table.insert(result, table.remove(double_quoted_strings, 1))
-      else
-        table.insert(result, word)
-      end
-    end
-    return result
-  end
-
-  vim.api.nvim_create_user_command('KarateTestLine', function(o)
-    local user_karate_opts
-    local remove_idx
-    local args = split_preserve_double_quotes(o.args)
-    for idx, arg in ipairs(args) do
-      user_karate_opts = string.match(arg, [==[.*^-Dkarate.options=["'](.*)["']]==])
-      remove_idx = idx
-    end
-    if remove_idx ~= nil then
-      args[remove_idx] = nil
-    end
-    local classpath = vim.fn.expand('%'):gsub('.*src/test/java/', 'classpath:')
-    local line = vim.fn.line('.')
-    local karate_options = ('%s -Dkarate.options="%s:%s %s"'):format(table.concat(args, ' '), classpath, line, user_karate_opts or '')
-    local current_splitbelow = vim.o.splitbelow
-    vim.o.splitbelow = true
-    vim.cmd.split()
-    vim.o.splitbelow = current_splitbelow
-    local cmd = [[mvn test -Dtest=TestTagRunner ]] .. karate_options
-    vim.notify('Running ' .. cmd, vim.log.INFO, {})
-    vim.cmd.term(cmd)
-    vim.cmd.normal({ 'G', bang = true })
-  end, {
-    bar = false,
-    nargs = '*',
-    register = false,
-  })
-
-  vim.api.nvim_create_user_command('KarateTestFile', function(o)
-    local user_karate_opts
-    local remove_idx
-    local args = split_preserve_double_quotes(o.args)
-    for idx, arg in ipairs(args) do
-      user_karate_opts = string.match(arg, [==[.*-Dkarate.options=["'](.*)["']]==])
-      remove_idx = idx
-    end
-    if remove_idx ~= nil then
-      args[remove_idx] = nil
-    end
-    local classpath = vim.fn.expand('%'):gsub('.*src/test/java/', 'classpath:')
-    local karate_options = ('%s -Dkarate.options="%s --tags ~@ignore %s"'):format(table.concat(args, ' '), classpath, user_karate_opts or '')
-    local current_splitbelow = vim.o.splitbelow
-    vim.o.splitbelow = true
-    vim.cmd.split()
-    vim.o.splitbelow = current_splitbelow
-    local cmd = [[mvn test -Dtest=TestTagRunner ]] .. karate_options
-    vim.notify('Running ' .. cmd, vim.log.INFO, {})
-    vim.cmd.term(cmd)
-    vim.cmd.normal({ 'G', bang = true })
-  end, {
-    bar = false,
-    nargs = '*',
-    register = false,
-  })
-
   -- these PRs are hardcoded because they were not merged directly but in other work
   -- example command used to generate: gh pr view https://github.com/neovim/neovim/pull/25034 --json title,url,number,headRepositoryOwner,headRepository,updatedAt --jq '. | { number: .number, title: .title, url: .url, updatedAt: .updatedAt, repository: { name : "neovim", nameWithOwner: "neovim/neovim" } }'
   local pr_778 =
@@ -242,53 +170,54 @@ M.setup = function()
     register = false,
   })
 
-  vim.api.nvim_create_user_command('FormatJira', function(o)
-    local args = (o.fargs and next(o.fargs)) and o.fargs[1] or ''
-    local fields = 'summary'
-    if args == 'parent' then
-      fields = fields .. ',parent'
-    end
-
-    local issue_id = vim.fn.expand('<cWORD>'):match('FTE%-%d+')
-    if issue_id == nil then
-      issue_id = vim.fn.expand('<cWORD>'):match('^%d+$')
-      issue_id = issue_id and 'FTE-' .. issue_id
-    end
-    if issue_id == nil then
-      issue_id = vim.fn.expand('<cWORD>'):match('^%d+$')
-      vim.notify('could not parse Jira issue ID', vim.log.levels.ERROR, {})
-      return
-    end
-    local issue = vim
-      .system({
-        'curl',
-        '--user',
-        vim.env.JIRA_API_USER .. ':' .. vim.env.JIRA_API_TOKEN,
-        '--header',
-        'Accept: application/json',
-        vim.env.JIRA_API_URL .. '/rest/api/3/issue/' .. issue_id .. '?fields=' .. fields,
-      })
-      :wait().stdout or '{}'
-
-    local issue_json = vim.json.decode(issue)
-
-    local issue_key = issue_json.key
-    local issue_summary = issue_json.fields.summary
-    if args == 'parent' then
-      issue_key = issue_json.fields.parent.key
-      issue_summary = issue_json.fields.parent.fields.summary
-    end
-    local issue_link = vim.env.JIRA_API_URL .. '/browse/' .. issue_key
-    vim.cmd.normal({ 'mmciW{' .. issue_link .. '}[' .. issue_key .. ' ' .. issue_summary .. ']', bang = true })
-    vim.cmd.normal({ '0`m', bang = true })
-  end, {
-    bar = false,
-    register = false,
-    nargs = '?',
-    complete = function()
-      return { 'parent' }
-    end,
-  })
+  -- TODO: revisit FormatJira not working
+  -- vim.api.nvim_create_user_command('FormatJira', function(o)
+  --   local args = (o.fargs and next(o.fargs)) and o.fargs[1] or ''
+  --   local fields = 'summary'
+  --   if args == 'parent' then
+  --     fields = fields .. ',parent'
+  --   end
+  --
+  --   local issue_id = vim.fn.expand('<cWORD>'):match('FTE%-%d+')
+  --   if issue_id == nil then
+  --     issue_id = vim.fn.expand('<cWORD>'):match('^%d+$')
+  --     issue_id = issue_id and 'FTE-' .. issue_id
+  --   end
+  --   if issue_id == nil then
+  --     issue_id = vim.fn.expand('<cWORD>'):match('^%d+$')
+  --     vim.notify('could not parse Jira issue ID', vim.log.levels.ERROR, {})
+  --     return
+  --   end
+  --   local issue = vim
+  --     .system({
+  --       'curl',
+  --       '--user',
+  --       vim.env.JIRA_API_USER .. ':' .. vim.env.JIRA_API_TOKEN,
+  --       '--header',
+  --       'Accept: application/json',
+  --       vim.env.JIRA_API_URL .. '/rest/api/3/issue/' .. issue_id .. '?fields=' .. fields,
+  --     })
+  --     :wait().stdout or '{}'
+  --
+  --   local issue_json = vim.json.decode(issue)
+  --
+  --   local issue_key = issue_json.key
+  --   local issue_summary = issue_json.fields.summary
+  --   if args == 'parent' then
+  --     issue_key = issue_json.fields.parent.key
+  --     issue_summary = issue_json.fields.parent.fields.summary
+  --   end
+  --   local issue_link = vim.env.JIRA_API_URL .. '/browse/' .. issue_key
+  --   vim.cmd.normal({ 'mmciW{' .. issue_link .. '}[' .. issue_key .. ' ' .. issue_summary .. ']', bang = true })
+  --   vim.cmd.normal({ '0`m', bang = true })
+  -- end, {
+  --   bar = false,
+  --   register = false,
+  --   nargs = '?',
+  --   complete = function()
+  --     return { 'parent' }
+  --   end,
+  -- })
 
   vim.api.nvim_create_user_command('TermHl', function()
     local b = vim.api.nvim_create_buf(false, true)
