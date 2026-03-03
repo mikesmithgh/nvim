@@ -112,10 +112,6 @@ M.setup = function()
   vim.opt.tabstop = 2
   vim.opt.softtabstop = 2
 
-  -- augroup TabStops
-  --   autocmd FileType java setlocal shiftwidth=4 tabstop=4 softtabstop=4
-  -- augroup end
-
   -- Auto indent
   vim.opt.autoindent = true
   -- Smart indent
@@ -171,7 +167,7 @@ M.setup = function()
 
   vim.opt.inccommand = 'nosplit'
 
-  vim.opt.keywordprg = ':Woman'
+  -- vim.opt.keywordprg = ':Woman'
 
   vim.opt.cmdheight = 0
 

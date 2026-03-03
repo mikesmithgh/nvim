@@ -80,34 +80,34 @@ M.setup = function()
     )
   end, {})
 
-  vim.api.nvim_create_user_command('Woman', function(params)
-    local man = require('man')
-    if params.bang then
-      man.init_pager()
-    else
-      -- TODO: there is probably a better way to write this
-      local vertical_help = true
-      local man_ok, man_err = pcall(man.open_page, params.count, params.smods, params.fargs)
-      if not man_ok then
-        vim.notify(man.errormsg or man_err, vim.log.levels.INfO)
-        vertical_help = false
-      end
-      local help_ok, help_err
-      help_ok, help_err = pcall(vim.api.nvim_cmd, { cmd = 'help', args = params.fargs, mods = { vertical = vertical_help } }, {})
-      if not help_ok then
-        vim.notify(help_err, vim.log.levels.INFO)
-      end
-    end
-  end, {
-    bang = true,
-    bar = true,
-    addr = 'other',
-    nargs = '*',
-    complete = function(...)
-      -- TODO: add help completion
-      return require('man').man_complete(...)
-    end,
-  })
+  -- vim.api.nvim_create_user_command('Woman', function(params)
+  --   local man = require('man')
+  --   if params.bang then
+  --     man.init_pager()
+  --   else
+  --     -- TODO: there is probably a better way to write this
+  --     local vertical_help = true
+  --     local man_ok, man_err = pcall(man.open_page, params.count, params.smods, params.fargs)
+  --     if not man_ok then
+  --       vim.notify(man.errormsg or man_err, vim.log.levels.INFO)
+  --       vertical_help = false
+  --     end
+  --     local help_ok, help_err
+  --     help_ok, help_err = pcall(vim.api.nvim_cmd, { cmd = 'help', args = params.fargs, mods = { vertical = vertical_help } }, {})
+  --     if not help_ok then
+  --       vim.notify(help_err, vim.log.levels.INFO)
+  --     end
+  --   end
+  -- end, {
+  --   bang = true,
+  --   bar = true,
+  --   addr = 'other',
+  --   nargs = '*',
+  --   complete = function(...)
+  --     -- TODO: add help completion
+  --     return require('man').man_complete(...)
+  --   end,
+  -- })
 
   -- no longer using because conform is handling it with gofmt and goimports
   -- Auto-format files prior to saving them

@@ -190,7 +190,7 @@ local opts = {
     end, { 'i', 's' }),
   },
   sources = sources(),
-  -- -- view = ???,
+  -- view = ???,
   experimental = {
     ghost_text = false, -- this feature conflict with copilot.vim's preview.
   },
@@ -199,24 +199,5 @@ local opts = {
 M.call_setup = function()
   cmp.setup(opts)
 end
--- cmp.event:on('menu_opened', function(ev)
---   local buf = ev.window.entries_win:get_buffer()
---   local after_cmp_win_open = function(buf) vim.print(buf) end
---   after_cmp_win_open = function(b)
---     if vim.fn.bufexists(b) > 0 then
---       vim.schedule(function()
---         vim.print(b)
---         require('colorizer').attach_to_buffer(b)
---       end)
---     else
---       vim.schedule(function()
---         after_cmp_win_open(b)
---       end)
---     end
---   end
---   vim.schedule(function()
---     after_cmp_win_open(buf)
---   end)
--- end)
 
 return M

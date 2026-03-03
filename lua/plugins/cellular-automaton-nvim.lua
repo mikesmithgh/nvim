@@ -1,6 +1,6 @@
 return {
   'eandrju/cellular-automaton.nvim',
-  enabled = true,
+  enabled = false,
   lazy = true,
   cmd = 'CellularAutomaton',
   config = function()

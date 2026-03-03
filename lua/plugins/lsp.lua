@@ -49,19 +49,11 @@ return {
 
       require('mason-lspconfig').setup({
         automatic_installation = false,
-        -- Do not use the java language server in this config, it is setup independently
-        -- local java_language_server = 'nvim-jdtls' -- https://github.com/mfussenegger/nvim-jdtls
-        -- See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#jdtls
-        -- IMPORTANT: If you want all the features jdtls has to offer, nvim-jdtls is highly recommended.
-        -- If all you need is diagnostics, completion, imports, gotos and formatting and some code actions
-        -- you can keep reading here.
         ensure_installed = {
           'lua_ls',
           'bashls',
           'pylsp',
           'gopls',
-          'ts_ls',
-          'clangd',
         },
       })
 
@@ -69,10 +61,9 @@ return {
       require('mason-nvim-dap').setup({
         automatic_installation = false,
         ensure_installed = {
-          'python@1.6.7', -- 1.6.8 no available in pip
+          'python@1.6.7', -- 1.6.8 not available in pip
           'delve',
           'bash',
-          'codelldb',
         },
       })
 
