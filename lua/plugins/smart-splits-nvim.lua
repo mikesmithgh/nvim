@@ -14,6 +14,7 @@ return {
     { '<A-Right>' },
   },
   config = function()
+    ---@diagnostic disable-next-line: missing-fields
     require('smart-splits').setup({
       default_amount = 5,
     })

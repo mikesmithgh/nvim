@@ -52,7 +52,6 @@ return {
         ensure_installed = {
           'lua_ls',
           'bashls',
-          'pylsp',
           'gopls',
         },
       })
@@ -61,7 +60,6 @@ return {
       require('mason-nvim-dap').setup({
         automatic_installation = false,
         ensure_installed = {
-          'python@1.6.7', -- 1.6.8 not available in pip
           'delve',
           'bash',
         },
@@ -179,51 +177,6 @@ return {
             },
             codeLens = {
               enable = true,
-            },
-          },
-        },
-      })
-
-      vim.lsp.config('pylsp', {
-        on_attach = lsp_attach,
-        root_dir = function(fname)
-          local util = require('lspconfig.util')
-          local root_files = {
-            'pyproject.toml',
-            'setup.py',
-            'setup.cfg',
-            -- 'requirements.txt',
-            'Pipfile',
-          }
-          return util.root_pattern(unpack(root_files))(fname) or util.find_git_ancestor(fname)
-        end,
-        settings = {
-          ---@diagnostic disable-next-line: missing-fields
-          pylsp = {
-            ---@diagnostic disable-next-line: missing-fields
-            plugins = {
-              autopep8 = {
-                enabled = false, -- conflicts with yapf
-              },
-              ---@diagnostic disable-next-line: missing-fields
-              pycodestyle = {
-                enabled = true,
-              },
-              ---@diagnostic disable-next-line: missing-fields
-              flake8 = {
-                enabled = false, -- conflicts with yapf
-              },
-              ---@diagnostic disable-next-line: missing-fields
-              yapf = {
-                enabled = true,
-              },
-              ---@diagnostic disable-next-line: missing-fields
-              mccabe = {
-                enabled = true,
-              },
-              pyflakes = {
-                enabled = true,
-              },
             },
           },
         },
