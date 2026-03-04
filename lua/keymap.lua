@@ -265,8 +265,6 @@ M.setup = function()
     require('fzf-lua').commands()
   end)
 
-  vim.keymap.set('n', 'su', '<Cmd>UrlView buffer bufnr=0<CR>', { desc = 'View buffer URLs' })
-
   vim.keymap.set('n', 'sT', function()
     require('fzf-lua').lsp_typedefs()
   end)
@@ -336,14 +334,6 @@ M.setup = function()
 
   -- toggle keymappings for venn using <leader>v
   vim.keymap.set({ 'n' }, '<leader>v', ':lua Toggle_venn()<CR>', {})
-
-  -- local osv
-  -- status, osv = pcall(require, 'osv')
-  -- if status then
-  --   vim.keymap.set('n', '<leader><f5>', function()
-  --     osv.launch({ port = 8086 })
-  --   end, { silent = true })
-  -- end
 
   vim.keymap.set({ 'n', 'i', 't' }, '<c-w>h', function()
     vim.cmd.stopinsert()
