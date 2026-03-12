@@ -2,6 +2,8 @@ return {
   {
     'nvim-treesitter/nvim-treesitter',
     enabled = true,
+    -- main has a full rewrite which is breaking my config, pin to master
+    branch = 'master',
     build = function()
       require('nvim-treesitter.install').update({ with_sync = true })
     end,
@@ -98,7 +100,7 @@ return {
       local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
       parser_config.gotmpl = {
         install_info = {
-          url = '/Users/mike/gitrepos/tree-sitter-go-template',
+          url = vim.env.HOME .. '/gitrepos/tree-sitter-go-template',
           files = { 'src/parser.c' },
         },
         filetype = 'gotmpl',
