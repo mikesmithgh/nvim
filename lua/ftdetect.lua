@@ -39,8 +39,15 @@ local yaml_or_gotmpl = {
 
 M.setup = function()
   vim.filetype.add({
+    extension = {
+      gotmpl = 'gotmpl',
+    },
     pattern = {
-      ['.*.ya?ml'] = yaml_or_gotmpl,
+      -- tree-sitter-go-template made updates so still testing if this ft detect works properly
+      ['.*/templates/.*%.tpl'] = 'helm',
+      ['.*/templates/.*%.ya?ml'] = 'helm',
+      ['helmfile.*%.ya?ml'] = 'helm',
+      -- ['.*.ya?ml'] = yaml_or_gotmpl,
       ['.*.pipeline'] = json_or_yaml,
       ['%.releaserc'] = json_or_yaml,
       ['.*%.%d*T%d*%.bak'] = function(path, bufnr)

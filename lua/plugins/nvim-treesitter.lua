@@ -13,6 +13,7 @@ return {
         return
       end
       treesitterconfigs.setup({
+        modules = {},
         -- A list of parser names, or "all"
         ensure_installed = {
           'bash',
@@ -30,7 +31,9 @@ return {
           'go',
           'gomod',
           'gowork',
+          'gotmpl',
           -- 'help',
+          'helm',
           'html',
           'http',
           'java',
@@ -96,19 +99,8 @@ return {
           additional_vim_regex_highlighting = false,
         },
       })
-
-      local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
-      parser_config.gotmpl = {
-        install_info = {
-          url = vim.env.HOME .. '/gitrepos/tree-sitter-go-template',
-          files = { 'src/parser.c' },
-        },
-        filetype = 'gotmpl',
-        used_by = { 'gohtmltmpl', 'gotexttmpl', 'gotmpl', 'yaml' },
-      }
     end,
   },
-
   {
     'nvim-treesitter/playground',
     enabled = true,
