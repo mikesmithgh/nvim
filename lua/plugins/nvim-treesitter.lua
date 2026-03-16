@@ -12,6 +12,10 @@ return {
       if not status then
         return
       end
+
+      -- Tiltfiles are written in Starlark, a dialect of Python, https://docs.tilt.dev/api.html
+      vim.treesitter.language.register('starlark', { 'tiltfile' })
+
       treesitterconfigs.setup({
         modules = {},
         -- A list of parser names, or "all"

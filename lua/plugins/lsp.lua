@@ -53,6 +53,7 @@ return {
           'lua_ls',
           'bashls',
           'gopls',
+          -- 'tilt_ls', -- tilt_ls exists but is not managed by mason lspconfig
         },
       })
 
@@ -87,6 +88,13 @@ return {
         on_attach = lsp_attach,
         capabilities = lsp_capabilities,
       })
+
+      vim.lsp.config('tilt_ls', {
+        cmd = { 'tilt', 'lsp', 'start' },
+        filetypes = { 'tiltfile' },
+        root_markers = { 'Tiltfile', '.git' },
+      })
+      vim.lsp.enable('tilt_ls')
 
       vim.lsp.config('gopls', {
         -- see https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#gopls
