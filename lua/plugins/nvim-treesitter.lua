@@ -54,6 +54,7 @@ return {
           'ruby',
           'scala',
           'sql',
+          'terraform',
           'todotxt',
           'toml',
           'typescript',
