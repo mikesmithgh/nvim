@@ -1,6 +1,7 @@
 local M = {}
 
 M.setup = function()
+  -- askpass should be installed, see https://github.com/theseal/ssh-askpass
   vim.api.nvim_create_user_command('W', function(opts)
     if opts.bang then
       vim.cmd('w !sudo -A tee %')

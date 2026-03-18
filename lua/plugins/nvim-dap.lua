@@ -123,7 +123,7 @@ return {
       end)
 
       local dapuiwidgets
-      status, dapuiwidgets = pcall(require, 'dapui.widgets')
+      status, dapuiwidgets = pcall(require, 'dap.ui.widgets')
       if status then
         set('n', '<f12>', dapuiwidgets.hover)
         set('i', '<f12>', function()
