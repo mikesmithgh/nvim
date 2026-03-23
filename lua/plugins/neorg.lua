@@ -19,7 +19,17 @@ return {
             },
           },
           ['core.summary'] = {},
-          ['core.concealer'] = {}, -- Adds pretty icons to your documents
+          ['core.concealer'] = {
+            config = {
+              icons = {
+                todo = {
+                  pending = {
+                    icon = '',
+                  },
+                },
+              },
+            },
+          },
           ['core.itero'] = {}, -- <M-CR> to add header/list items
           ['core.promo'] = {}, -- promotes/demotes headers, etc
           ['core.qol.toc'] = {},
