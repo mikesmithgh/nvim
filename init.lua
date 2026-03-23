@@ -8,6 +8,11 @@ if vim.fn.has('nvim-0.11') == 0 then
   return
 end
 
+if not vim.go.loadplugins then
+  vim.notify('Your personal config is disabled. noplugins detected, plugins are required for config to work.', vim.log.levels.WARN, {})
+  return
+end
+
 local keymap = require('keymap')
 
 local lazy = require('lazy-nvim')
