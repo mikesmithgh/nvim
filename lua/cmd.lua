@@ -171,54 +171,76 @@ M.setup = function()
     register = false,
   })
 
-  -- TODO: revisit FormatJira not working
-  -- vim.api.nvim_create_user_command('FormatJira', function(o)
-  --   local args = (o.fargs and next(o.fargs)) and o.fargs[1] or ''
-  --   local fields = 'summary'
-  --   if args == 'parent' then
-  --     fields = fields .. ',parent'
-  --   end
-  --
-  --   local issue_id = vim.fn.expand('<cWORD>'):match('FTE%-%d+')
-  --   if issue_id == nil then
-  --     issue_id = vim.fn.expand('<cWORD>'):match('^%d+$')
-  --     issue_id = issue_id and 'FTE-' .. issue_id
-  --   end
-  --   if issue_id == nil then
-  --     issue_id = vim.fn.expand('<cWORD>'):match('^%d+$')
-  --     vim.notify('could not parse Jira issue ID', vim.log.levels.ERROR, {})
-  --     return
-  --   end
-  --   local issue = vim
-  --     .system({
-  --       'curl',
-  --       '--user',
-  --       vim.env.JIRA_API_USER .. ':' .. vim.env.JIRA_API_TOKEN,
-  --       '--header',
-  --       'Accept: application/json',
-  --       vim.env.JIRA_API_URL .. '/rest/api/3/issue/' .. issue_id .. '?fields=' .. fields,
-  --     })
-  --     :wait().stdout or '{}'
-  --
-  --   local issue_json = vim.json.decode(issue)
-  --
-  --   local issue_key = issue_json.key
-  --   local issue_summary = issue_json.fields.summary
-  --   if args == 'parent' then
-  --     issue_key = issue_json.fields.parent.key
-  --     issue_summary = issue_json.fields.parent.fields.summary
-  --   end
-  --   local issue_link = vim.env.JIRA_API_URL .. '/browse/' .. issue_key
-  --   vim.cmd.normal({ 'mmciW{' .. issue_link .. '}[' .. issue_key .. ' ' .. issue_summary .. ']', bang = true })
-  --   vim.cmd.normal({ '0`m', bang = true })
-  -- end, {
-  --   bar = false,
-  --   register = false,
-  --   nargs = '?',
-  --   complete = function()
-  --     return { 'parent' }
-  --   end,
-  -- })
+  -- TODO: move to a utility module?
+  local function split(inputstr, sep)
+    -- source - https://stackoverflow.com/a/7615129
+    if sep == nil then
+      sep = '%s'
+    end
+    local t = {}
+    for str in string.gmatch(inputstr, '([^' .. sep .. ']+)') do
+      table.insert(t, str)
+    end
+    return t
+  end
+
+  -- TODO: revisit FormatJira to allow more than 1 prefix if needed
+  vim.api.nvim_create_user_command('FormatJira', function(o)
+    -- creds stored in 1password
+    local op_item = require('op.api').item.get({ 'JIRA API Token', '--fields', 'username,url,prefix,credential', '--reveal' })[1]
+    local op_fields = split(op_item, ',')
+    local jira = {
+      username = op_fields[1],
+      url = op_fields[2],
+      prefix = op_fields[3],
+      credential = op_fields[4],
+    }
+    local args = (o.fargs and next(o.fargs)) and o.fargs[1] or ''
+    local fields = 'summary'
+    if args == 'parent' then
+      fields = fields .. ',parent'
+    end
+
+    local issue_id = vim.fn.expand('<cWORD>'):match(jira.prefix .. '%-%d+')
+    if issue_id == nil then
+      issue_id = vim.fn.expand('<cWORD>'):match('^%d+$')
+      issue_id = issue_id and jira.prefix .. '-' .. issue_id
+    end
+    if issue_id == nil then
+      issue_id = vim.fn.expand('<cWORD>'):match('^%d+$')
+      vim.notify('could not parse Jira issue ID', vim.log.levels.ERROR, {})
+      return
+    end
+    local issue = vim
+      .system({
+        'curl',
+        '--user',
+        jira.username .. ':' .. jira.credential,
+        '--header',
+        'Accept: application/json',
+        jira.url .. '/rest/api/3/issue/' .. issue_id .. '?fields=' .. fields,
+      })
+      :wait().stdout or '{}'
+
+    local issue_json = vim.json.decode(issue)
+
+    local issue_key = issue_json.key
+    local issue_summary = issue_json.fields.summary
+    if args == 'parent' then
+      issue_key = issue_json.fields.parent.key
+      issue_summary = issue_json.fields.parent.fields.summary
+    end
+    local issue_link = jira.url .. '/browse/' .. issue_key
+    vim.cmd.normal({ 'mmciW{' .. issue_link .. '}[' .. issue_key .. ' ' .. issue_summary .. ']', bang = true })
+    vim.cmd.normal({ '0`m', bang = true })
+  end, {
+    bar = false,
+    register = false,
+    nargs = '?',
+    complete = function()
+      return { 'parent' }
+    end,
+  })
 
   vim.api.nvim_create_user_command('TermHl', function()
     local b = vim.api.nvim_create_buf(false, true)
