@@ -188,6 +188,10 @@ M.setup = function()
   vim.api.nvim_create_user_command('FormatJira', function(o)
     -- creds stored in 1password
     local op_item = require('op.api').item.get({ 'JIRA API Token', '--fields', 'username,url,prefix,credential', '--reveal' })[1]
+    if op_item == nil then
+      vim.notify('1password failed to get item', vim.log.levels.ERROR, {})
+      return
+    end
     local op_fields = split(op_item, ',')
     local jira = {
       username = op_fields[1],
