@@ -20,27 +20,11 @@ local json_or_yaml = {
   end,
 }
 
-local yaml_or_gotmpl = {
-  priority = -math.huge,
-  function(_, bufnr)
-    if vim.fn.did_filetype() ~= 0 then
-      -- Filetype was already detected
-      return
-    end
-    local lines_table = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-    local content = table.concat(lines_table, '\n')
-    local is_gotmpl = vim.fn.match(content, '{{.*}}') >= 0
-    if is_gotmpl then
-      return 'gotmpl'
-    end
-    return 'yaml'
-  end,
-}
-
 M.setup = function()
   vim.filetype.add({
     extension = {
       gotmpl = 'gotmpl',
+      gitconfig = 'gitconfig',
     },
     pattern = {
       -- tree-sitter-go-template made updates so still testing if this ft detect works properly
