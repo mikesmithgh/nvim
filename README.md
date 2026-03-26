@@ -1,3 +1,8 @@
+> [!IMPORTANT]\
+> Currently having an issue with nvim-treesitter, neorg, and neovim nightly compatiblity
+> Pinned to 4ed597389c on Neovim nightly and master branch on nvim-treesitter
+>
+
 <pre align="center">
       ,l;             c,      
    .:ooool'           loo:.   
