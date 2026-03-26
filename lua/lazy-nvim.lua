@@ -1,5 +1,11 @@
 local M = {}
 
+-- Note:
+-- Do not install lua or luarocks on your system (e.g., homebrew)
+-- lazy.nvim will install the appropriate versions via hererocks
+-- add to your PATH: ~/.local/share/nvim/lazy-rocks/hererocks/bin
+-- this inclues lua (pinned to 5.1) and luarocks
+
 M.init = function()
   -- Bootstrap lazy.nvim
   local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
