@@ -1,5 +1,26 @@
 local M = {}
 
+local function jump_opts()
+  local opts = {
+    on_jump = function(_, bufnr)
+      vim.diagnostic.open_float({
+        bufnr = bufnr,
+        scope = 'cursor',
+        focus = false,
+      })
+    end,
+  }
+
+  -- deprecated, leaving for backwards compatibility
+  if vim.fn.has('nvim-0.12') == 0 then
+    opts = {
+      float = true,
+    }
+  end
+
+  return opts
+end
+
 M.setup = function()
   -- globals
   -- disable netrw at the very start of your init.lua (strongly advised) Nvimtree
@@ -195,9 +216,7 @@ M.setup = function()
 
   -- open float window when diagnostic.jump is called
   vim.diagnostic.config({
-    jump = {
-      float = true,
-    },
+    jump = jump_opts(),
   })
 end
 
