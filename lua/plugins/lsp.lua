@@ -113,6 +113,9 @@ return {
               constantValues = true,
               parameterNames = true,
             },
+            analyses = {
+              ST1000 = false, -- ignore ST1000: at least one file in a package should have a package comment [default]
+            },
           },
         },
       })
