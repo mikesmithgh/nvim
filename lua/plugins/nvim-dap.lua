@@ -6,15 +6,6 @@ return {
     -- copied from https://github.com/mfussenegger/dotfiles/blob/833d634251ebf3bf7e9899ed06ac710735d392da/vim/.config/nvim/lua/me/dap.lua
     local api = vim.api
     local M = {}
-    local log_level = 'INFO'
-
-    local function reload()
-      require('dap.repl').close()
-      M.setup()
-      require('jdtls.dap').setup_dap({ hotcodereplace = 'auto' })
-      vim.cmd('set ft=' .. vim.bo.filetype)
-      require('dap').set_log_level(log_level)
-    end
 
     function M.setup()
       -- TODO: revist and improve highlights
@@ -47,12 +38,6 @@ return {
       local status, dap = pcall(require, 'dap')
       if not status then
         return
-      end
-
-      local orig_set_log_level = dap.set_log_level
-      function dap.set_log_level(level)
-        orig_set_log_level(level)
-        log_level = level
       end
 
       -- local widgets
@@ -170,7 +155,6 @@ return {
 
       -- local sidebar = widgets.sidebar(widgets.scopes)
       -- api.nvim_create_user_command('DapSidebar', sidebar.toggle, { nargs = 0 })
-      api.nvim_create_user_command('DapReload', reload, { nargs = 0 })
       api.nvim_create_user_command('DapBreakpoints', function()
         dap.list_breakpoints(true)
       end, { nargs = 0 })
