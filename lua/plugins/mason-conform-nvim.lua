@@ -1,3 +1,4 @@
+-- TODO: replace plugin with alternative, mason-conform.nvim is archived
 return {
   'zapling/mason-conform.nvim',
   enabled = true,
