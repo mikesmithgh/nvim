@@ -25,6 +25,7 @@ M.setup = function()
     extension = {
       gotmpl = 'gotmpl',
       gitconfig = 'gitconfig',
+      gitcommit = 'gitcommit',
     },
     pattern = {
       -- tree-sitter-go-template made updates so still testing if this ft detect works properly
