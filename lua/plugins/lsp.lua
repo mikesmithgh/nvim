@@ -1,5 +1,6 @@
 return {
   {
+    -- check out https://mason-registry.dev/registry/list for available mason packages
     'williamboman/mason.nvim',
     dependencies = {
       -- LSP Support
