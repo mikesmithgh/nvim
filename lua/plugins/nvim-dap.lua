@@ -46,8 +46,8 @@ return {
       --   return
       -- end
       local keymap = vim.keymap
-      local function set(mode, lhs, rhs)
-        keymap.set(mode, lhs, rhs, { silent = true })
+      local function set(mode, lhs, rhs, desc)
+        keymap.set(mode, lhs, rhs, { desc = desc, silent = true })
       end
 
       -- TODO: move mappings to keymaps file
@@ -67,62 +67,63 @@ return {
         dap.toggle_breakpoint(nil, nil, vim.fn.input('Log point message: '), true)
       end)
 
-      set('n', '<f5>', dap.continue) -- vscode
+      set('n', '<f5>', dap.continue, 'DAP Debug Continue/Pause') -- vscode
       set('i', '<f5>', function()
         dap.continue()
         vim.cmd.startinsert({ bang = true })
-      end)
+      end, 'DAP Debug Continue/Pause')
 
-      set('n', '<f11>', dap.step_into) -- vscode
+      set('n', '<f11>', dap.step_into, 'DAP Debug Step Into') -- vscode
       set('i', '<f11>', function()
         dap.step_into()
         vim.cmd.startinsert({ bang = true })
-      end)
+      end, 'DAP Debug Step Into')
 
-      set('n', '<s-f11>', dap.step_out) -- vscode
+      set('n', '<s-f11>', dap.step_out, 'DAP Debug Step Out') -- vscode
       set('i', '<s-f11>', function()
         dap.step_out()
         vim.cmd.startinsert({ bang = true })
-      end)
-      set('n', '<f23>', dap.step_out) -- vscode, same as <s-f11>
+      end, 'DAP Debug Step Out')
+
+      set('n', '<f23>', dap.step_out, 'DAP Debug Step Out') -- vscode, same as <s-f11>
       set('i', '<s-f23>', function()
         dap.step_out()
         vim.cmd.startinsert({ bang = true })
-      end)
+      end, 'DAP Debug Step Out')
 
-      set('n', '<f10>', dap.step_over) -- vscode
+      set('n', '<f10>', dap.step_over, 'DAP Debug Step Over') -- vscode
       set('i', '<f10>', function()
         dap.step_over()
         vim.cmd.startinsert({ bang = true })
-      end)
+      end, 'DAP Debug Step Over')
 
-      set('n', '<s-f5>', dap.terminate) -- vscode
+      set('n', '<s-f5>', dap.terminate, 'DAP Debug Stop') -- vscode
       set('i', '<s-f5>', function()
         dap.terminate()
         vim.cmd.startinsert({ bang = true })
-      end)
-      set('n', '<f17>', dap.terminate) -- vscode, same as <s-f5>
+      end, 'DAP Debug Stop')
+      set('n', '<f17>', dap.terminate, 'DAP Debug Stop') -- vscode, same as <s-f5>
       set('i', '<f17>', function()
         dap.terminate()
         vim.cmd.startinsert({ bang = true })
-      end)
+      end, 'DAP Debug Stop')
 
       local dapuiwidgets
       status, dapuiwidgets = pcall(require, 'dap.ui.widgets')
       if status then
-        set('n', '<f12>', dapuiwidgets.hover)
+        set('n', '<f12>', dapuiwidgets.hover, 'DAP Debug Show Hover')
         set('i', '<f12>', function()
           dapuiwidgets.hover()
           vim.cmd.startinsert({ bang = true })
-        end)
+        end, 'DAP Debug Show Hover')
       end
 
       -- set('n', '<leader>dr', function() dap.repl.toggle({ height = 15 }) end)
-      set('n', '<leader>dl', dap.run_last)
+      set('n', '<leader>dl', dap.run_last, 'DAP Debug Run Last')
       set('n', '<leader>dj', dap.down)
       set('n', '<leader>dk', dap.up)
-      set('n', '<leader>dc', dap.run_to_cursor)
-      set('n', '<leader>df', dap.focus_frame)
+      set('n', '<leader>dc', dap.run_to_cursor, 'DAP Debug Run to Cursor')
+      set('n', '<leader>df', dap.focus_frame, 'DAP Debug Focus Frame')
 
       -- set('n', '<leader>dS', function() widgets.centered_float(widgets.frames) end)
       -- set('n', '<leader>dt', function() widgets.centered_float(widgets.threads) end)
