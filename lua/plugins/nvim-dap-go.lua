@@ -21,7 +21,7 @@ return {
     require('dap').configurations.go = {
       {
         type = 'go',
-        name = 'Debug',
+        name = ' Debug',
         request = 'launch',
         program = '${file}',
         outputMode = 'remote',
@@ -45,7 +45,7 @@ return {
       },
       {
         type = 'go',
-        name = 'Debug Package',
+        name = ' Debug Package',
         request = 'launch',
         program = '${fileDirname}',
         outputMode = 'remote',
@@ -68,7 +68,7 @@ return {
       },
       {
         type = 'go',
-        name = 'Debug test',
+        name = ' Debug test',
         request = 'launch',
         mode = 'test',
         program = '${file}',
@@ -76,7 +76,7 @@ return {
       },
       {
         type = 'go',
-        name = 'Debug test (go.mod)',
+        name = ' Debug test (go.mod)',
         request = 'launch',
         mode = 'test',
         program = './${relativeFileDirname}',
