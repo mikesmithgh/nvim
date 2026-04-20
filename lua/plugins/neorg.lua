@@ -5,6 +5,9 @@ return {
     lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
     version = '*', -- Pin Neorg to the latest stable release
     config = function()
+      -- see https://github.com/nvim-neorg/neorg/issues/1808#issuecomment-4281328564
+      vim.opt.rtp:prepend(vim.fn.stdpath('data') .. '/lazy-rocks/tree-sitter-norg/lib/lua/5.1')
+      vim.opt.rtp:prepend(vim.fn.stdpath('data') .. '/lazy-rocks/tree-sitter-norg-meta/lib/lua/5.1')
       require('neorg').setup({
         load = {
           ['core.defaults'] = {}, -- Loads default behaviour
