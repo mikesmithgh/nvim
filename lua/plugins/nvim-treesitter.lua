@@ -12,7 +12,7 @@
 -- # sync lazy.nvim
 -- note: ensure installed is no longer in config, we explicilty call install and it will noop if already installed
 
--- This probably ties this config to nvim 0.12+, I assum ebreaking changes are expected on older version of Neovim
+-- This probably ties this config to nvim 0.12+, I assume breaking changes are expected on older version of Neovim
 
 return {
   {
