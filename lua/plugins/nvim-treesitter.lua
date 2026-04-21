@@ -5,6 +5,7 @@
 -- !!!!!!!!!!!!!!!!!!!!!!
 -- !!!!!!!!!!!!!!!!!!!!!!
 -- stay tuned, https://github.com/nvim-treesitter/nvim-treesitter is listed as archived 😢
+-- # make sure treesitter is installed! brew install tree-sitter-cli
 -- # upgrade path from master
 -- # branch = 'main'
 -- # a bit nuclear but for good measure 😂
