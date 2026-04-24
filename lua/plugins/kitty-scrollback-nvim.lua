@@ -9,7 +9,13 @@ return {
     config = function()
       vim.g.mapleader = ' '
       vim.g.maplocalleader = ','
-      require('kitty-scrollback').setup()
+      require('kitty-scrollback').setup({
+        {
+          extras = {
+            fzf_lua = true,
+          },
+        },
+      })
     end,
   },
 }
