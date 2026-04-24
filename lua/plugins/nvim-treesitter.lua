@@ -30,7 +30,6 @@ return {
       )
 
       -- Tiltfiles are written in Starlark, a dialect of Python, https://docs.tilt.dev/api.html
-      vim.treesitter.language.register('starlark', { 'tiltfile' })
 
       require('nvim-treesitter').install({
         -- TOOD: lets revisit if all these are necessary
@@ -71,6 +70,7 @@ return {
         'regex',
         'ruby',
         'scala',
+        'starlark',
         'sql',
         'terraform',
         'todotxt',
@@ -79,6 +79,18 @@ return {
         -- 'vim', -- provided by nvim
         -- 'vimdoc', -- provided by nvim
         'yaml',
+      })
+
+      vim.treesitter.language.register('starlark', 'tiltfile')
+
+      -- copied from nvim-treesitter
+      -- I noticed highlights work automatically for some filetypes, but not titlefile
+      -- this is an attemp to do it for all filetypes
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          pcall(vim.treesitter.start)
+          vim.bo[args.buf].indentexpr = 'v:lua.require"nvim-treesitter".indentexpr()'
+        end,
       })
     end,
   },
