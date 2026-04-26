@@ -34,6 +34,19 @@ return {
   cmd = { 'NvimTreeToggle', 'NvimTreeFindFile', 'NvimTreeFocus' },
   config = function()
     require('nvim-tree').setup({
+      on_attach = function(bufnr)
+        local api = require('nvim-tree.api')
+        local function opts(desc)
+          return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+        end
+        -- default mappings
+        api.map.on_attach.default(bufnr)
+
+        -- custom mappings
+        -- I use 's' as my fzf leader, nvim-tree defaults this to open with system, lets remove this in favor of vim-like keybind gx
+        vim.keymap.del('n', 's', { buffer = bufnr })
+        vim.keymap.set('n', 'gx', api.node.run.system, opts('Run System'))
+      end,
       hijack_netrw = false,
       renderer = {
         hidden_display = 'all',
