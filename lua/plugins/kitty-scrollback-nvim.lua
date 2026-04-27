@@ -11,9 +11,7 @@ return {
       vim.g.maplocalleader = ','
       require('kitty-scrollback').setup({
         {
-          extras = {
-            fzf_lua = true,
-          },
+          scrollback_tempfile = true,
         },
       })
     end,
