@@ -54,6 +54,7 @@ return {
           'lua_ls',
           'bashls',
           'gopls',
+          'golangci_lint_ls',
           -- 'tilt_ls', -- tilt_ls exists but is not managed by mason lspconfig
         },
       })
