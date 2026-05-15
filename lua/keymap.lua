@@ -170,23 +170,8 @@ M.setup = function()
     require('incline').toggle()
   end)
   vim.keymap.set('n', '<leader><leader>v', function()
-    if next(require('diffview.lib').views) == nil then
-      vim.cmd('DiffviewOpen')
-    else
-      vim.cmd('DiffviewClose')
-    end
+    require('diffview').toggle({})
   end)
-
-  vim.api.nvim_create_user_command('DiffviewToggle', function()
-    vim.schedule(function()
-      if next(require('diffview.lib').views) == nil then
-        vim.cmd('DiffviewOpen')
-      else
-        vim.cmd('DiffviewClose')
-      end
-    end)
-  end, {})
-
   vim.keymap.set('n', '<leader><leader>u', function()
     vim.cmd('UndotreeToggle')
     vim.cmd('UndotreeFocus')

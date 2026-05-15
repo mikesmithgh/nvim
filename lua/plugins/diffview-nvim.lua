@@ -1,17 +1,16 @@
 return {
-  'sindrets/diffview.nvim',
-  -- 'mikesmithgh/diffview.nvim',
-  -- branch = 'fix-islist', -- see https://github.com/sindrets/diffview.nvim/pull/489
+  'dlyongemallo/diffview.nvim', -- active fork of sindrets/diffview.nvim
   lazy = true,
   cmd = {
-    'DiffviewLog',
     'DiffviewOpen',
-    'DiffviewClose',
     'DiffviewToggle',
-    'DiffviewRefresh',
-    'DiffviewFocusFiles',
+    'DiffviewDiffFiles',
     'DiffviewFileHistory',
+    'DiffviewClose',
+    'DiffviewFocusFiles',
     'DiffviewToggleFiles',
+    'DiffviewRefresh',
+    'DiffviewLog',
   },
   enabled = true,
   dependencies = 'nvim-lua/plenary.nvim',
