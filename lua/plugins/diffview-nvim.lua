@@ -1,3 +1,4 @@
+vim.cmd.cnoreabbrev('dt DiffviewToggle')
 return {
   'dlyongemallo/diffview.nvim', -- active fork of sindrets/diffview.nvim
   lazy = true,
@@ -11,6 +12,7 @@ return {
     'DiffviewToggleFiles',
     'DiffviewRefresh',
     'DiffviewLog',
+    'DiffviewMergeFiles',
   },
   enabled = true,
   dependencies = 'nvim-lua/plenary.nvim',
