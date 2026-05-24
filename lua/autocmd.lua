@@ -50,7 +50,7 @@ M.setup = function()
           incline.disable()
         end)
       end
-      vim.api.nvim_notify('To execute the command you must write the buffer contents.', vim.log.levels.WARN, {})
+      vim.notify('To execute the command you must write the buffer contents.', vim.log.levels.WARN, {})
       return true
     end,
   })
@@ -161,7 +161,8 @@ end
 vim.api.nvim_create_autocmd({ 'TextYankPost' }, {
   group = vim.api.nvim_create_augroup('TextYankPostGroup', { clear = true }),
   callback = function()
-    vim.hl.on_yank({
+    local hl_op = vim.fn.has('nvim-0.13') == 0 and 'on_yank' or 'hl_op'
+    vim.hl[hl_op]({
       higroup = 'Visual',
       timeout = 300,
       on_visual = false,
@@ -186,7 +187,7 @@ if vim.env.VIM:match('.*%.local/share/bob.*') then
     pattern = { 'VeryLazy' },
     callback = function()
       vim.defer_fn(function()
-        vim.api.nvim_notify('Using a bob neovim instance', vim.log.levels.WARN, {})
+        vim.notify('Using a bob neovim instance', vim.log.levels.WARN, {})
       end, 1000)
       return true
     end,
