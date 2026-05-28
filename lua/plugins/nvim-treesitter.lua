@@ -94,12 +94,4 @@ return {
       })
     end,
   },
-  {
-    'nvim-treesitter/playground',
-    enabled = true,
-    lazy = true,
-    cmd = {
-      'TSPlaygroundToggle',
-    },
-  },
 }
