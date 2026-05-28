@@ -92,7 +92,7 @@ vim.api.nvim_create_autocmd({ 'TextYankPost' }, {
       on_visual = false,
     })
     local event = vim.v.event
-    if vim.fn.reg_executing() ~= '' or event.operator ~= 'y' or vim.regtype == '' or event.visual then
+    if vim.fn.reg_executing() ~= '' or event.operator ~= 'y' or event.regtype == '' or event.visual then
       return
     end
     if vim.o.cursorline then
