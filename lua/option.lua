@@ -95,10 +95,10 @@ M.setup = function()
   vim.opt.cursorline = true
   vim.opt.cursorcolumn = true
 
-  -- -- hide insert autocomplete messages and while scanning for completion items
-  vim.tbl_extend('force', vim.opt.shortmess, { 'c', 'C' })
-  -- -- enable spell check completion
-  vim.tbl_extend('force', vim.opt.complete, { 'kspell' })
+  -- hide insert autocomplete messages and while scanning for completion items
+  vim.opt.shortmess:append('cC')
+  -- enable spell check completion
+  vim.opt.complete:append('kspell')
 
   -- Improve popup completion menu
   vim.opt.completeopt = { 'longest', 'menuone' }
