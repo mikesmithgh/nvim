@@ -188,8 +188,6 @@ M.setup = function()
 
   vim.opt.inccommand = 'nosplit'
 
-  -- vim.opt.keywordprg = ':Woman'
-
   vim.opt.cmdheight = 0
 
   -- => Status line
