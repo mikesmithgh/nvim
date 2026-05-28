@@ -143,10 +143,8 @@ M.setup = function()
 
   -- TODO: keep this until it conflicts
   vim.keymap.set('t', '<esc>', '<c-\\><c-n><esc>', { remap = true })
-  -- Toggle
-  vim.keymap.set('n', '<leader><leader>t', function()
-    vim.cmd('ToggleTerm')
-  end)
+
+  -- Toggles
   vim.keymap.set('n', '<leader><leader>d', function()
     local status, dapui = pcall(require, 'dapui')
     if not status then
