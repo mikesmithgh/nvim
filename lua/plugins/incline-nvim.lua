@@ -8,6 +8,10 @@ return {
     if not ok then
       incline = require('incline')
     end
-    incline.setup()
+    incline.setup({
+      hide = {
+        cursorline = 'focused_win',
+      },
+    })
   end,
 }
