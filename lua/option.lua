@@ -188,8 +188,6 @@ M.setup = function()
 
   vim.opt.inccommand = 'nosplit'
 
-  vim.opt.cmdheight = 0
-
   -- => Status line
   -- lualine will override these values
   vim.o.statusline = [[%#EndOfBuffer#%<~%=neovim btw ]]
@@ -215,6 +213,14 @@ M.setup = function()
   -- open float window when diagnostic.jump is called
   vim.diagnostic.config({
     jump = jump_opts(),
+  })
+
+  -- experimental/unstable options
+  vim.opt.cmdheight = 0
+  require('vim._core.ui2').enable({
+    msg = {
+      targets = 'msg',
+    },
   })
 end
 

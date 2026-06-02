@@ -65,13 +65,6 @@ return {
       end,
     })
     local x = {
-      -- see https://github.com/nvim-lualine/lualine.nvim/issues/868
-      {
-        ---@diagnostic disable-next-line: undefined-field
-        require('noice').api.status.command.get,
-        ---@diagnostic disable-next-line: undefined-field
-        cond = require('noice').api.status.command.has,
-      },
       {
         function()
           return rec_msg
