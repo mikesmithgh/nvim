@@ -5,11 +5,6 @@ return {
     enabled = false,
   },
   {
-    -- applescript
-    'vim-scripts/applescript.vim',
-    enabled = false,
-  },
-  {
     -- kitty.conf
     'fladson/vim-kitty',
     enabled = true,
