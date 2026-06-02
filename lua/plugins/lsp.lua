@@ -109,6 +109,7 @@ return {
             -- staticcheck enables additional analyses from staticcheck.io. These analyses are documented on Staticcheck's website.
             -- https://staticcheck.dev/docs/checks/
             staticcheck = true,
+            buildFlags = { '-tags=integration' },
             hints = {
               -- see https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md
               compositeLiteralFields = true,
