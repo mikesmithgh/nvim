@@ -84,6 +84,15 @@ return {
       },
       {
         type = 'go',
+        name = ' Debug integration test (go.mod)',
+        request = 'launch',
+        mode = 'test',
+        program = './${relativeFileDirname}',
+        buildFlags = '-tags=integration',
+        outputMode = 'remote',
+      },
+      {
+        type = 'go',
         name = ' Attach Remote',
         mode = 'remote',
         request = 'attach',
