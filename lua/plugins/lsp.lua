@@ -55,6 +55,7 @@ return {
           'bashls',
           'gopls',
           'golangci_lint_ls',
+          'ts_ls',
           -- 'tilt_ls', -- tilt_ls exists but is not managed by mason lspconfig
         },
       })
@@ -120,6 +121,19 @@ return {
               ST1000 = false, -- ignore ST1000: at least one file in a package should have a package comment [default]
             },
           },
+        },
+      })
+
+      vim.lsp.config('ts_ls', {
+        -- see https://github.com/typescript-language-server/typescript-language-server
+        on_attach = lsp_attach,
+        filetypes = {
+          'javascript',
+          'javascriptreact',
+          'javascript.jsx',
+          'typescript',
+          'typescriptreact',
+          'typescript.tsx',
         },
       })
 
